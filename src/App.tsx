@@ -12,7 +12,10 @@ import styled from "styled-components";
 function App() {
   return (
     <>
-      <Container>Logga in</Container>
+      <H1>
+        Techship<Button>Logga in</Button>
+      </H1>
+
       <Sidebar />
       <Routes>
         <Route path="/" element={<Applications />} />
@@ -27,8 +30,19 @@ function App() {
   );
 }
 
-const Container = styled.button`
+const H1 = styled.h1`
+  border: 1px solid black;
+  text-align: center;
+  font-size: 100px;
+  margin: 0px;
+  margin-top: 15px;
+  padding-bottom: 25px;
+  padding-top: 25px;
+`;
+
+const Button = styled.button`
   position: absolute;
-  margin-left: 1800px;
+  right: 20px;
+  top: 150px;
 `;
 export default App;
