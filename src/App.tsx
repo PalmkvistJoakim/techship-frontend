@@ -1,5 +1,11 @@
+import Items from "./Applicants";
+
 function App() {
-  return <div>App</div>;
+  return (
+    <div>
+      <Items />
+    </div>
+  );
 }
 
 export default App;
