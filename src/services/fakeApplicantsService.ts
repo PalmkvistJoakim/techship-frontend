@@ -10,6 +10,7 @@ const appplicants = [
     adress: "Redaregatan 40",
     notis: "Han är driven",
     stage: "APPLIED",
+    description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
     _id: "5b21ca3eeb7f6fbccd461815",
@@ -20,6 +21,7 @@ const appplicants = [
     adress: "Redaregatan 41",
     notis: "Hon är utvecklare",
     stage: "APPLIED",
+    description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
     _id: "5b21ca3eeb7f6fbccd478815",
@@ -30,6 +32,7 @@ const appplicants = [
     adress: "Redaregatan 42",
     notis: "Han är duktig",
     stage: "APPLIED",
+    description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
     _id: "5b21ca3eeb7f6fbccd371815",
@@ -40,6 +43,7 @@ const appplicants = [
     adress: "Redaregatan 43",
     notis: "Han är trött",
     stage: "APPLIED",
+    description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
     _id: "5b21ca3eeb7f6fbccd471815",
@@ -50,6 +54,7 @@ const appplicants = [
     adress: "Redaregatan 44",
     notis: "Han är senior",
     stage: "APPLIED",
+    description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
     _id: "5b21ca3eeb7f6fbccd479815",
@@ -60,6 +65,7 @@ const appplicants = [
     adress: "Redaregatan 45",
     notis: "Hon är entreprnör",
     stage: "APPLIED",
+    description: "är taggad för den här program , hoppas jag hör av er",
   },
 ];
 
@@ -67,7 +73,7 @@ export function getAppplicants() {
   return appplicants;
 }
 
-export function getAppplicant(id) {
+export function getAppplicant(id: string) {
   return appplicants.find((appplicant) => appplicant._id === id);
 }
 

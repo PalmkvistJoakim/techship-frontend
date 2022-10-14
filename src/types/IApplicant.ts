@@ -7,6 +7,7 @@ interface IApplicant {
   adress: string;
   notis: string;
   stage: string;
+  description: string;
 }
 
 export default IApplicant;
