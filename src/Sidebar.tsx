@@ -9,22 +9,13 @@ function Sidebar() {
           <Link to="/">ANSÖKNINGAR</Link>
         </LiContainer>
         <LiContainer>
-          <Link to="/selections">URVAL</Link>
+          <Link to="/applied">APPLIED</Link>
         </LiContainer>
         <LiContainer>
-          <Link to="/approved">Antagna</Link>
+          <Link to="/program">TECHSHIP_PROGRAMME</Link>
         </LiContainer>
         <LiContainer>
-          <Link to="/step1">Steg1</Link>
-        </LiContainer>
-        <LiContainer>
-          <Link to="/step2">Steg2</Link>
-        </LiContainer>
-        <LiContainer>
-          <Link to="/notapproved">Ej Antagna</Link>
-        </LiContainer>
-        <LiContainer>
-          <Link to="/savedprofiles">SPARADE PROFILER</Link>
+          <Link to="/school">TECHSHIP_SCHOOL</Link>
         </LiContainer>
       </ul>
     </Container>
