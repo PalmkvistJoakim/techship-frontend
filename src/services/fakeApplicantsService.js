@@ -23,7 +23,7 @@ const appplicants = [
   },
   {
     _id: "5b21ca3eeb7f6fbccd478815",
-    name: "Janken Matena",
+    name: "Janken Matene",
     age: 26,
     email: "Janken@gmail.com",
     phone: "0739367846",
