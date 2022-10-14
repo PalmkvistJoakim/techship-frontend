@@ -53,6 +53,7 @@ const Container = styled.tr`
 const TdCommentIcon = styled.td`
   text-align: left;
   margin-left: 16px;
+  cursor: pointer;
 `;
 
 const TdAge = styled.td`
