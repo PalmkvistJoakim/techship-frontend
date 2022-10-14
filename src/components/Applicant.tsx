@@ -13,7 +13,7 @@ function Applicant({ name, age, stage, _id, index }: Props): JSX.Element {
       <TdAge>{age}</TdAge>
       <Td>{stage}</Td>
       <TdCommentIcon>
-        <i className="fa-regular fa-comment" />
+        <I className="fa-regular fa-comment" />
       </TdCommentIcon>
       <button> Delete </button>
     </Container>
@@ -53,10 +53,14 @@ const Container = styled.tr`
 const TdCommentIcon = styled.td`
   text-align: left;
   margin-left: 16px;
-  cursor: pointer;
 `;
 
 const TdAge = styled.td`
   text-align: left;
   margin-left: 42px;
+`;
+
+const I = styled.i`
+  cursor: pointer;
+  margin-top: 4px;
 `;
