@@ -23,7 +23,7 @@ function Sidebar() {
 }
 
 const Container = styled.div`
-  border: 1px solid black;
+  border: 1px solid white;
   position: absolute;
   top: 200px;
   padding-right: 30px;

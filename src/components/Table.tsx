@@ -17,8 +17,10 @@ export default Table;
 
 const TableCSS = styled.table`
   position: absolute;
+  background-color: white;
+  color: black;
   top: 200px;
   left: 400px;
   border-collapse: collapse;
-  border: 1px solid;
+  border: 1px solid white;
 `;

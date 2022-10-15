@@ -2,3 +2,13 @@
   padding: 0;
   margin: 0;
 }
+
+:root {
+  --bodyColor: black;
+  --color: white;
+}
+
+body {
+  background-color: var(--bodyColor);
+  color: var(--color);
+}
