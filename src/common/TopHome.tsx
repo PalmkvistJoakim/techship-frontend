@@ -20,7 +20,7 @@ function TopHome(): JSX.Element {
             potential med hjälp av entreprenörskap, innovation och teknik.
           </p>
 
-          <button onClick={() => navigate("/application")}> ANSÖK </button>
+          <button onClick={() => navigate("/Dashboard")}> Dashboard </button>
         </Continer>
       </Warpper>
     </>

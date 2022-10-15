@@ -12,8 +12,6 @@ function Navbar(): JSX.Element {
       </Logo>
       <RightItems>
         <div onClick={() => navigate("/dashboard")}>Dashboard</div>
-        <div onClick={() => navigate("/partner")}>Bli partner</div>
-        <div onClick={() => navigate("/questions")}>Frågor & svar</div>
         <div onClick={() => navigate("/login")}>Login</div>
       </RightItems>
     </Continer>
@@ -54,10 +52,9 @@ const Logo = styled.div`
 `;
 
 const RightItems = styled.div`
-  width: 30%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   list-style: none;
   flex-wrap: wrap;
   div {
