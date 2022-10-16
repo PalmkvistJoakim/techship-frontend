@@ -4,6 +4,7 @@ import IApplicant from "../types/IApplicant";
 import Table from "../components/Table";
 import applicantsContext from "../context/applicantsContext";
 import Sidebar from "../Sidebar";
+import SearchBar from "./SearchBar";
 
 function Items() {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
@@ -17,6 +18,7 @@ function Items() {
       <applicantsContext.Provider value={applicants}>
         <Sidebar />
         <Table />
+        <SearchBar />
       </applicantsContext.Provider>
     </>
   );

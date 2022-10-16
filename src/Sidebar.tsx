@@ -1,21 +1,32 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
+  const navigate = useNavigate();
   return (
     <Container>
       <ul>
         <LiContainer>
-          <Link to="/">ANSÖKNINGAR</Link>
+          <h5>Ansökningar</h5>
         </LiContainer>
         <LiContainer>
-          <Link to="/applied">APPLIED</Link>
+          <h5>Urval (valbar, dropdown?)</h5>
         </LiContainer>
         <LiContainer>
-          <Link to="/program">TECHSHIP_PROGRAMME</Link>
+          <h5>- Antagna</h5>
         </LiContainer>
         <LiContainer>
-          <Link to="/school">TECHSHIP_SCHOOL</Link>
+          <h5>- Ej Antagna</h5>
+        </LiContainer>
+        <LiContainer>
+          <h5>- Techship Programme</h5>
+        </LiContainer>
+        <LiContainer>
+          <h5>- Techship School</h5>
+        </LiContainer>
+        <LiContainer>
+          <h5>Sparade Profiler</h5>
         </LiContainer>
       </ul>
     </Container>
