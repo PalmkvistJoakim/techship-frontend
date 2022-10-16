@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import applicantsContext from "../context/applicantsContext";
 import IApplicant from "../types/IApplicant";
 import styled from "styled-components";
@@ -12,7 +13,11 @@ function TableBody(): JSX.Element {
         <tr key={applicant._id}>
           <Container>
             <td>{index + 1}</td>
-            <Td>{applicant.name}</Td>
+            <Td>
+              <div>
+                <Link to={"/application/:id"}>{applicant.name}</Link>
+              </div>
+            </Td>
             <TdAge>{applicant.age}</TdAge>
             <Td>{applicant.stage}</Td>
             <TdCommentIcon>

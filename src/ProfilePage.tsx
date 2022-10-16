@@ -8,7 +8,6 @@ function ProfilePage() {
         <PageHeader>
           <img src={require("./img/profilbild.jpg")} />
           <h1>Nazih Hazime (22år)</h1>
-
           <p>
             Har fått jobb, kan inte delta. Vill vara med nästa år istället.
             Detta är en kommentar
@@ -56,7 +55,7 @@ function ProfilePage() {
             <h4>E-post</h4>
             <p>nazih1700@gmail.com</p>
             <h4>Telefonnummer</h4>
-            <p>071234567</p>
+            <p>071 234 54 67</p>
             <h4>Videoask-länk</h4>
             <p>videoask.com</p>
           </ContactDetails>
@@ -70,6 +69,7 @@ const Container = styled.div`
   margin: 10%;
   margin-right: 0%;
   margin-left: 25%;
+  margin-top: 3%;
   display: grid;
   grid-template-columns: 3fr 1.2fr;
   grid-template-rows: 0.5fr 1fr;
@@ -84,7 +84,6 @@ const PageHeader = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   @media (max-width: 667px) {
     display: flex;
     flex-direction: column;
@@ -104,25 +103,31 @@ const PageHeader = styled.div`
     border-radius: 50%;
     height: 90px;
     top: 20%;
-    margin-left: 15px;
+    margin-right: 10px;
+    justify-content: right;
   }
 
   h1 {
     text-align: left;
-    margin-left: 15%;
+    margin-left: 16%;
     margin-top: 25px;
   }
+
   p {
     text-align: left;
-    margin-left: 15%;
-    margin-right: 28%;
+    margin-left: 16%;
+    margin-right: 35%;
     margin-top: 2%;
     margin-bottom: 2%;
     border: 2px solid #40daae;
     border-radius: 10px;
     padding: 8px;
+    justify-content: right;
   }
 `;
+
+//Kolla med Aladin varför det kommer en ny flex varje gång man lägger till något nytt
+const Stage = styled.p``;
 
 const MainPage = styled.div`
   grid-area: main;
