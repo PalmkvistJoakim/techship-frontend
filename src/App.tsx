@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LoginForm from "./components/LoginForm";
 import { useNavigate } from "react-router-dom";
+import ProfilePage from "./ProfilePage";
 
 function App() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function App() {
         <Navbar />
       </NavMain>
       <Routes>
-        <Route path="/application/:id" element={<ApplicationForm />} />
+        <Route path="/application/:id" element={<ProfilePage />} />
         <Route path="/application" element={<ApplicationForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<LoginForm />} />
