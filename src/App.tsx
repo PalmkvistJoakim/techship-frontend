@@ -5,11 +5,9 @@ import ApplicationForm from "./components/ApplicationForm";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import LoginForm from "./components/LoginForm";
-import { useNavigate } from "react-router-dom";
-import ProfilePage from "./ProfilePage";
+import ProfilePage from "./common/ProfilePage";
 
 function App() {
-  const navigate = useNavigate();
   return (
     <>
       <NavMain>
