@@ -20,7 +20,7 @@ const TableCSS = styled.table`
   background-color: white;
   color: black;
   top: 300px;
-  left: 400px;
+  left: 280px;
   border-collapse: collapse;
   border: 1px solid white;
 `;

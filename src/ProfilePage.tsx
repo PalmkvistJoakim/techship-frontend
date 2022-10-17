@@ -10,7 +10,7 @@ function ProfilePage() {
           <h1>Nazih Hazime (22år)</h1>
           <p>
             Har fått jobb, kan inte delta. Vill vara med nästa år istället.
-            Detta är en kommentar
+            Detta är en kommentar!
           </p>
         </PageHeader>
         <MainPage>
@@ -74,7 +74,7 @@ const Container = styled.div`
   grid-template-columns: 3fr 1.2fr;
   grid-template-rows: 0.5fr 1fr;
   grid-template-areas:
-    "head   head"
+    "head   headRight"
     "main   right";
   height: 100vh;
 `;
