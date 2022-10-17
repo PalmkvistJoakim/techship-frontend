@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import applicantsContext from "../context/applicantsContext";
+import applicantsContext from "../Context/ApplicantsContext";
 import IApplicant from "../types/IApplicant";
 import styled from "styled-components";
 
