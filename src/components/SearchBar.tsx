@@ -12,9 +12,9 @@ export default SearchBar;
 
 const Input = styled.input`
   position: absolute;
-  left: 399px;
+  left: 280px;
   top: 260px;
-  padding-right: 464px;
+  padding-right: 772px;
   padding-top: 5px;
   padding-bottom: 5px;
 `;

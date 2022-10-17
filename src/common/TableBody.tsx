@@ -45,7 +45,7 @@ const Td = styled.td`
 
 const Container = styled.tr`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, 184px);
   border-bottom: 1px solid;
   padding: 8px;
 `;
