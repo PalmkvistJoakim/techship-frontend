@@ -11,7 +11,6 @@ function SearchBar() {
 export default SearchBar;
 
 const Input = styled.input`
-  position: absolute;
   left: 280px;
   top: 260px;
   padding-right: 772px;

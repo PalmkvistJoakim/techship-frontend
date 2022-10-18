@@ -9,7 +9,7 @@ function TableHeader() {
         <ThAge>Ålder</ThAge>
         <Th>Status</Th>
         <Th>Notis</Th>
-        <th></th>
+        <Th> Email</Th>
       </Tr>
     </thead>
   );
@@ -22,7 +22,7 @@ const Th = styled.th`
 
 const Tr = styled.tr`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   border-collapse: collapse;
   border: 1px solid;
 `;
