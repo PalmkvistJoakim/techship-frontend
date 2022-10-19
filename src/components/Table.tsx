@@ -51,7 +51,6 @@ const Warrper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 58%;
-  border: 2px solid white;
   margin-left: 20%;
 
   @media (max-width: 1280) {
@@ -67,7 +66,7 @@ const Warrper = styled.div`
     font-weight: bold;
     border: none;
     border-radius: 10px;
-    margin-right: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
 
     :hover {
