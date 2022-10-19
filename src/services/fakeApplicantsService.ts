@@ -27,7 +27,7 @@ const appplicants = [
     _id: "5b21ca3eeb7f6fbccd478815",
     name: "Janken Matene",
     age: 26,
-    email: "Janken@gmail.com",
+    email: "janken-matene@hotmail.com",
     phone: "0739367846",
     adress: "Redaregatan 42",
     notis: "Han är duktig",
@@ -35,7 +35,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd371815",
+    _id: "5b21ca3eeb7f6fbccd37181",
     name: "Nazih Hazime",
     age: 27,
     email: "Nazih@gmail.com",
@@ -46,7 +46,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471815",
+    _id: "5b21ca3eeb7f6fbccd4355",
     name: "Aladin El-khalil",
     age: 28,
     email: "Aladin@gmail.com",
@@ -57,7 +57,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd479815",
+    _id: "5b21ca3eeb7f6fbccd23615",
     name: "Aliya Sabir",
     age: 29,
     email: "Aliya@gmail.com",
@@ -68,7 +68,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471835",
+    _id: "5b21ca3eeb7f6fbccd235135",
     name: "Joakim Palmkvist",
     age: 24,
     email: "Jocke@gmail.com",
@@ -79,7 +79,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd461815",
+    _id: "5b21ca3eeb7f6fbccd46125135",
     name: "Embla williamsson ",
     age: 25,
     email: "embla@gmail.com",
@@ -90,10 +90,10 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd478815",
+    _id: "5b21ca3eeb7f6fbccd44587",
     name: "Janken Matene",
     age: 26,
-    email: "Janken@gmail.com",
+    email: "janken-matene@hotmail.com",
     phone: "0739367846",
     adress: "Redaregatan 42",
     notis: "Han är duktig",
@@ -101,7 +101,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd371815",
+    _id: "5b21ca3eeb7f6fbccd3324734",
     name: "Nazih Hazime",
     age: 27,
     email: "Nazih@gmail.com",
@@ -112,7 +112,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471815",
+    _id: "5b21ca3eeb7f6fbccd423462",
     name: "Aladin El-khalil",
     age: 28,
     email: "Aladin@gmail.com",
@@ -123,7 +123,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd479815",
+    _id: "5b21ca3eeb7f6fbccd423511",
     name: "Aliya Sabir",
     age: 29,
     email: "Aliya@gmail.com",
@@ -134,7 +134,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471835",
+    _id: "5b21ca3eeb7f6fbccd41124",
     name: "Joakim Palmkvist",
     age: 24,
     email: "Jocke@gmail.com",
@@ -145,7 +145,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd461815",
+    _id: "5b21ca3eeb7f6fbccd46909",
     name: "Embla williamsson ",
     age: 25,
     email: "embla@gmail.com",
@@ -156,7 +156,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd478815",
+    _id: "5b21ca3eeb7f6fbccd475685",
     name: "Janken Matene",
     age: 26,
     email: "Janken@gmail.com",
@@ -167,7 +167,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd371815",
+    _id: "5b21ca3eeb7f6fbccd37465843",
     name: "Nazih Hazime",
     age: 27,
     email: "Nazih@gmail.com",
@@ -178,7 +178,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471815",
+    _id: "5b21ca3eeb7f6fbccd473463",
     name: "Aladin El-khalil",
     age: 28,
     email: "Aladin@gmail.com",
@@ -189,7 +189,7 @@ const appplicants = [
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
-    _id: "5b21ca3eeb7f6fbccd479815",
+    _id: "5b21ca3eeb7f6fbccd4357388",
     name: "Aliya Sabir",
     age: 29,
     email: "Aliya@gmail.com",

@@ -5,7 +5,7 @@ const LoginForm = () => {
     <Container>
       <video src={require("../assets/video.mp4")} loop muted autoPlay />
       <Form>
-        <h1>LOGIN </h1>
+        <h1>LOG IN </h1>
         <label htmlFor="html"></label>
         <input type="text" placeholder="Username" />
         <label htmlFor="psw"></label>
