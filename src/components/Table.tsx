@@ -14,7 +14,7 @@ function Table(): JSX.Element {
   };
 
   return (
-    <>
+    <Container>
       <Warrper>
         <button type="submit" onClick={() => onSubmit()}>
           Send Email
@@ -25,34 +25,41 @@ function Table(): JSX.Element {
         <TableHeader />
         <TableBody setCheck={setCheck} checkEmail={checkEmail} />
       </TableCSS>
-    </>
+    </Container>
   );
 }
 
 export default Table;
 
+const Container = styled.div`
+  margin-top: 5%;
+`;
+
 const TableCSS = styled.table`
-  position: absolute;
   background-color: white;
   color: black;
   top: 300px;
   left: 280px;
   border-collapse: collapse;
   border: 1px solid white;
+  margin-left: 20%;
 `;
 
 const Warrper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  position: absolute;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 60%;
-  right: 26%;
-  top: 27%;
+  width: 58%;
+  border: 2px solid white;
+  margin-left: 20%;
+
+  @media (max-width: 1280) {
+    width: 100%;
+  }
 
   button {
-    width: 150px;
+    width: 120px;
     padding: 12px;
     /* right: 27%;
   top: 27%; */
