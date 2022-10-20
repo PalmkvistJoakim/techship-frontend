@@ -3,13 +3,15 @@ import { Link } from "react-router-dom";
 import applicantsContext from "../Context/ApplicantsContext";
 import IApplicant from "../types/IApplicant";
 import styled from "styled-components";
+import { IVideoask } from "../types/VideoAsk";
 
 interface Props {
   setCheck: (checkEmail: string | string[]) => void;
   checkEmail: any;
+  data: IVideoask[];
 }
 
-function TableBody({ setCheck, checkEmail }: Props): JSX.Element {
+function TableBody({ setCheck, checkEmail, data }: Props): JSX.Element {
   const applicants = useContext(applicantsContext) as IApplicant[];
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -29,30 +31,28 @@ function TableBody({ setCheck, checkEmail }: Props): JSX.Element {
   return (
     <>
       <Tbody>
-        {applicants.map((applicant) => (
-          <tr key={applicant._id}>
+        {data.map((Data: IVideoask) => (
+          <tr key={Data.answer_id}>
             <Container>
               <td>
                 <form onSubmit={handleSubmit}>
                   <input
                     type="checkbox"
                     onChange={handleChange}
-                    value={applicant.email}
-                    name={applicant.email}
+                    value={Data.email}
+                    name={Data.email}
                   />
                 </form>
               </td>
               <Td>
-                <div>
-                  <Link to={"/application/:id"}>{applicant.name}</Link>
-                </div>
+                <Link to={"/application/:id"}>{Data.name}</Link>
               </Td>
-              <TdAge>{applicant.age}</TdAge>
-              <Td>{applicant.stage}</Td>
+              <TdAge>{Data.phone_number}</TdAge>
+              <a>{Data.created_at}</a>
               <TdCommentIcon>
                 <i className="fa-regular fa-comment" />
               </TdCommentIcon>
-              <Td>{applicant.email}</Td>
+              <Td>{Data.email}</Td>
             </Container>
           </tr>
         ))}

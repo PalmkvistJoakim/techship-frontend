@@ -3,44 +3,50 @@ import styled from "styled-components";
 function Sidebar() {
   return (
     <Container>
-      <ul>
-        <LiContainer>
-          <h5>Ansökningar</h5>
-        </LiContainer>
-        <LiContainer>
-          <h5>Urval (valbar, dropdown?)</h5>
-        </LiContainer>
-        <LiContainer>
-          <h5>- Antagna</h5>
-        </LiContainer>
-        <LiContainer>
-          <h5>- Ej Antagna</h5>
-        </LiContainer>
-        <LiContainer>
-          <h5>- Techship Programme</h5>
-        </LiContainer>
-        <LiContainer>
-          <h5>- Techship School</h5>
-        </LiContainer>
-        <LiContainer>
-          <h5>Sparade Profiler</h5>
-        </LiContainer>
-      </ul>
+      <LiContainer>
+        <h4>Alla Ansökningar</h4>
+      </LiContainer>
+      <LiContainer>
+        <h5>- Antagna</h5>
+      </LiContainer>
+      <LiContainer>
+        <h5>- Ej Antagna</h5>
+      </LiContainer>
+      <LiContainer>
+        <h5>- Techship Programme</h5>
+      </LiContainer>
+      <LiContainer>
+        <h5>- Techship School</h5>
+      </LiContainer>
+      <LiContainer>
+        <h5>Sparade Profiler</h5>
+      </LiContainer>
     </Container>
   );
 }
 
 const Container = styled.div`
-  border: 1px solid white;
-  position: absolute;
-  top: 200px;
-  padding-right: 30px;
-  padding-top: 100px;
-  padding-bottom: 200px;
+  border: 1px solid #58eac1;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 50%;
 `;
 
 const LiContainer = styled.div`
-  margin: 10px;
+  text-align: center;
+  background-color: #0c0c0c7a;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+
+  :hover {
+    background-color: #58eac1;
+  }
 `;
 
 export default Sidebar;
