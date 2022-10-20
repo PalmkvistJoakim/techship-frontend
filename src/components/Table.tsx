@@ -2,17 +2,29 @@ import TableBody from "../common/TableBody";
 import TableHeader from "../common/TableHeader";
 import styled from "styled-components";
 import { Sendmail } from "../services/emailService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
+import { http } from "../services/httpService";
+import { IVideoask } from "../types/VideoAsk";
 
 function Table(): JSX.Element {
   const [checkEmail, setCheck] = useState<string | string[]>("");
+  const [data, setData] = useState<IVideoask[]>([]);
 
   const onSubmit = () => {
     Sendmail(checkEmail);
     console.log(checkEmail);
   };
 
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await http.get("http://localhost:5000/api/videoask");
+      setData(data.results);
+    };
+    getData();
+  }, []);
+
+  console.log(data);
   return (
     <Container>
       <Warrper>
@@ -23,7 +35,7 @@ function Table(): JSX.Element {
       </Warrper>
       <TableCSS>
         <TableHeader />
-        <TableBody setCheck={setCheck} checkEmail={checkEmail} />
+        <TableBody setCheck={setCheck} checkEmail={checkEmail} data={data} />
       </TableCSS>
     </Container>
   );
@@ -38,11 +50,14 @@ const Container = styled.div`
 const TableCSS = styled.table`
   background-color: white;
   color: black;
-  top: 300px;
-  left: 280px;
   border-collapse: collapse;
   border: 1px solid white;
-  margin-left: 20%;
+  margin-left: 10%;
+
+  @media (max-width: 600px) {
+    width: auto;
+    margin-right: 30px;
+  }
 `;
 
 const Warrper = styled.div`
@@ -51,17 +66,18 @@ const Warrper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 58%;
-  margin-left: 20%;
+  margin-left: 10%;
 
-  @media (max-width: 1280) {
-    width: 100%;
+  @media (max-width: 600px) {
+    width: auto;
+    position: absolute;
+    right: 0;
+    top: 20%;
   }
 
   button {
-    width: 120px;
+    width: auto;
     padding: 12px;
-    /* right: 27%;
-  top: 27%; */
     background-color: #58eac1;
     font-weight: bold;
     border: none;
@@ -71,6 +87,11 @@ const Warrper = styled.div`
 
     :hover {
       background-color: #b9e7db;
+    }
+
+    @media (width < 600px) {
+      width: auto;
+      margin-right: 30px;
     }
   }
 `;

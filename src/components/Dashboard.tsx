@@ -6,6 +6,7 @@ import applicantsContext from "../Context/ApplicantsContext";
 
 import Sidebar from "../components/Sidebar";
 import SearchBar from "./SearchBar";
+import styled from "styled-components";
 
 function Items(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
@@ -15,13 +16,32 @@ function Items(): JSX.Element {
   }, []);
 
   return (
-    <>
+    <Continer>
       <applicantsContext.Provider value={applicants}>
-        <Sidebar />
-        <Table />
+        <SidebarStyle>
+          <Sidebar />
+        </SidebarStyle>
+        <Main>
+          <Table />
+        </Main>
       </applicantsContext.Provider>
-    </>
+    </Continer>
   );
 }
 
 export default Items;
+
+const Continer = styled.div`
+  display: grid;
+  grid-template-columns: 10% 90%;
+  grid-template-areas:
+    "sidebar main"
+    "sidebar main ";
+`;
+
+const SidebarStyle = styled.div`
+  grid-area: sidebar;
+`;
+const Main = styled.div`
+  grid-area: main;
+`;

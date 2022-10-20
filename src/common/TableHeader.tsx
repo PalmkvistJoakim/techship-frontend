@@ -6,8 +6,8 @@ function TableHeader() {
       <Tr>
         <ThNumber>#</ThNumber>
         <Th>Namn</Th>
-        <ThAge>Ålder</ThAge>
-        <Th>Status</Th>
+        <ThAge>Tel</ThAge>
+        <Th>Created</Th>
         <Th>Notis</Th>
         <Th> Email</Th>
       </Tr>
