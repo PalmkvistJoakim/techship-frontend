@@ -1,6 +1,6 @@
 import { useContext, FormEvent, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
-import applicantsContext from "../Context/ApplicantsContext";
+import applicantsContext from "../context/applicantsContext";
 import IApplicant from "../types/IApplicant";
 import styled from "styled-components";
 import { IVideoask } from "../types/VideoAsk";

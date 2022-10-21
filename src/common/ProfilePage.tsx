@@ -6,8 +6,11 @@ function ProfilePage() {
       <Sidebar />
       <Container>
         <PageHeader>
-          <img src={require("../img/profilbild.jpg")} alt="" />
-          <h1>Nazih Hazime (22år)</h1>
+          <img src={require("../img/profilbild.jpg")} />
+          <div>
+            <h1>Nazih Hazime (22år)</h1>
+            <p>hej</p>
+          </div>
           <p>
             Har fått jobb, kan inte delta. Vill vara med nästa år istället.
             Detta är en kommentar!
@@ -82,8 +85,8 @@ const Container = styled.div`
 const PageHeader = styled.div`
   grid-area: head;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   @media (max-width: 667px) {
     display: flex;
     flex-direction: column;
