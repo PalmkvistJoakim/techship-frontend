@@ -17,10 +17,11 @@ import { Paginate } from "../utils/Paginate";
 
 function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
-  const [data, setData] = useState<IVideoask[]>([]);
+  let [data, setData] = useState<IVideoask[]>([]);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [pageSize, setPageSize] = useState(10);
-  let [selectedPage, setSelectedPage] = useState(1);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     setApplicants(getAppplicants());
@@ -31,6 +32,8 @@ function Dashboard(): JSX.Element {
     };
     getData();
   }, []);
+
+  data = data.filter((d) => d.name != null);
 
   const onSubmit = () => {
     Sendmail(checkEmail);
@@ -56,7 +59,15 @@ function Dashboard(): JSX.Element {
     setSelectedPage(selectedPage - 1);
   };
 
-  const allData: IVideoask[] = Paginate(data, pageSize, selectedPage);
+  const handleSearch = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
+  };
+
+  const filteredData = data.filter((d) =>
+    d.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const allData: IVideoask[] = Paginate(filteredData, pageSize, selectedPage);
 
   return (
     <Container>
@@ -67,12 +78,12 @@ function Dashboard(): JSX.Element {
               <Sidebar />
             </SidebarStyle>
             <Main>
-              <Warrper>
+              <Wrapper>
                 <button type="submit" onClick={() => onSubmit()}>
                   Send Email
                 </button>
-                <SearchBar />
-              </Warrper>
+                <SearchBar value={searchQuery} onChange={handleSearch} />
+              </Wrapper>
               <ApplicantsTable />
               <Pagination
                 itemCount={data.length}
@@ -106,7 +117,7 @@ const Main = styled.div`
   grid-area: main;
 `;
 
-const Warrper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

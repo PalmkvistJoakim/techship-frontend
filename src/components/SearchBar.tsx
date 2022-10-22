@@ -1,9 +1,19 @@
 import styled from "styled-components";
 
-function SearchBar() {
+interface Props {
+  value: string;
+  onChange: (searchQuery: string) => void;
+}
+
+function SearchBar({ value, onChange }: Props) {
   return (
     <div className="search">
-      <Input type="text" placeholder="Sök efter namn?" />
+      <Input
+        type="text"
+        placeholder="Sök på namn..."
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </div>
   );
 }
