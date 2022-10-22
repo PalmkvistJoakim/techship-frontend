@@ -1,11 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
-import styled from "styled-components";
 import ApplicationForm from "./components/ApplicationForm";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
 import LoginForm from "./components/LoginForm";
-import ProfilePage from "./common/ProfilePage";
+import ProfilePage from "./components/ProfilePage";
+import styled from "styled-components";
 
 function App() {
   return (
@@ -18,7 +17,7 @@ function App() {
         <Route path="/application" element={<ApplicationForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Dashboard />} />
       </Routes>
     </>
   );

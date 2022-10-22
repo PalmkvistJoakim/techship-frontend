@@ -1,31 +1,20 @@
-import { useContext, FormEvent, ChangeEvent } from "react";
+import { useContext, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import applicantsContext from "../context/applicantsContext";
-import IApplicant from "../types/IApplicant";
+import ApplicantsContext from "../../context/ApplicantsContext";
+import EmailContext from "../../context/EmailContext";
+import DataContext from "../../context/DataContext";
+import IApplicant from "../../types/IApplicant";
+import { IVideoask } from "../../types/IVideoAsk";
+import { IEmail } from "../../types/IEmail";
 import styled from "styled-components";
-import { IVideoask } from "../types/VideoAsk";
 
-interface Props {
-  setCheck: (checkEmail: string | string[]) => void;
-  checkEmail: any;
-  data: IVideoask[];
-}
-
-function TableBody({ setCheck, checkEmail, data }: Props): JSX.Element {
-  const applicants = useContext(applicantsContext) as IApplicant[];
+function TableBody(): JSX.Element {
+  const applicants = useContext(ApplicantsContext) as IApplicant[];
+  const data = useContext(DataContext) as IVideoask[];
+  const { onChange } = useContext(EmailContext) as IEmail;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const checked = e.target.checked;
-    if (checked) {
-      setCheck([...checkEmail, value]);
-    } else {
-      setCheck(value);
-    }
   };
 
   return (
@@ -38,7 +27,7 @@ function TableBody({ setCheck, checkEmail, data }: Props): JSX.Element {
                 <form onSubmit={handleSubmit}>
                   <input
                     type="checkbox"
-                    onChange={handleChange}
+                    onChange={onChange}
                     value={Data.email}
                     name={Data.email}
                   />

@@ -1,4 +1,4 @@
-import { IVideoask } from "../types/VideoAsk";
+import { IVideoask } from "../types/IVideoAsk";
 
 export function Paginate(
   data: IVideoask[],

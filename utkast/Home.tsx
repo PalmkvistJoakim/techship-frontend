@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import TopHome from "../common/TopHome";
+import TopHome from "./TopHome";
 
 function Home(): JSX.Element {
   return (
