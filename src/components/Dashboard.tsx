@@ -8,20 +8,27 @@ import DataContext from "../context/DataContext";
 import EmailContext from "../context/EmailContext";
 import IApplicant from "../types/IApplicant";
 import { IVideoask } from "../types/IVideoAsk";
+import { ISort, ISorts } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
 import Pagination from "./common/Pagination";
 import ApplicantsTable from "./ApplicantsTable";
 import { Paginate } from "../utils/Paginate";
+import SortContext from "../context/SortContext";
+import _ from "lodash";
 
 function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
   let [data, setData] = useState<IVideoask[]>([]);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [pageSize, setPageSize] = useState(10);
-  const [selectedPage, setSelectedPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  let [selectedPage, setSelectedPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState<ISort>({
+    path: "skapad",
+    order: "asc",
+  });
 
   useEffect(() => {
     setApplicants(getAppplicants());
@@ -63,36 +70,45 @@ function Dashboard(): JSX.Element {
     setSearchQuery(searchQuery);
   };
 
+  //
   const filteredData = data.filter((d) =>
     d.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const allData: IVideoask[] = Paginate(filteredData, pageSize, selectedPage);
+  const handleSort = (sortColumn: ISort) => {
+    setSortColumn({ path: sortColumn.path, order: sortColumn.order });
+  };
+
+  const sortedData = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
+
+  const allData: IVideoask[] = Paginate(sortedData, pageSize, selectedPage);
 
   return (
     <Container>
       <EmailContext.Provider value={{ checkEmail, onChange: handleChange }}>
         <DataContext.Provider value={allData}>
           <applicantsContext.Provider value={applicants}>
-            <SidebarStyle>
-              <Sidebar />
-            </SidebarStyle>
-            <Main>
-              <Wrapper>
-                <button type="submit" onClick={() => onSubmit()}>
-                  Send Email
-                </button>
-                <SearchBar value={searchQuery} onChange={handleSearch} />
-              </Wrapper>
-              <ApplicantsTable />
-              <Pagination
-                itemCount={data.length}
-                pageSize={pageSize}
-                selectedPage={selectedPage}
-                onPagePlus={handlePagePlus}
-                onPageMinus={handlePageMinus}
-              />
-            </Main>
+            <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
+              <SidebarStyle>
+                <Sidebar />
+              </SidebarStyle>
+              <Main>
+                <Wrapper>
+                  <button type="submit" onClick={() => onSubmit()}>
+                    Send Email
+                  </button>
+                  <SearchBar value={searchQuery} onChange={handleSearch} />
+                </Wrapper>
+                <ApplicantsTable />
+                <Pagination
+                  itemCount={data.length}
+                  pageSize={pageSize}
+                  selectedPage={selectedPage}
+                  onPagePlus={handlePagePlus}
+                  onPageMinus={handlePageMinus}
+                />
+              </Main>
+            </SortContext.Provider>
           </applicantsContext.Provider>
         </DataContext.Provider>
       </EmailContext.Provider>
