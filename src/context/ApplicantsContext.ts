@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import IApplicant from "../types/IApplicant";
 
-const applicantsContext = createContext<IApplicant[] | IApplicant>([]);
+const ApplicantsContext = createContext<IApplicant[] | IApplicant>([]);
 
-export default applicantsContext;
+export default ApplicantsContext;

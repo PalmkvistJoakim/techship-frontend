@@ -17,5 +17,11 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "./src/index.d.ts", "src/utils"]
+  "include": [
+    "src",
+    "./src/index.d.ts",
+    "src/utils",
+    "utkast/TopHome.tsx",
+    "utkast/Home.tsx"
+  ]
 }

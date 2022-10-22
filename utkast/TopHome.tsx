@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import TeamSveg from "../sveg/TeamSveg";
+import TeamSveg from "../src/sveg/TeamSveg";
 import { useNavigate } from "react-router-dom";
 
 function TopHome(): JSX.Element {
