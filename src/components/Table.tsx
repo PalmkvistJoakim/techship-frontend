@@ -6,10 +6,14 @@ import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import { http } from "../services/httpService";
 import { IVideoask } from "../types/VideoAsk";
+import Pagination from "../common/Pagination";
+import { Paginate } from "../utils/Paginate";
 
 function Table(): JSX.Element {
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [data, setData] = useState<IVideoask[]>([]);
+  const [pageSize, setPageSize] = useState(10);
+  let [selectedPage, setSelectedPage] = useState(1);
 
   const onSubmit = () => {
     Sendmail(checkEmail);
@@ -25,6 +29,17 @@ function Table(): JSX.Element {
   }, []);
 
   console.log(data);
+
+  const handlePagePlus = () => {
+    setSelectedPage(selectedPage + 1);
+  };
+
+  const handlePageMinus = () => {
+    setSelectedPage(selectedPage - 1);
+  };
+
+  const allData: IVideoask[] = Paginate(data, pageSize, selectedPage);
+
   return (
     <Container>
       <Warrper>
@@ -35,8 +50,15 @@ function Table(): JSX.Element {
       </Warrper>
       <TableCSS>
         <TableHeader />
-        <TableBody setCheck={setCheck} checkEmail={checkEmail} data={data} />
+        <TableBody setCheck={setCheck} checkEmail={checkEmail} data={allData} />
       </TableCSS>
+      <Pagination
+        itemCount={data.length}
+        pageSize={pageSize}
+        selectedPage={selectedPage}
+        onPagePlus={handlePagePlus}
+        onPageMinus={handlePageMinus}
+      />
     </Container>
   );
 }
