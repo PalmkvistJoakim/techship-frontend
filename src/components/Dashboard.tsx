@@ -70,7 +70,7 @@ function Dashboard(): JSX.Element {
     setSearchQuery(searchQuery);
   };
 
-  //
+  //Detta är sökfunktion, som ska kombineras med filtered funktionen
   const filteredData = data.filter((d) =>
     d.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -79,7 +79,11 @@ function Dashboard(): JSX.Element {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
 
-  const sortedData = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
+  const sortedData = _.orderBy(
+    filteredData,
+    [sortColumn.path],
+    [sortColumn.order]
+  );
 
   const allData: IVideoask[] = Paginate(sortedData, pageSize, selectedPage);
 
