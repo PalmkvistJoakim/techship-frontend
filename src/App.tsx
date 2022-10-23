@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
 import ProfilePage from "./components/ProfilePage";
 import styled from "styled-components";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   return (

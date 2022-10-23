@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import Sidebar from "./Sidebar";
 function ProfilePage() {
   return (
     <>
-      <Sidebar />
       <Container>
         <PageHeader>
           <img src={require("../img/profilbild.jpg")} />

@@ -17,10 +17,13 @@ import ApplicantsTable from "./ApplicantsTable";
 import { Paginate } from "../utils/Paginate";
 import SortContext from "../context/SortContext";
 import _ from "lodash";
+import { IStatus } from "../types/IStatus";
+import { getStatus } from "../services/mockStatus";
 
 function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
   let [data, setData] = useState<IVideoask[]>([]);
+  const [status, setStatus] = useState<IStatus[]>([]);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [pageSize, setPageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -32,6 +35,7 @@ function Dashboard(): JSX.Element {
 
   useEffect(() => {
     setApplicants(getAppplicants());
+    setStatus(getStatus());
 
     const getData = async () => {
       const { data } = await http.get("http://localhost:5000/api/videoask");
@@ -45,6 +49,14 @@ function Dashboard(): JSX.Element {
 
   //Denna är för att göra om datumet mer läsbart än det videoask skickar
   data.map((d) => (d.created_at = new Date(d.created_at).toLocaleString()));
+
+  // Denna är till för att lägga till properties status. Den sätter var tredje ej antagen, techship School, techship programme
+  data.map((d) => {
+    if (data.indexOf(d) % 4 === 0) d.stage = "TECHSHIP PROGRAMM";
+    if (data.indexOf(d) % 4 === 1) d.stage = "EJ ANTAGEN";
+    if (data.indexOf(d) % 4 === 2) d.stage = "TECHSHIP SCHOOL";
+    if (data.indexOf(d) % 4 === 3) d.stage = "EJ ANTAGEN";
+  });
 
   const onSubmit = () => {
     Sendmail(checkEmail);
@@ -98,7 +110,7 @@ function Dashboard(): JSX.Element {
           <applicantsContext.Provider value={applicants}>
             <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
               <SidebarStyle>
-                <Sidebar />
+                <Sidebar status={status} />
               </SidebarStyle>
               <Main>
                 <Wrapper>
