@@ -14,8 +14,9 @@ function Table() {
 export default Table;
 
 const TableCSS = styled.table`
-  background-color: white;
-  color: black;
+  background-color: #2c2c2c79;
+  color: white;
+  font-weight: bold;
   border-collapse: collapse;
   border: 1px solid white;
   margin-left: 10%;
