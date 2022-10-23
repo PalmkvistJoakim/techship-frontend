@@ -41,6 +41,7 @@ function TableBody(): JSX.Element {
               </Td>
               <Td>{Data.stage}</Td>
               <Td>{Data.created_at}</Td>
+              <Td>{Data.status}</Td>
             </Container>
           </tr>
         ))}
@@ -56,11 +57,12 @@ const Tbody = styled.tbody`
   grid-template-rows: 1fr;
   border-collapse: collapse;
   border: 1px solid;
+  padding: 2px;
 `;
 
 const Container = styled.tr`
   display: grid;
-  grid-template-columns: 36px 36px 244px 248px 184px;
+  grid-template-columns: 36px 36px 244px 248px 184px 178px;
   border-bottom: 1px solid;
   padding: 8px;
 `;

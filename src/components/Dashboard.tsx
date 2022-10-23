@@ -20,13 +20,14 @@ import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
 import { IStatus } from "../types/IStatus";
 import { getStatus } from "../services/mockStatus";
+import { useRouteLoaderData } from "react-router-dom";
 
 function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
   let [data, setData] = useState<IVideoask[]>([]);
   const [status, setStatus] = useState<IStatus[]>([]);
   const [checkEmail, setCheck] = useState<string | string[]>("");
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(9);
   const [searchQuery, setSearchQuery] = useState<string>("");
   let [selectedPage, setSelectedPage] = useState(1);
   const [sortColumn, setSortColumn] = useState<ISort>({
@@ -134,12 +135,17 @@ function Dashboard(): JSX.Element {
                 <Sidebar status={status} />
               </SidebarStyle>
               <Main>
+                <ReloadButton onClick={() => window.location.reload()}>
+                  <i className="fa-solid fa-download" />
+                  Hämta ansökningar
+                </ReloadButton>
                 <Wrapper>
                   <button type="submit" onClick={() => onSubmit()}>
-                    Send Email
+                    Sänd Mejl
                   </button>
                   <SearchBar value={searchQuery} onChange={handleSearch} />
                 </Wrapper>
+
                 <ApplicantsTable />
                 <Pagination
                   itemCount={data.length}
@@ -179,7 +185,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  width: 58%;
+  width: 80%;
   margin-left: 10%;
 
   @media (max-width: 600px) {
@@ -207,5 +213,31 @@ const Wrapper = styled.div`
       width: auto;
       margin-right: 30px;
     }
+  }
+`;
+
+const ReloadButton = styled.button`
+  width: auto;
+  padding: 12px;
+  background-color: #58eac1;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  margin-left: 115px;
+  cursor: pointer;
+
+  :hover {
+    background-color: #b9e7db;
+  }
+
+  @media (width < 600px) {
+    width: auto;
+    margin-right: 30px;
+  }
+
+  i {
+    margin-right: 5px;
+    font-size: 16px;
   }
 `;

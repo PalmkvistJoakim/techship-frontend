@@ -22,8 +22,8 @@ export default SearchBar;
 
 const Input = styled.input`
   width: 180px;
-  padding: 5px;
+  padding: 8px;
   border: none;
   border-radius: 20px;
-  margin-right: -100px;
+  margin-right: -40px;
 `;

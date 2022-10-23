@@ -26,8 +26,9 @@ function TableHeader() {
           <i className="fa-solid fa-comments" />
         </Th>
         <Th onClick={() => raiseSort("name")}>Namn</Th>
-        <Th onClick={() => raiseSort("status")}>Status</Th>
+        <Th onClick={() => raiseSort("stage")}>Steg</Th>
         <Th onClick={() => raiseSort("created_at")}>Skapad</Th>
+        <Th onClick={() => raiseSort("status")}>Status</Th>
       </Tr>
     </thead>
   );
@@ -36,14 +37,14 @@ function TableHeader() {
 const Th = styled.th`
   text-align: left;
   margin: 2px;
-  padding: 2px;
+  padding: 4px;
   margin-left: 6px;
   cursor: pointer;
 `;
 
 const Tr = styled.tr`
   display: grid;
-  grid-template-columns: 36px 36px 244px 248px 184px;
+  grid-template-columns: 36px 36px 244px 248px 184px 178px;
   border-collapse: collapse;
   border: 1px solid;
 `;
