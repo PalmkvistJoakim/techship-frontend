@@ -8,7 +8,7 @@ import DataContext from "../context/DataContext";
 import EmailContext from "../context/EmailContext";
 import IApplicant from "../types/IApplicant";
 import { IVideoask } from "../types/IVideoAsk";
-import { ISort, ISorts } from "../types/ISort";
+import { ISort } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
@@ -17,12 +17,13 @@ import ApplicantsTable from "./ApplicantsTable";
 import { Paginate } from "../utils/Paginate";
 import SortContext from "../context/SortContext";
 import _ from "lodash";
+import { getAccessToken } from "../services/videoaskService";
 
 function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
   let [data, setData] = useState<IVideoask[]>([]);
   const [checkEmail, setCheck] = useState<string | string[]>("");
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState<string>("");
   let [selectedPage, setSelectedPage] = useState(1);
   const [sortColumn, setSortColumn] = useState<ISort>({
@@ -30,14 +31,34 @@ function Dashboard(): JSX.Element {
     order: "asc",
   });
 
-  useEffect(() => {
-    setApplicants(getAppplicants());
+  const handleToken = () => {
+    let parameters = new URLSearchParams(window.location.search);
+    const code = parameters.get("code");
+    localStorage.setItem("code", code || "");
+    getAccessToken(code);
+  };
 
-    const getData = async () => {
-      const { data } = await http.get("http://localhost:5000/api/videoask");
+  const GetDataFromVideoask = async () => {
+    const token = localStorage.getItem("access_token");
+    const { data } = await http.get(
+      "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    try {
       setData(data.results);
-    };
-    getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleToken();
+    GetDataFromVideoask();
+    setApplicants(getAppplicants());
   }, []);
 
   data = data.filter((d) => d.name != null);

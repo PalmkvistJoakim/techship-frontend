@@ -1,18 +1,14 @@
 import styled from "styled-components";
+import { handleLogin } from "../services/videoaskService";
+import VideoAsk from "../sveg/VideoAsk";
 
 const LoginForm = () => {
   return (
     <Container>
       <video src={require("../assets/video.mp4")} loop muted autoPlay />
       <Form>
-        <h1>LOG IN </h1>
-        <label htmlFor="html"></label>
-        <input type="text" placeholder="Username" />
-        <label htmlFor="psw"></label>
-        <input type="password" placeholder="Password" />
-
-        <button type="submit">
-          Logga in <i className="fa-solid fa-circle-arrow-right"></i>
+        <button onClick={() => handleLogin()}>
+          Connect Your account <VideoAsk />
         </button>
       </Form>
     </Container>
@@ -87,7 +83,6 @@ const Form = styled.form`
 
   button {
     display: flex;
-    width: 25%;
     padding: 10px;
     margin-top: 30px;
     font-weight: bold;

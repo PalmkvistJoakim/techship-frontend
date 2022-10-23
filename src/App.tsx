@@ -5,8 +5,10 @@ import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
 import ProfilePage from "./components/ProfilePage";
 import styled from "styled-components";
+import LogoutForm from "./components/LogoutForm";
 
 function App() {
+  const token = localStorage.getItem("access_token");
   return (
     <>
       <NavMain>
@@ -16,8 +18,9 @@ function App() {
         <Route path="/application/:id" element={<ProfilePage />} />
         <Route path="/application" element={<ApplicationForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/logout" element={<LogoutForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={token ? <Dashboard /> : <LoginForm />} />
       </Routes>
     </>
   );

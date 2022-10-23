@@ -3,16 +3,35 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar(): JSX.Element {
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("access_token");
   return (
     <Continer>
-      <Logo onClick={() => navigate("/")}>
-        <h1 className="Tech"> Tech</h1>
-        <h3 className="ship"> Ship</h3>
-        <i className="fa-solid fa-rocket" />
-      </Logo>
+      {token ? (
+        <Logo onClick={() => navigate("/dashboard")}>
+          <h1 className="Tech"> Tech</h1>
+          <h3 className="ship"> Ship</h3>
+          <i className="fa-solid fa-rocket" />
+        </Logo>
+      ) : (
+        <Logo onClick={() => navigate("/login")}>
+          <h1 className="Tech"> Tech</h1>
+          <h3 className="ship"> Ship</h3>
+          <i className="fa-solid fa-rocket" />
+        </Logo>
+      )}
+
       <RightItems>
-        <div onClick={() => navigate("/dashboard")}>Dashboard</div>
-        <div onClick={() => navigate("/login")}>Login</div>
+        {token ? (
+          <>
+            <div onClick={() => navigate("/dashboard")}>Dashboard</div>
+            <div onClick={() => navigate("/logout")}>Logout</div>
+          </>
+        ) : (
+          <>
+            <div onClick={() => navigate("/login")}>Login</div>
+          </>
+        )}
       </RightItems>
     </Continer>
   );
