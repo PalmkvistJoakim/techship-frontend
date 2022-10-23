@@ -90,6 +90,7 @@ const Form = styled.form`
     border-radius: 20px;
     background-color: #58eac1;
     border: none;
+
     cursor: pointer;
 
     i {
