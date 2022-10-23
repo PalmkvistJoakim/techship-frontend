@@ -25,6 +25,10 @@ function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
   let [data, setData] = useState<IVideoask[]>([]);
   const [status, setStatus] = useState<IStatus[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<IStatus>({
+    _id: "",
+    name: "Alla Ansökningar",
+  });
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [pageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -73,11 +77,17 @@ function Dashboard(): JSX.Element {
 
   // Denna är till för att lägga till properties status. Den sätter var tredje ej antagen, techship School, techship programme
   data.map((d) => {
-    if (data.indexOf(d) % 4 === 0) d.stage = "TECHSHIP PROGRAMM";
-    if (data.indexOf(d) % 4 === 1) d.stage = "EJ ANTAGEN";
-    if (data.indexOf(d) % 4 === 2) d.stage = "TECHSHIP SCHOOL";
-    if (data.indexOf(d) % 4 === 3) d.stage = "EJ ANTAGEN";
+    if (data.indexOf(d) % 4 === 0)
+      d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
+    if (data.indexOf(d) % 4 === 1)
+      d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
+    if (data.indexOf(d) % 4 === 2)
+      d.stage = { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" };
+    if (data.indexOf(d) % 4 === 3)
+      d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
   });
+
+  console.log(data);
 
   const onSubmit = () => {
     Sendmail(checkEmail);
@@ -107,11 +117,19 @@ function Dashboard(): JSX.Element {
     setSearchQuery(searchQuery);
   };
 
-  //Detta är sökfunktion, som ska kombineras med filtered funktionen
-  const filteredData = data.filter((d) =>
-    d.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleSelectStatus = (status: IStatus) => {
+    setSelectedStatus(status);
+    setSelectedPage(1);
+  };
 
+  let filteredData = selectedStatus._id
+    ? data.filter((d) => d.stage._id === selectedStatus._id)
+    : data;
+  if (searchQuery) {
+    filteredData = data.filter((d) =>
+      d.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
   const handleSort = (sortColumn: ISort) => {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
@@ -131,7 +149,11 @@ function Dashboard(): JSX.Element {
           <applicantsContext.Provider value={applicants}>
             <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
               <SidebarStyle>
-                <Sidebar status={status} />
+                <Sidebar
+                  status={status}
+                  selectedStatus={selectedStatus}
+                  onSelectStatus={handleSelectStatus}
+                />
               </SidebarStyle>
               <Main>
                 <Wrapper>
@@ -142,7 +164,7 @@ function Dashboard(): JSX.Element {
                 </Wrapper>
                 <ApplicantsTable />
                 <Pagination
-                  itemCount={data.length}
+                  itemCount={filteredData.length}
                   pageSize={pageSize}
                   selectedPage={selectedPage}
                   onPagePlus={handlePagePlus}
