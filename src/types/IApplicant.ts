@@ -6,8 +6,13 @@ interface IApplicant {
   phone: string;
   adress: string;
   notis: string;
-  stage: string;
+  status: IStatus;
   description: string;
+}
+
+interface IStatus {
+  _id: string;
+  name: string;
 }
 
 export default IApplicant;
