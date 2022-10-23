@@ -51,6 +51,6 @@ const Button = styled.button`
 `;
 
 const Ul = styled.ul`
-  margin-left: 170px;
+  margin-left: 112px;
   margin-top: 6px;
 `;

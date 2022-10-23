@@ -40,7 +40,14 @@ function Dashboard(): JSX.Element {
     getData();
   }, []);
 
+  console.log("data", data);
+
   data = data.filter((d) => d.name != null);
+
+  const manipulatedData = data.map(
+    (d) => (d.created_at = new Date(d.created_at).toLocaleString())
+  );
+  console.log(manipulatedData);
 
   const onSubmit = () => {
     Sendmail(checkEmail);

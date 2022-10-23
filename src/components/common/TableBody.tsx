@@ -23,7 +23,7 @@ function TableBody(): JSX.Element {
         {data.map((Data: IVideoask) => (
           <tr key={Data.answer_id}>
             <Container>
-              <td>
+              <Td>
                 <form onSubmit={handleSubmit}>
                   <input
                     type="checkbox"
@@ -32,16 +32,15 @@ function TableBody(): JSX.Element {
                     name={Data.email}
                   />
                 </form>
-              </td>
+              </Td>
+              <Td>
+                <i className="fa-regular fa-comment" />
+              </Td>
               <Td>
                 <Link to={"/application/:id"}>{Data.name}</Link>
               </Td>
-              <TdAge>{Data.phone_number}</TdAge>
-              <a>{Data.created_at}</a>
-              <TdCommentIcon>
-                <i className="fa-regular fa-comment" />
-              </TdCommentIcon>
-              <Td>{Data.email}</Td>
+              <Td>TECHSHIP PROGRAMME</Td>
+              <Td>{Data.created_at}</Td>
             </Container>
           </tr>
         ))}
@@ -59,23 +58,13 @@ const Tbody = styled.tbody`
   border: 1px solid;
 `;
 
-const Td = styled.td`
-  text-align: left;
-`;
-
 const Container = styled.tr`
   display: grid;
-  grid-template-columns: repeat(6, 184px);
+  grid-template-columns: 36px 36px 244px 248px 184px;
   border-bottom: 1px solid;
   padding: 8px;
 `;
 
-const TdCommentIcon = styled.td`
+const Td = styled.td`
   text-align: left;
-  margin-left: 16px;
-`;
-
-const TdAge = styled.td`
-  text-align: left;
-  margin-left: 42px;
 `;

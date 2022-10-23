@@ -19,13 +19,15 @@ function TableHeader() {
   return (
     <thead>
       <Tr>
-        <ThMail>
+        <Th>
           <i className="fa-solid fa-envelope" />
-        </ThMail>
+        </Th>
+        <Th onClick={() => raiseSort("kommentar")}>
+          <i className="fa-solid fa-comments" />
+        </Th>
         <Th onClick={() => raiseSort("name")}>Namn</Th>
-        <ThAge onClick={() => raiseSort("kommentar")}>Kommentar</ThAge>
-        <Th onClick={() => raiseSort("created_at")}>Skapad</Th>
         <Th onClick={() => raiseSort("status")}>Status</Th>
+        <Th onClick={() => raiseSort("created_at")}>Skapad</Th>
       </Tr>
     </thead>
   );
@@ -34,23 +36,15 @@ function TableHeader() {
 const Th = styled.th`
   text-align: left;
   margin: 2px;
+  padding: 2px;
+  margin-left: 6px;
 `;
 
 const Tr = styled.tr`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 36px 36px 244px 248px 184px;
   border-collapse: collapse;
   border: 1px solid;
-`;
-
-const ThAge = styled.th`
-  text-align: left;
-  margin-left: 42px;
-`;
-
-const ThMail = styled.th`
-  text-align: left;
-  margin-left: 8px;
 `;
 
 export default TableHeader;
