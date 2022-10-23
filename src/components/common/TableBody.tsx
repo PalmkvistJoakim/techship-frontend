@@ -39,7 +39,7 @@ function TableBody(): JSX.Element {
               <Td>
                 <Link to={"/application/:id"}>{Data.name}</Link>
               </Td>
-              <Td>TECHSHIP PROGRAMME</Td>
+              <Td>{Data.stage}</Td>
               <Td>{Data.created_at}</Td>
             </Container>
           </tr>

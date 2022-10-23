@@ -1,3 +1,5 @@
+import { IStatus } from "./IStatus";
+
 interface IApplicant {
   answer_id: string;
   name: string;
@@ -9,11 +11,6 @@ interface IApplicant {
   notis: string;
   status: IStatus;
   description: string;
-}
-
-interface IStatus {
-  _id: string;
-  name: string;
 }
 
 export default IApplicant;

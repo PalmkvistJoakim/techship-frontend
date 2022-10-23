@@ -6,6 +6,7 @@ import LoginForm from "./components/LoginForm";
 import ProfilePage from "./components/ProfilePage";
 import styled from "styled-components";
 import LogoutForm from "./components/LogoutForm";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   const token = localStorage.getItem("access_token");

@@ -6,6 +6,7 @@ export interface IVideoask {
   created_at: string;
   media_type: string;
   share_url: IProfile;
+  stage: String;
 }
 
 export interface IProfile {

@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { IStatus } from "../types/IStatus";
 
-function Sidebar() {
+interface Props {
+  status: IStatus[];
+}
+
+function Sidebar(status: Props) {
   return (
     <Container>
       <LiContainer>
