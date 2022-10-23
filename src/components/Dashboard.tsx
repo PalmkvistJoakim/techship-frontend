@@ -40,14 +40,11 @@ function Dashboard(): JSX.Element {
     getData();
   }, []);
 
-  console.log("data", data);
-
+  //Denna är för att filtrera bort alla ansökningar utan namn
   data = data.filter((d) => d.name != null);
 
-  const manipulatedData = data.map(
-    (d) => (d.created_at = new Date(d.created_at).toLocaleString())
-  );
-  console.log(manipulatedData);
+  //Denna är för att göra om datumet mer läsbart än det videoask skickar
+  data.map((d) => (d.created_at = new Date(d.created_at).toLocaleString()));
 
   const onSubmit = () => {
     Sendmail(checkEmail);
