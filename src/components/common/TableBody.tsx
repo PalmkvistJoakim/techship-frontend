@@ -37,7 +37,7 @@ function TableBody(): JSX.Element {
                 <i className="fa-regular fa-comment" />
               </Td>
               <Td>
-                <Link to={"/application/:id"}>{Data.name}</Link>
+                <LinkStyle to={"/application/:id"}>{Data.name}</LinkStyle>
               </Td>
               <Td>{Data.stage.name}</Td>
               <Td>{Data.created_at}</Td>
@@ -65,6 +65,12 @@ const Container = styled.tr`
   grid-template-columns: 36px 36px 244px 248px 184px 178px;
   border-bottom: 1px solid;
   padding: 8px;
+`;
+
+const LinkStyle = styled(Link)`
+  font-size: 16px;
+  text-decoration: none;
+  color: #58eac1;
 `;
 
 const Td = styled.td`
