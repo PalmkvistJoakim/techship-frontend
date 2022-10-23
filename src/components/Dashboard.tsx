@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChangeEvent } from "react";
-import { getAppplicants } from "../services/fakeApplicantsService";
+import { getAppplicants } from "../services/mockApplicants";
 import { http } from "../services/httpService";
 import { Sendmail } from "../services/emailService";
 import applicantsContext from "../context/ApplicantsContext";
@@ -8,7 +8,7 @@ import DataContext from "../context/DataContext";
 import EmailContext from "../context/EmailContext";
 import IApplicant from "../types/IApplicant";
 import { IVideoask } from "../types/IVideoAsk";
-import { ISort, ISorts } from "../types/ISort";
+import { ISort } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";

@@ -7,16 +7,16 @@ function Sidebar() {
         <h4>Alla Ansökningar</h4>
       </LiContainer>
       <LiContainer>
-        <h5>- Antagna</h5>
+        <h4>Antagna</h4>
       </LiContainer>
       <LiContainer>
-        <h5>- Ej Antagna</h5>
+        <h5>Ej Antagna</h5>
       </LiContainer>
       <LiContainer>
-        <h5>- Techship Programme</h5>
+        <h5>Techship Programme</h5>
       </LiContainer>
       <LiContainer>
-        <h5>- Techship School</h5>
+        <h4>Techship School</h4>
       </LiContainer>
       <LiContainer>
         <h5>Sparade Profiler</h5>
