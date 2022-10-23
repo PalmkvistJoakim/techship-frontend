@@ -3,29 +3,18 @@ import { IStatus } from "../types/IStatus";
 
 interface Props {
   status: IStatus[];
+  selectedStatus: IStatus;
+  onSelectStatus: (status: IStatus) => void;
 }
 
-function Sidebar(status: Props) {
+function Sidebar({ status, selectedStatus, onSelectStatus }: Props) {
   return (
     <Container>
-      <LiContainer>
-        <h4>Alla Ansökningar</h4>
-      </LiContainer>
-      <LiContainer>
-        <h4>Antagna</h4>
-      </LiContainer>
-      <LiContainer>
-        <h5>Ej Antagna</h5>
-      </LiContainer>
-      <LiContainer>
-        <h5>Techship Programme</h5>
-      </LiContainer>
-      <LiContainer>
-        <h4>Techship School</h4>
-      </LiContainer>
-      <LiContainer>
-        <h5>Sparade Profiler</h5>
-      </LiContainer>
+      {status.map((s) => (
+        <LiContainer key={s._id} onClick={() => onSelectStatus(s)}>
+          {s.name}
+        </LiContainer>
+      ))}
     </Container>
   );
 }

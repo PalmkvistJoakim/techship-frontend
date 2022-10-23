@@ -1,3 +1,5 @@
+import { IStatus } from "./IStatus";
+
 export interface IVideoask {
   answer_id: string;
   name: string;
@@ -6,8 +8,9 @@ export interface IVideoask {
   created_at: string;
   media_type: string;
   share_url: IProfile;
-  stage: String;
+
   status: string;
+  stage: IStatus;
 }
 
 export interface IProfile {
