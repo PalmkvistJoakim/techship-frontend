@@ -19,7 +19,7 @@ function TableHeader() {
   return (
     <thead>
       <Tr>
-        <Th>
+        <Th onClick={() => raiseSort("email")}>
           <i className="fa-solid fa-envelope" />
         </Th>
         <Th onClick={() => raiseSort("kommentar")}>
@@ -38,6 +38,7 @@ const Th = styled.th`
   margin: 2px;
   padding: 2px;
   margin-left: 6px;
+  cursor: pointer;
 `;
 
 const Tr = styled.tr`
