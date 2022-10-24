@@ -16,6 +16,11 @@ function TableHeader() {
     onSort(sortColumn);
   };
 
+  let classes =
+    sortColumn.order === "asc"
+      ? "fa-solid fa-sort-down"
+      : "fa-solid fa-sort-up";
+
   return (
     <thead>
       <Tr>
@@ -25,10 +30,23 @@ function TableHeader() {
         <Th onClick={() => raiseSort("kommentar")}>
           <i className="fa-solid fa-comments" />
         </Th>
-        <Th onClick={() => raiseSort("name")}>Namn</Th>
-        <Th onClick={() => raiseSort("stage")}>Steg</Th>
-        <Th onClick={() => raiseSort("created_at")}>Skapad</Th>
-        <Th onClick={() => raiseSort("status")}>Status</Th>
+        <Th onClick={() => raiseSort("name")}>
+          Namn<> </>
+          <i className={classes} />
+        </Th>
+
+        <Th onClick={() => raiseSort("stage.name")}>
+          Steg<> </>
+          <i className={classes} />
+        </Th>
+        <Th onClick={() => raiseSort("created_at")}>
+          Skapad<> </>
+          <i className={classes} />
+        </Th>
+        <Th onClick={() => raiseSort("status")}>
+          Status<> </>
+          <i className={classes} />
+        </Th>
       </Tr>
     </thead>
   );

@@ -18,15 +18,15 @@ import { Paginate } from "../utils/Paginate";
 import SortContext from "../context/SortContext";
 import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
-import { IStatus } from "../types/IStatus";
-import { getStatus } from "../services/mockStatus";
+import { getStage } from "../services/mockStage";
 import { useRouteLoaderData } from "react-router-dom";
+import { IStage } from "../types/IStage";
 
 function Dashboard(): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
   let [data, setData] = useState<IVideoask[]>([]);
-  const [status, setStatus] = useState<IStatus[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<IStatus>({
+  const [stage, setStage] = useState<IStage[]>([]);
+  const [selectedStage, setSelectedStage] = useState<IStage>({
     _id: "",
     name: "Alla Ansökningar",
   });
@@ -67,7 +67,7 @@ function Dashboard(): JSX.Element {
     handleToken();
     GetDataFromVideoask();
     setApplicants(getAppplicants());
-    setStatus(getStatus());
+    setStage(getStage());
   }, []);
 
   //Denna är för att filtrera bort alla ansökningar utan namn
@@ -118,13 +118,13 @@ function Dashboard(): JSX.Element {
     setSearchQuery(searchQuery);
   };
 
-  const handleSelectStatus = (status: IStatus) => {
-    setSelectedStatus(status);
+  const handleSelectStage = (stage: IStage) => {
+    setSelectedStage(stage);
     setSelectedPage(1);
   };
 
-  let filteredData = selectedStatus._id
-    ? data.filter((d) => d.stage._id === selectedStatus._id)
+  let filteredData = selectedStage._id
+    ? data.filter((d) => d.stage._id === selectedStage._id)
     : data;
   if (searchQuery) {
     filteredData = data.filter((d) =>
@@ -151,9 +151,9 @@ function Dashboard(): JSX.Element {
             <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
               <SidebarStyle>
                 <Sidebar
-                  status={status}
-                  selectedStatus={selectedStatus}
-                  onSelectStatus={handleSelectStatus}
+                  stage={stage}
+                  selectedStage={selectedStage}
+                  onSelectStage={handleSelectStage}
                 />
               </SidebarStyle>
               <Main>
