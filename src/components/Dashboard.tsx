@@ -48,7 +48,7 @@ function Dashboard(): JSX.Element {
 
   const GetDataFromVideoask = async () => {
     const token = localStorage.getItem("access_token");
-    const { data } = await http.get(
+    const { data: data1 } = await http.get(
       "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
       {
         headers: {
@@ -56,8 +56,20 @@ function Dashboard(): JSX.Element {
         },
       }
     );
+    //Denna la Nazih till. Den hämtar index 100-199. Det Nazih ändrade är query paramatern "offset" som var 0, den ändrades till 100
+    const { data: data2 } = await http.get(
+      "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=100",
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const allData = data1.results.concat(data2.results);
+
     try {
-      setData(data.results);
+      setData(allData);
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +88,7 @@ function Dashboard(): JSX.Element {
   //Denna är för att göra om datumet mer läsbart än det videoask skickar
   data.map((d) => (d.created_at = new Date(d.created_at).toLocaleString()));
 
-  // Denna är till för att lägga till properties status. Den sätter var tredje ej antagen, techship School, techship programme
+  // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme
   data.map((d) => {
     if (data.indexOf(d) % 4 === 0)
       d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
@@ -87,8 +99,6 @@ function Dashboard(): JSX.Element {
     if (data.indexOf(d) % 4 === 3)
       d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
   });
-
-  console.log(data);
 
   const onSubmit = () => {
     Sendmail(checkEmail);

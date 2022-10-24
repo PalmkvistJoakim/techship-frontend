@@ -17,7 +17,6 @@ function Pagination({
   onPagePlus,
 }: Props) {
   const pageCount = Math.ceil(itemCount / pageSize);
-  console.log(itemCount);
   const pages = _.range(1, pageCount + 1);
 
   const leftArrow = "<<";
