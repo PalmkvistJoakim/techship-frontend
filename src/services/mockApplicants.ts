@@ -1,4 +1,4 @@
-import { getStatus } from "./mockStatus";
+import { getStage } from "./mockStage";
 
 const appplicants = [
   {
@@ -10,7 +10,7 @@ const appplicants = [
     adress: "Redaregatan 40",
     created_at: "2022-10-23 14:00:11",
     notis: "Han är driven",
-    status: { _id: "5b21ca3eeb7f6fbccd471818", name: "Alla Ansökningar" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471818", name: "Alla Ansökningar" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -22,7 +22,7 @@ const appplicants = [
     adress: "Redaregatan 41",
     created_at: "2022-10-19 18:06:41",
     notis: "Hon är utvecklare",
-    status: { _id: "5b21ca3eeb7f6fbccd471814", name: "Antagna" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471814", name: "Antagna" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -34,7 +34,7 @@ const appplicants = [
     adress: "Redaregatan 42",
     created_at: "2022-10-17 12:45:34",
     notis: "Han är duktig",
-    status: { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej Antagna" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej Antagna" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -46,7 +46,7 @@ const appplicants = [
     adress: "Redaregatan 43",
     created_at: "2022-09-04 08:37:01",
     notis: "Han är trött",
-    status: { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -58,7 +58,7 @@ const appplicants = [
     adress: "Redaregatan 44",
     created_at: "2022-09-27 13:39:22",
     notis: "Han är senior",
-    status: { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -70,7 +70,7 @@ const appplicants = [
     adress: "Redaregatan 45",
     created_at: "2022-09-30 20:04:23",
     notis: "Hon är entreprnör",
-    status: { _id: "5b21ca3eeb7f6fbccd471816", name: "Sparade Profiler" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471816", name: "Sparade Profiler" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -82,7 +82,7 @@ const appplicants = [
     adress: "Redaregatan 40",
     created_at: "2022-10-23 14:00:11",
     notis: "Han är driven",
-    status: { _id: "5b21ca3eeb7f6fbccd471818", name: "Alla Ansökningar" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471818", name: "Alla Ansökningar" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -94,7 +94,7 @@ const appplicants = [
     adress: "Redaregatan 41",
     created_at: "2022-10-19 18:06:41",
     notis: "Hon är utvecklare",
-    status: { _id: "5b21ca3eeb7f6fbccd471814", name: "Antagna" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471814", name: "Antagna" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -106,7 +106,7 @@ const appplicants = [
     adress: "Redaregatan 42",
     created_at: "2022-10-17 12:45:34",
     notis: "Han är duktig",
-    status: { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej Antagna" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej Antagna" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -118,7 +118,7 @@ const appplicants = [
     adress: "Redaregatan 43",
     created_at: "2022-09-04 08:37:01",
     notis: "Han är trött",
-    status: { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -130,7 +130,7 @@ const appplicants = [
     adress: "Redaregatan 44",
     created_at: "2022-09-27 13:39:22",
     notis: "Han är senior",
-    status: { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -142,7 +142,7 @@ const appplicants = [
     adress: "Redaregatan 45",
     created_at: "2022-09-30 20:04:23",
     notis: "Hon är entreprnör",
-    status: { _id: "5b21ca3eeb7f6fbccd471816", name: "Sparade Profiler" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471816", name: "Sparade Profiler" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -154,7 +154,7 @@ const appplicants = [
     adress: "Redaregatan 40",
     created_at: "2022-10-23 14:00:11",
     notis: "Han är driven",
-    status: { _id: "5b21ca3eeb7f6fbccd471818", name: "Alla Ansökningar" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471818", name: "Alla Ansökningar" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -166,7 +166,7 @@ const appplicants = [
     adress: "Redaregatan 41",
     created_at: "2022-10-19 18:06:41",
     notis: "Hon är utvecklare",
-    status: { _id: "5b21ca3eeb7f6fbccd471814", name: "Antagna" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471814", name: "Antagna" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -178,7 +178,7 @@ const appplicants = [
     adress: "Redaregatan 42",
     created_at: "2022-10-17 12:45:34",
     notis: "Han är duktig",
-    status: { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej Antagna" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej Antagna" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -190,7 +190,7 @@ const appplicants = [
     adress: "Redaregatan 43",
     created_at: "2022-09-04 08:37:01",
     notis: "Han är trött",
-    status: { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -202,7 +202,7 @@ const appplicants = [
     adress: "Redaregatan 44",
     created_at: "2022-09-27 13:39:22",
     notis: "Han är senior",
-    status: { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
   {
@@ -214,7 +214,7 @@ const appplicants = [
     adress: "Redaregatan 45",
     created_at: "2022-09-30 20:04:23",
     notis: "Hon är entreprnör",
-    status: { _id: "5b21ca3eeb7f6fbccd471816", name: "Sparade Profiler" },
+    stage: { _id: "5b21ca3eeb7f6fbccd471816", name: "Sparade Profiler" },
     description: "är taggad för den här program , hoppas jag hör av er",
   },
 ];

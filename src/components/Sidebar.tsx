@@ -1,17 +1,17 @@
 import styled from "styled-components";
-import { IStatus } from "../types/IStatus";
+import { IStage } from "../types/IStage";
 
 interface Props {
-  status: IStatus[];
-  selectedStatus: IStatus;
-  onSelectStatus: (status: IStatus) => void;
+  stage: IStage[];
+  selectedStage: IStage;
+  onSelectStage: (stage: IStage) => void;
 }
 
-function Sidebar({ status, selectedStatus, onSelectStatus }: Props) {
+function Sidebar({ stage, selectedStage, onSelectStage }: Props) {
   return (
     <Container>
-      {status.map((s) => (
-        <LiContainer key={s._id} onClick={() => onSelectStatus(s)}>
+      {stage.map((s) => (
+        <LiContainer key={s._id} onClick={() => onSelectStage(s)}>
           {s.name}
         </LiContainer>
       ))}
@@ -29,7 +29,7 @@ const Container = styled.div`
   margin-top: 50%;
 `;
 
-const LiContainer = styled.div`
+const LiContainer = styled.li`
   text-align: center;
   background-color: #0c0c0c7a;
   padding: 10px;
