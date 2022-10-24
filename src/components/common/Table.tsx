@@ -8,11 +8,10 @@ interface Props {
 }
 
 function Table({ columns }: Props) {
-  console.log("columns i table", columns);
   return (
     <TableCSS>
       <TableHeader columns={columns} />
-      <TableBody />
+      <TableBody columns={columns} />
     </TableCSS>
   );
 }
