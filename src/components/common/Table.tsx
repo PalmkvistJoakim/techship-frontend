@@ -1,11 +1,17 @@
 import TableBody from "./TableBody";
 import TableHeader from "./TableHeader";
 import styled from "styled-components";
+import { IColumns } from "../ApplicantsTable";
 
-function Table() {
+interface Props {
+  columns: IColumns[];
+}
+
+function Table({ columns }: Props) {
+  console.log("columns i table", columns);
   return (
     <TableCSS>
-      <TableHeader />
+      <TableHeader columns={columns} />
       <TableBody />
     </TableCSS>
   );
