@@ -2,8 +2,14 @@ import { useContext } from "react";
 import styled from "styled-components";
 import SortContext from "../../context/SortContext";
 import { ISorts } from "../../types/ISort";
+import { IColumns } from "../ApplicantsTable";
 
-function TableHeader() {
+interface Props {
+  columns: IColumns[];
+}
+
+function TableHeader({ columns }: Props) {
+  console.log("columns", columns);
   const { sortColumn, onSort } = useContext(SortContext) as ISorts;
 
   const raiseSort = (path: string) => {
@@ -16,37 +22,23 @@ function TableHeader() {
     onSort(sortColumn);
   };
 
-  let classes =
-    sortColumn.order === "asc"
-      ? "fa-solid fa-sort-down"
-      : "fa-solid fa-sort-up";
+  const renderSortIcon = (column: IColumns) => {
+    if (sortColumn.path !== column.path) return null;
+
+    if (sortColumn.order === "asc")
+      return <i className="fa-solid fa-sort-down" />;
+
+    return <i className="fa-solid fa-sort-up" />;
+  };
 
   return (
     <thead>
       <Tr>
-        <Th onClick={() => raiseSort("email")}>
-          <i className="fa-solid fa-envelope" />
-        </Th>
-        <Th onClick={() => raiseSort("kommentar")}>
-          <i className="fa-solid fa-comments" />
-        </Th>
-        <Th onClick={() => raiseSort("name")}>
-          Namn<> </>
-          <i className={classes} />
-        </Th>
-
-        <Th onClick={() => raiseSort("stage.name")}>
-          Steg<> </>
-          <i className={classes} />
-        </Th>
-        <Th onClick={() => raiseSort("created_at")}>
-          Skapad<> </>
-          <i className={classes} />
-        </Th>
-        <Th onClick={() => raiseSort("status")}>
-          Status<> </>
-          <i className={classes} />
-        </Th>
+        {columns.map((column) => (
+          <Th key={column.path} onClick={() => raiseSort(column.path)}>
+            {column.label} {renderSortIcon(column)}
+          </Th>
+        ))}
       </Tr>
     </thead>
   );
