@@ -5,6 +5,7 @@ import { IVideoask } from "../types/IVideoAsk";
 import Table from "./common/Table";
 import { Link } from "react-router-dom";
 import { useContext, FormEvent } from "react";
+import styled from "styled-components";
 
 export interface IColumns {
   label: string | JSX.Element;
@@ -44,7 +45,7 @@ function ApplicantsTable() {
       label: "Namn",
       path: "name",
       content: (data: IVideoask) => (
-        <Link to={"/application/:id"}>{data.name}</Link>
+        <LinkStyle to={"/application/:id"}>{data.name}</LinkStyle>
       ),
     },
     { label: "Steg", path: "stage.name" },
@@ -52,9 +53,13 @@ function ApplicantsTable() {
     { label: "Status", path: "status" },
   ];
 
-  console.log("columns i AT", columns);
-
   return <Table columns={columns} />;
 }
 
 export default ApplicantsTable;
+
+const LinkStyle = styled(Link)`
+  font-size: 16px;
+  text-decoration: none;
+  color: #58eac1;
+`;

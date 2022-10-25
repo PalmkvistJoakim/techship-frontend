@@ -17,6 +17,7 @@ function Pagination({
   onPagePlus,
 }: Props) {
   const pageCount = Math.ceil(itemCount / pageSize);
+
   const pages = _.range(1, pageCount + 1);
 
   const leftArrow = "<<";
@@ -52,4 +53,5 @@ const Button = styled.button`
 const Ul = styled.ul`
   margin-left: 112px;
   margin-top: 6px;
+  display: inline-block;
 `;
