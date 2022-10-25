@@ -144,6 +144,8 @@ function Dashboard(): JSX.Element {
       d.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
+
+  console.log(filteredData);
   // let filteredData;
 
   // if (selectedStage._id)
@@ -178,6 +180,10 @@ function Dashboard(): JSX.Element {
           <applicantsContext.Provider value={applicants}>
             <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
               <SidebarStyle>
+                <ReloadButton onClick={() => window.location.reload()}>
+                  <i className="fa-solid fa-download" />
+                  Hämta ansökningar
+                </ReloadButton>
                 <Sidebar
                   stage={stage}
                   selectedStage={selectedStage}
@@ -185,10 +191,6 @@ function Dashboard(): JSX.Element {
                 />
               </SidebarStyle>
               <Main>
-                <ReloadButton onClick={() => window.location.reload()}>
-                  <i className="fa-solid fa-download" />
-                  Hämta ansökningar
-                </ReloadButton>
                 <Wrapper>
                   <button type="submit" onClick={() => onSubmit()}>
                     Sänd Mejl
@@ -221,10 +223,12 @@ const Container = styled.div`
   grid-template-areas:
     "sidebar main"
     "sidebar main ";
+  margin-bottom: 1000px;
 `;
 
 const SidebarStyle = styled.div`
   grid-area: sidebar;
+  margin-top: 42%;
 `;
 const Main = styled.div`
   grid-area: main;
@@ -237,6 +241,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 80%;
   margin-left: 10%;
+  margin-top: 5%;
 
   @media (max-width: 600px) {
     width: auto;
@@ -247,7 +252,7 @@ const Wrapper = styled.div`
 
   button {
     width: auto;
-    padding: 12px;
+    padding: 8px;
     background-color: #58eac1;
     font-weight: bold;
     border: none;
@@ -267,14 +272,15 @@ const Wrapper = styled.div`
 `;
 
 const ReloadButton = styled.button`
-  width: auto;
+  width: 142%;
   padding: 12px;
   background-color: #58eac1;
   font-weight: bold;
   border: none;
   border-radius: 10px;
   margin-bottom: 16px;
-  margin-left: 115px;
+  margin-left: 35px;
+  margin-top: 45%;
   cursor: pointer;
 
   :hover {
@@ -294,5 +300,5 @@ const ReloadButton = styled.button`
 
 const Span = styled.span`
   color: #58eac1;
-  margin-left: 880px;
+  margin-left: 840px;
 `;

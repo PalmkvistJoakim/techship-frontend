@@ -26,16 +26,18 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 50%;
+  width: 130%;
+  margin-left: 40px;
 `;
 
 const LiContainer = styled.li`
   text-align: center;
   background-color: #0c0c0c7a;
-  padding: 10px;
+  padding: 4px;
   margin-bottom: 10px;
   margin-top: 10px;
   border-radius: 20px;
+  list-style: none;
   cursor: pointer;
 
   :hover {

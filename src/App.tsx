@@ -3,7 +3,6 @@ import Dashboard from "./components/Dashboard";
 import ApplicationForm from "./components/ApplicationForm";
 import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
-import ProfilePage from "./components/ProfilePage";
 import styled from "styled-components";
 import LogoutForm from "./components/LogoutForm";
 import Sidebar from "./components/Sidebar";
