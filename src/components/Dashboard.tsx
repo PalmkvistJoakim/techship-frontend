@@ -88,7 +88,7 @@ function Dashboard(): JSX.Element {
   //Denna är för att göra om datumet mer läsbart än det videoask skickar
   data.map((d) => (d.created_at = new Date(d.created_at).toLocaleString()));
 
-  // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme
+  // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme. DEN SKA BORT NÄR VI KOPPLAT MOT DATABAS
   data.map((d) => {
     if (data.indexOf(d) % 4 === 0)
       d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
@@ -136,11 +136,29 @@ function Dashboard(): JSX.Element {
   let filteredData = selectedStage._id
     ? data.filter((d) => d.stage._id === selectedStage._id)
     : data;
+  if (selectedStage.name === "Antagna") {
+    filteredData = data.filter((d) => d.stage.name !== "Ej antagen");
+  }
   if (searchQuery) {
     filteredData = data.filter((d) =>
       d.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
+  // let filteredData;
+
+  // if (selectedStage._id)
+  //   filteredData = data.filter((d) => d.stage._id === selectedStage._id);
+  // if (selectedStage._id === "Antagna") {
+  //   filteredData = data.filter(
+  //     (d) => d.stage._id === "Techship Programme" || "Techship School"
+  //   );
+  // }
+  // if (searchQuery) {
+  //   filteredData = data.filter((d) =>
+  //     d.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  // }
+
   const handleSort = (sortColumn: ISort) => {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };

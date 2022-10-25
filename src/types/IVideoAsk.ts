@@ -8,7 +8,6 @@ export interface IVideoask {
   created_at: string;
   media_type: string;
   share_url: IProfile;
-
   status: string;
   stage: IStage;
 }
