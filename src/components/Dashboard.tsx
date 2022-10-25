@@ -177,7 +177,6 @@ function Dashboard(): JSX.Element {
                   </button>
                   <SearchBar value={searchQuery} onChange={handleSearch} />
                 </Wrapper>
-
                 <ApplicantsTable />
                 <Pagination
                   itemCount={filteredData.length}
@@ -186,6 +185,7 @@ function Dashboard(): JSX.Element {
                   onPagePlus={handlePagePlus}
                   onPageMinus={handlePageMinus}
                 />
+                <Span>{filteredData.length}</Span>
               </Main>
             </SortContext.Provider>
           </applicantsContext.Provider>
@@ -272,4 +272,9 @@ const ReloadButton = styled.button`
     margin-right: 5px;
     font-size: 16px;
   }
+`;
+
+const Span = styled.span`
+  color: #58eac1;
+  margin-left: 880px;
 `;
