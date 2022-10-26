@@ -1,4 +1,4 @@
-import { IStatus } from "./IStatus";
+import { IStage } from "./IStage";
 
 export interface IVideoask {
   answer_id: string;
@@ -11,7 +11,7 @@ export interface IVideoask {
   respondent_id: string;
   contact_id: string;
   status: string;
-  stage: IStatus;
+  stage: IStage;
 }
 
 export interface IProfile {

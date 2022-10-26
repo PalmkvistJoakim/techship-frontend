@@ -17,8 +17,8 @@ import { Paginate } from "../utils/Paginate";
 import SortContext from "../context/SortContext";
 import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
-import { IStatus } from "../types/IStatus";
-import { getStatus } from "../services/mockStatus";
+import { getStage } from "../services/mockStage";
+import { IStage } from "../types/IStage";
 
 interface Props {
   data: IVideoask[];
@@ -48,12 +48,29 @@ function Dashboard({ data }: Props): JSX.Element {
     getAccessToken(code);
   };
 
+  const GetDataFromVideoask = async () => {
+    const token = localStorage.getItem("access_token");
+    const { data } = await http.get(
+      "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    try {
+      setData(data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (localStorage.getItem("access_token") === null) {
       handleToken();
     }
     setApplicants(getAppplicants());
-    setStatus(getStatus());
+    setStage(getStage());
   }, []);
 
   //Denna är för att filtrera bort alla ansökningar utan namn
@@ -62,7 +79,7 @@ function Dashboard({ data }: Props): JSX.Element {
   //Denna är för att göra om datumet mer läsbart än det videoask skickar
   data.map((d) => (d.created_at = new Date(d.created_at).toLocaleString()));
 
-  // Denna är till för att lägga till properties status. Den sätter var tredje ej antagen, techship School, techship programme
+  // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme. DEN SKA BORT NÄR VI KOPPLAT MOT DATABAS
   data.map((d) => {
     if (data.indexOf(d) % 4 === 0)
       d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
@@ -73,8 +90,6 @@ function Dashboard({ data }: Props): JSX.Element {
     if (data.indexOf(d) % 4 === 3)
       d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
   });
-
-  console.log(data);
 
   const onSubmit = () => {
     Sendmail(checkEmail);
@@ -104,19 +119,39 @@ function Dashboard({ data }: Props): JSX.Element {
     setSearchQuery(searchQuery);
   };
 
-  const handleSelectStatus = (status: IStatus) => {
-    setSelectedStatus(status);
+  const handleSelectStage = (stage: IStage) => {
+    setSelectedStage(stage);
     setSelectedPage(1);
   };
 
-  let filteredData = selectedStatus._id
-    ? data.filter((d) => d.stage._id === selectedStatus._id)
+  let filteredData = selectedStage._id
+    ? data.filter((d) => d.stage._id === selectedStage._id)
     : data;
+  if (selectedStage.name === "Antagna") {
+    filteredData = data.filter((d) => d.stage.name !== "Ej antagen");
+  }
   if (searchQuery) {
     filteredData = data.filter((d) =>
       d.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
+
+  console.log(filteredData);
+  // let filteredData;
+
+  // if (selectedStage._id)
+  //   filteredData = data.filter((d) => d.stage._id === selectedStage._id);
+  // if (selectedStage._id === "Antagna") {
+  //   filteredData = data.filter(
+  //     (d) => d.stage._id === "Techship Programme" || "Techship School"
+  //   );
+  // }
+  // if (searchQuery) {
+  //   filteredData = data.filter((d) =>
+  //     d.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  // }
+
   const handleSort = (sortColumn: ISort) => {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
@@ -136,24 +171,23 @@ function Dashboard({ data }: Props): JSX.Element {
           <applicantsContext.Provider value={applicants}>
             <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
               <SidebarStyle>
-                <Sidebar
-                  status={status}
-                  selectedStatus={selectedStatus}
-                  onSelectStatus={handleSelectStatus}
-                />
-              </SidebarStyle>
-              <Main>
                 <ReloadButton onClick={() => window.location.reload()}>
                   <i className="fa-solid fa-download" />
                   Hämta ansökningar
                 </ReloadButton>
+                <Sidebar
+                  stage={stage}
+                  selectedStage={selectedStage}
+                  onSelectStage={handleSelectStage}
+                />
+              </SidebarStyle>
+              <Main>
                 <Wrapper>
                   <button type="submit" onClick={() => onSubmit()}>
                     Sänd Mejl
                   </button>
                   <SearchBar value={searchQuery} onChange={handleSearch} />
                 </Wrapper>
-
                 <ApplicantsTable />
                 <Pagination
                   itemCount={filteredData.length}
@@ -162,6 +196,7 @@ function Dashboard({ data }: Props): JSX.Element {
                   onPagePlus={handlePagePlus}
                   onPageMinus={handlePageMinus}
                 />
+                <Span>{filteredData.length}</Span>
               </Main>
             </SortContext.Provider>
           </applicantsContext.Provider>
@@ -179,10 +214,12 @@ const Container = styled.div`
   grid-template-areas:
     "sidebar main"
     "sidebar main ";
+  margin-bottom: 1000px;
 `;
 
 const SidebarStyle = styled.div`
   grid-area: sidebar;
+  margin-top: 42%;
 `;
 const Main = styled.div`
   grid-area: main;
@@ -195,6 +232,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 80%;
   margin-left: 10%;
+  margin-top: 5%;
 
   @media (max-width: 600px) {
     width: auto;
@@ -205,7 +243,7 @@ const Wrapper = styled.div`
 
   button {
     width: auto;
-    padding: 12px;
+    padding: 8px;
     background-color: #58eac1;
     font-weight: bold;
     border: none;
@@ -225,14 +263,15 @@ const Wrapper = styled.div`
 `;
 
 const ReloadButton = styled.button`
-  width: auto;
+  width: 142%;
   padding: 12px;
   background-color: #58eac1;
   font-weight: bold;
   border: none;
   border-radius: 10px;
   margin-bottom: 16px;
-  margin-left: 115px;
+  margin-left: 35px;
+  margin-top: 45%;
   cursor: pointer;
 
   :hover {
@@ -248,4 +287,9 @@ const ReloadButton = styled.button`
     margin-right: 5px;
     font-size: 16px;
   }
+`;
+
+const Span = styled.span`
+  color: #58eac1;
+  margin-left: 840px;
 `;

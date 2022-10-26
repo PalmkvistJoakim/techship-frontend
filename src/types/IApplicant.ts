@@ -1,4 +1,4 @@
-import { IStatus } from "./IStatus";
+import { IStage } from "./IStage";
 
 interface IApplicant {
   answer_id: string;
@@ -9,7 +9,7 @@ interface IApplicant {
   adress: string;
   created_at: string;
   notis: string;
-  status: IStatus;
+  stage: IStage;
   description: string;
 }
 
