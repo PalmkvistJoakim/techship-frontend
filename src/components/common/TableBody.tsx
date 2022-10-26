@@ -37,7 +37,9 @@ function TableBody(): JSX.Element {
                 <i className="fa-regular fa-comment" />
               </Td>
               <Td>
-                <LinkStyle to={"/application/:id"}>{Data.name}</LinkStyle>
+                <LinkStyle to={`/dashboard/${Data.respondent_id}`}>
+                  {Data.name}
+                </LinkStyle>
               </Td>
               <Td>{Data.stage.name}</Td>
               <Td>{Data.created_at}</Td>

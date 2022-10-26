@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChangeEvent } from "react";
 import { getAppplicants } from "../services/mockApplicants";
-import { http } from "../services/httpService";
 import { Sendmail } from "../services/emailService";
 import applicantsContext from "../context/ApplicantsContext";
 import DataContext from "../context/DataContext";
@@ -20,11 +19,14 @@ import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
 import { IStatus } from "../types/IStatus";
 import { getStatus } from "../services/mockStatus";
-import { useRouteLoaderData } from "react-router-dom";
 
-function Dashboard(): JSX.Element {
+interface Props {
+  data: IVideoask[];
+}
+
+function Dashboard({ data }: Props): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
-  let [data, setData] = useState<IVideoask[]>([]);
+
   const [status, setStatus] = useState<IStatus[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<IStatus>({
     _id: "",
@@ -46,26 +48,10 @@ function Dashboard(): JSX.Element {
     getAccessToken(code);
   };
 
-  const GetDataFromVideoask = async () => {
-    const token = localStorage.getItem("access_token");
-    const { data } = await http.get(
-      "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-    try {
-      setData(data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    handleToken();
-    GetDataFromVideoask();
+    if (localStorage.getItem("access_token") === null) {
+      handleToken();
+    }
     setApplicants(getAppplicants());
     setStatus(getStatus());
   }, []);
