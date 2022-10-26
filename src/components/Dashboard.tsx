@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChangeEvent } from "react";
 import { getAppplicants } from "../services/mockApplicants";
-import { http } from "../services/httpService";
 import { Sendmail } from "../services/emailService";
 import applicantsContext from "../context/ApplicantsContext";
 import DataContext from "../context/DataContext";
@@ -19,14 +18,17 @@ import SortContext from "../context/SortContext";
 import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
 import { getStage } from "../services/mockStage";
-import { useRouteLoaderData } from "react-router-dom";
 import { IStage } from "../types/IStage";
 
-function Dashboard(): JSX.Element {
+interface Props {
+  data: IVideoask[];
+}
+
+function Dashboard({ data }: Props): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
-  let [data, setData] = useState<IVideoask[]>([]);
-  const [stage, setStage] = useState<IStage[]>([]);
-  const [selectedStage, setSelectedStage] = useState<IStage>({
+
+  const [status, setStatus] = useState<IStatus[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<IStatus>({
     _id: "",
     name: "Alla Ansökningar",
   });
@@ -48,7 +50,7 @@ function Dashboard(): JSX.Element {
 
   const GetDataFromVideoask = async () => {
     const token = localStorage.getItem("access_token");
-    const { data: data1 } = await http.get(
+    const { data } = await http.get(
       "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
       {
         headers: {
@@ -56,28 +58,17 @@ function Dashboard(): JSX.Element {
         },
       }
     );
-    //Denna la Nazih till. Den hämtar index 100-199. Det Nazih ändrade är query paramatern "offset" som var 0, den ändrades till 100
-    const { data: data2 } = await http.get(
-      "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=100",
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-
-    const allData = data1.results.concat(data2.results);
-
     try {
-      setData(allData);
+      setData(data.results);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    handleToken();
-    GetDataFromVideoask();
+    if (localStorage.getItem("access_token") === null) {
+      handleToken();
+    }
     setApplicants(getAppplicants());
     setStage(getStage());
   }, []);
