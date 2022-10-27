@@ -18,7 +18,7 @@ import SortContext from "../context/SortContext";
 import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
 import { getStage } from "../services/mockStage";
-import { IStage } from "../types/IStage";
+import { IStage, IStagee } from "../types/IStage";
 
 interface Props {
   data: IVideoask[];
@@ -27,8 +27,8 @@ interface Props {
 function Dashboard({ data }: Props): JSX.Element {
   const [applicants, setApplicants] = useState<IApplicant[]>([]);
 
-  const [status, setStatus] = useState<IStatus[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<IStatus>({
+  const [stage, setStage] = useState<IStage[]>([]);
+  const [selectedStage, setSelectedStage] = useState<IStage>({
     _id: "",
     name: "Alla Ansökningar",
   });
@@ -46,23 +46,6 @@ function Dashboard({ data }: Props): JSX.Element {
     const code = parameters.get("code");
     localStorage.setItem("code", code || "");
     getAccessToken(code);
-  };
-
-  const GetDataFromVideoask = async () => {
-    const token = localStorage.getItem("access_token");
-    const { data } = await http.get(
-      "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-    try {
-      setData(data.results);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   useEffect(() => {

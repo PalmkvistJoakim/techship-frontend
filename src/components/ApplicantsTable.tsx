@@ -45,7 +45,7 @@ function ApplicantsTable() {
       label: "Namn",
       path: "name",
       content: (data: IVideoask) => (
-        <LinkStyle to={"/application/:id"}>{data.name}</LinkStyle>
+        <LinkStyle to={`/dashboard/${data.contact_id}`}>{data.name}</LinkStyle>
       ),
     },
     { label: "Steg", path: "stage.name" },
