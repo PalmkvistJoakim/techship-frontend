@@ -17,3 +17,14 @@ export interface IVideoask {
 export interface IProfile {
   share_url: string;
 }
+
+export interface IContactId extends IVideoask {
+  answer_id: string;
+  created_at: string;
+  file_uploads: string;
+  media_url: string;
+  thumbnail: string;
+  type: string;
+  input_text: string;
+  question_id: string;
+}
