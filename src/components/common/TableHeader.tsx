@@ -29,8 +29,6 @@ function TableHeader({ columns }: Props) {
   //   return <i className="fa-solid fa-sort-up" />;
   // };
 
-  // toogla på ikonerna. Sätt ett NamedNodeMap. Sedan ha en handler som gör en onKlick som sätter samma path, men sätter en annan order
-
   return (
     <>
       <select
