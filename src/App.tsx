@@ -1,7 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
-import ApplicationForm from "./components/ApplicationForm";
-import Navbar from "./components/Navbar";
 import LoginForm from "./components/LoginForm";
 import ProfilePage from "./components/ProfilePage";
 import styled from "styled-components";
@@ -11,6 +9,7 @@ import { IVideoask } from "./types/IVideoAsk";
 import { http } from "./services/httpService";
 function App() {
   let [data, setData] = useState<IVideoask[]>([]);
+
   const GetDataFromVideoask = async () => {
     const token = localStorage.getItem("access_token");
     const { data } = await http.get(
@@ -33,16 +32,11 @@ function App() {
   const token = localStorage.getItem("access_token");
   return (
     <>
-      {/* <NavMain>
-        <Navbar />
-      </NavMain> */}
-
       <Routes>
         {/* <Route
           path="/dashboard/:id"
           element={<ProfilePage data={[...data]} />}
         /> */}
-        <Route path="/application" element={<ApplicationForm />} />
         <Route path="/dashboard" element={<Dashboard data={[...data]} />} />
         <Route path="/dashboard/:id" element={<Dashboard data={[...data]} />} />
         <Route path="/logout" element={<LogoutForm />} />

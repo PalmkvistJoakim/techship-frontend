@@ -82,8 +82,14 @@ function Dashboard({ data }: Props): JSX.Element {
   }
 
   const handleSort = (sortColumn: ISort) => {
+    sortColumn.order = sortColumn.order;
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
+
+  // const handleSortOrder = (order: boolean | "asc" | "desc") => {
+  //   sortColumn.order = order;
+  //   setSortColumn({ path: sortColumn.path, order: sortColumn.order });
+  // };
 
   const sortedData = _.orderBy(
     filteredData,
@@ -139,6 +145,7 @@ const MainGrid = styled.div`
   grid-area: main;
   border: solid red 4px;
   margin: 0%;
+  background-color: brown;
 
   button {
     width: auto;

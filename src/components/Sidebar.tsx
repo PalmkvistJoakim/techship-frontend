@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Techship from "../sveg/Techship";
 import { IStage } from "../types/IStage";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   stage: IStage[];
@@ -15,6 +16,9 @@ function Sidebar({
   onSelectStage,
   filteredDataCount,
 }: Props) {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("access_token");
   return (
     <Container>
       <Picture>
@@ -38,7 +42,17 @@ function Sidebar({
         {/* Lägg till ochs tyla snyggt sen */}
         {/* <Span>{filteredDataCount}</Span> */}
       </Filter>
-      <Navigation>Logga ut</Navigation>
+      <Navigation>
+        {token ? (
+          <>
+            <div onClick={() => navigate("/logout")}>Logout</div>
+          </>
+        ) : (
+          <>
+            <div onClick={() => navigate("/login")}>Login</div>
+          </>
+        )}
+      </Navigation>
     </Container>
   );
 }
@@ -136,10 +150,22 @@ const LiContainer = styled.li`
 
 const Navigation = styled.div`
   grid-area: navigation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  flex-wrap: wrap;
+  div {
+    margin: 5px;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 20px;
+
+    cursor: pointer;
+  }
 `;
 
 const Span = styled.span`
   color: #58eac1;
 `;
-
 export default Sidebar;
