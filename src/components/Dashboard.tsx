@@ -123,7 +123,7 @@ export default Dashboard;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: min(21rem) min(28rem) min(56rem);
+  grid-template-columns: min(21rem) min(28rem) min(57.5rem);
   grid-template-areas: "sidebar main profilepage";
 `;
 
@@ -143,7 +143,7 @@ const MainGrid = styled.div`
   button {
     width: auto;
     padding: 8px;
-    background-color: #58eac1;
+    background-color: black;
     font-weight: bold;
     border: none;
     border-radius: 10px;

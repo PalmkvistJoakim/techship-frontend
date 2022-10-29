@@ -79,6 +79,7 @@ const Tr = styled.tr`
   margin-top: 80px;
   margin: 2%;
   padding-top: 0.5rem;
+
   :hover {
     background-color: grey;
   }
@@ -90,6 +91,7 @@ const TdEmail = styled.td`
   display: grid;
   grid-template-columns: 100%;
   align-items: center;
+  margin-bottom: 0.5rem;
 `;
 
 const TdName = styled.td`
@@ -97,7 +99,7 @@ const TdName = styled.td`
   font-weight: bold;
   display: row;
   grid-template-rows: 100%;
-  font-size: 1.18rem;
+  font-size: 1.5rem;
 `;
 
 const TdCreated = styled.td`
@@ -106,6 +108,7 @@ const TdCreated = styled.td`
   grid-template-rows: 100%;
   font-size: x-small;
   font-weight: 100;
+  font-size: 0.8rem;
 `;
 
 const TdStage = styled.td`
@@ -117,6 +120,7 @@ const TdStage = styled.td`
   font-size: 12px;
   justify-self: end;
   font-weight: bold;
+  font-size: 1.05rem;
 `;
 
 const TdComment = styled.td`
