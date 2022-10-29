@@ -1,41 +1,29 @@
 import { useEffect, useState } from "react";
-import { ChangeEvent } from "react";
-import { getAppplicants } from "../services/mockApplicants";
-import { Sendmail } from "../services/emailService";
-import applicantsContext from "../context/ApplicantsContext";
 import DataContext from "../context/DataContext";
-import EmailContext from "../context/EmailContext";
-import IApplicant from "../types/IApplicant";
 import { IVideoask } from "../types/IVideoAsk";
 import { ISort } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
-import SearchBar from "./SearchBar";
-import Pagination from "./common/Pagination";
-import ApplicantsTable from "./ApplicantsTable";
-import { Paginate } from "../utils/Paginate";
 import SortContext from "../context/SortContext";
 import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
 import { getStage } from "../services/mockStage";
-import { IStage, IStagee } from "../types/IStage";
+import { IStage } from "../types/IStage";
+import ProfilePage from "./ProfilePage";
+import Main from "./Main";
+import SearchContext from "../context/SearchContext";
 
 interface Props {
   data: IVideoask[];
 }
 
 function Dashboard({ data }: Props): JSX.Element {
-  const [applicants, setApplicants] = useState<IApplicant[]>([]);
-
   const [stage, setStage] = useState<IStage[]>([]);
   const [selectedStage, setSelectedStage] = useState<IStage>({
     _id: "",
     name: "Alla Ansökningar",
   });
-  const [checkEmail, setCheck] = useState<string | string[]>("");
-  const [pageSize] = useState(9);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  let [selectedPage, setSelectedPage] = useState(1);
   const [sortColumn, setSortColumn] = useState<ISort>({
     path: "skapad",
     order: "asc",
@@ -52,7 +40,6 @@ function Dashboard({ data }: Props): JSX.Element {
     if (localStorage.getItem("access_token") === null) {
       handleToken();
     }
-    setApplicants(getAppplicants());
     setStage(getStage());
   }, []);
 
@@ -74,37 +61,12 @@ function Dashboard({ data }: Props): JSX.Element {
       d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
   });
 
-  const onSubmit = () => {
-    Sendmail(checkEmail);
-    console.log(checkEmail);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const checked = e.target.checked;
-    if (checked) {
-      // @ts-ignore
-      setCheck([...checkEmail, value]);
-    } else {
-      setCheck(value);
-    }
-  };
-
-  const handlePagePlus = () => {
-    setSelectedPage(selectedPage + 1);
-  };
-
-  const handlePageMinus = () => {
-    setSelectedPage(selectedPage - 1);
-  };
-
   const handleSearch = (searchQuery: string) => {
     setSearchQuery(searchQuery);
   };
 
   const handleSelectStage = (stage: IStage) => {
     setSelectedStage(stage);
-    setSelectedPage(1);
   };
 
   let filteredData = selectedStage._id
@@ -119,22 +81,6 @@ function Dashboard({ data }: Props): JSX.Element {
     );
   }
 
-  console.log(filteredData);
-  // let filteredData;
-
-  // if (selectedStage._id)
-  //   filteredData = data.filter((d) => d.stage._id === selectedStage._id);
-  // if (selectedStage._id === "Antagna") {
-  //   filteredData = data.filter(
-  //     (d) => d.stage._id === "Techship Programme" || "Techship School"
-  //   );
-  // }
-  // if (searchQuery) {
-  //   filteredData = data.filter((d) =>
-  //     d.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
-  // }
-
   const handleSort = (sortColumn: ISort) => {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
@@ -145,46 +91,30 @@ function Dashboard({ data }: Props): JSX.Element {
     [sortColumn.order]
   );
 
-  const allData: IVideoask[] = Paginate(sortedData, pageSize, selectedPage);
-
   return (
     <Container>
-      <EmailContext.Provider value={{ checkEmail, onChange: handleChange }}>
-        <DataContext.Provider value={allData}>
-          <applicantsContext.Provider value={applicants}>
-            <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
-              <SidebarStyle>
-                <ReloadButton onClick={() => window.location.reload()}>
-                  <i className="fa-solid fa-download" />
-                  Hämta ansökningar
-                </ReloadButton>
-                <Sidebar
-                  stage={stage}
-                  selectedStage={selectedStage}
-                  onSelectStage={handleSelectStage}
-                />
-              </SidebarStyle>
-              <Main>
-                <Wrapper>
-                  <button type="submit" onClick={() => onSubmit()}>
-                    Sänd Mejl
-                  </button>
-                  <SearchBar value={searchQuery} onChange={handleSearch} />
-                </Wrapper>
-                <ApplicantsTable />
-                <Pagination
-                  itemCount={filteredData.length}
-                  pageSize={pageSize}
-                  selectedPage={selectedPage}
-                  onPagePlus={handlePagePlus}
-                  onPageMinus={handlePageMinus}
-                />
-                <Span>{filteredData.length}</Span>
-              </Main>
-            </SortContext.Provider>
-          </applicantsContext.Provider>
-        </DataContext.Provider>
-      </EmailContext.Provider>
+      <DataContext.Provider value={sortedData}>
+        <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
+          <SearchContext.Provider
+            value={{ searchQuery, onChange: handleSearch }}
+          >
+            <SidebarGrid>
+              <Sidebar
+                filteredDataCount={filteredData.length}
+                stage={stage}
+                selectedStage={selectedStage}
+                onSelectStage={handleSelectStage}
+              />
+            </SidebarGrid>
+            <MainGrid>
+              <Main />
+            </MainGrid>
+            <ProfilePageGrid>
+              <ProfilePage data={[...data]} />
+            </ProfilePageGrid>
+          </SearchContext.Provider>
+        </SortContext.Provider>
+      </DataContext.Provider>
     </Container>
   );
 }
@@ -193,36 +123,22 @@ export default Dashboard;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 10% 90%;
-  grid-template-areas:
-    "sidebar main"
-    "sidebar main ";
-  margin-bottom: 1000px;
+  grid-template-columns: 16% 24% 60%;
+  grid-template-areas: "sidebar main profilepage";
 `;
 
-const SidebarStyle = styled.div`
+const SidebarGrid = styled.div`
   grid-area: sidebar;
-  margin-top: 42%;
+  grid-template-columns: 1fr;
+  display: grid;
+  background-color: black;
+  border: solid red 4px;
+  margin: 0%;
 `;
-const Main = styled.div`
+const MainGrid = styled.div`
   grid-area: main;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  width: 80%;
-  margin-left: 10%;
-  margin-top: 5%;
-
-  @media (max-width: 600px) {
-    width: auto;
-    position: absolute;
-    right: 0;
-    top: 20%;
-  }
+  border: solid red 4px;
+  margin: 0%;
 
   button {
     width: auto;
@@ -245,34 +161,16 @@ const Wrapper = styled.div`
   }
 `;
 
-const ReloadButton = styled.button`
-  width: 142%;
-  padding: 12px;
-  background-color: #58eac1;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 16px;
-  margin-left: 35px;
-  margin-top: 45%;
-  cursor: pointer;
+const ProfilePageGrid = styled.div`
+  grid-area: profilepage;
+  background-color: brown;
+  border: solid red 4px;
+  margin: 0%;
 
-  :hover {
-    background-color: #b9e7db;
-  }
-
-  @media (width < 600px) {
+  @media (max-width: 600px) {
     width: auto;
-    margin-right: 30px;
+    position: absolute;
+    right: 0;
+    top: 20%;
   }
-
-  i {
-    margin-right: 5px;
-    font-size: 16px;
-  }
-`;
-
-const Span = styled.span`
-  color: #58eac1;
-  margin-left: 840px;
 `;
