@@ -1,7 +1,8 @@
+import path from "path";
 import { useContext } from "react";
 import styled from "styled-components";
 import SortContext from "../../context/SortContext";
-import { ISorts } from "../../types/ISort";
+import { ISort, ISorts } from "../../types/ISort";
 import { IColumns } from "../ApplicantsTable";
 
 interface Props {
@@ -9,40 +10,64 @@ interface Props {
 }
 
 function TableHeader({ columns }: Props) {
-  console.log("columns", columns);
   const { sortColumn, onSort } = useContext(SortContext) as ISorts;
 
-  const raiseSort = (path: string) => {
-    if (sortColumn.path === path) {
-      sortColumn.order = sortColumn.order === "desc" ? "asc" : "desc";
+  const raiseSort = (sortColumn: ISort) => {
+    if (sortColumn.path === sortColumn.path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     } else {
-      sortColumn.path = path;
+      sortColumn.path = sortColumn.path;
       sortColumn.order = "asc";
     }
     onSort(sortColumn);
   };
 
-  const renderSortIcon = (column: IColumns) => {
-    if (sortColumn.path !== column.path) return null;
+  // const renderSortIcon = () => {
+  //   if (sortColumn.order === "asc")
+  //     return <i className="fa-solid fa-sort-down" />;
 
-    if (sortColumn.order === "asc")
-      return <i className="fa-solid fa-sort-down" />;
-
-    return <i className="fa-solid fa-sort-up" />;
-  };
+  //   return <i className="fa-solid fa-sort-up" />;
+  // };
 
   return (
-    <thead>
-      <Tr>
+    <>
+      <select
+        onChange={(e) =>
+          raiseSort({
+            path: e.target.value,
+            order: sortColumn.order,
+          })
+        }
+      >
         {columns.map((column) => (
-          <Th key={column.path} onClick={() => raiseSort(column.path)}>
-            {column.label} {renderSortIcon(column)}
-          </Th>
+          <option key={column.path} value={column.path}>
+            {column.path}
+          </option>
         ))}
-      </Tr>
-    </thead>
+      </select>
+      <i
+        onClick={() =>
+          raiseSort({
+            path: sortColumn.path,
+            order: "desc",
+          })
+        }
+        className="fa-solid fa-sort-down"
+      />
+      <i
+        onClick={() =>
+          raiseSort({
+            path: sortColumn.path,
+            order: "asc",
+          })
+        }
+        className="fa-solid fa-sort-up"
+      />
+    </>
   );
 }
+
+export default TableHeader;
 
 const Th = styled.th`
   text-align: left;
@@ -58,5 +83,3 @@ const Tr = styled.tr`
   border-collapse: collapse;
   border: 1px solid;
 `;
-
-export default TableHeader;
