@@ -42,6 +42,9 @@ export default Main;
 
 const Container = styled.div`
   display: grid;
-  grid-template-areas: "searchbar" "sendemailsort" "table";
-  grid-template-rows: 10% 10% 10% 10% 60%;
+  /* grid-template-areas:
+    "searchbar searchbar"
+    "sendemail sort"
+    "table table"; */
+  grid-template-rows: 10% 10% 80%;
 `;

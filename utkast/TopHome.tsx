@@ -35,7 +35,7 @@ const Warpper = styled.div`
   grid-template-columns: 50% 50%;
   position: relative;
 
-  @media (max-width: 667px) {
+  /* @media (max-width: 667px) {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -44,7 +44,7 @@ const Warpper = styled.div`
   @media (max-width: 1024px) {
     display: flex;
     flex-direction: column;
-  }
+  } */
 
   video {
     display: flex;
@@ -95,12 +95,12 @@ const SvegTeamStyled = styled.div`
   height: 500px;
   margin-left: 100px;
 
-  @media (max-width: 667px) {
+  /* @media (max-width: 667px) {
     flex-direction: row;
     margin-top: 95%;
     width: 300px;
   }
   @media (max-width: 1603px) {
     display: none;
-  }
+  } */
 `;

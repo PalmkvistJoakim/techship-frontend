@@ -58,12 +58,6 @@ function ApplicantsTable() {
 
 export default ApplicantsTable;
 
-const Container = styled.div`
-  display: grid;
-  grid-template-areas: "getapplications" "batches" "searchbar" "sendemailsort" "table";
-  grid-template-rows: 10% 10% 10% 10% 60%;
-`;
-
 const LinkStyle = styled(Link)`
   font-size: 16px;
   text-decoration: none;

@@ -2,8 +2,8 @@ function Techship() {
   return (
     <svg
       fill="#9eeac0"
-      height="160"
-      width="240"
+      height="152"
+      width="224"
       id="Layer_1"
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"

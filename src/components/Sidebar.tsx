@@ -35,29 +35,31 @@ function Sidebar({
             {s.name}
           </LiContainer>
         ))}
-        <Span>{filteredDataCount}</Span>
+        {/* Lägg till ochs tyla snyggt sen */}
+        {/* <Span>{filteredDataCount}</Span> */}
       </Filter>
-      <Navigation>Login</Navigation>
+      <Navigation>Logga ut</Navigation>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 20% 10% 30% 10%;
+  grid-template-rows: 9rem 7rem 14rem 2rem;
   grid-template-areas:
     "picture"
     "get"
     "filter"
     "navigation";
   align-content: space-between;
-  row-gap: 10%;
+  row-gap: 5rem;
   justify-content: center;
   align-content: center;
 `;
 
 const Picture = styled.div`
   grid-area: picture;
+  margin-top: 0.8rem;
   background-color: black;
 `;
 
@@ -65,23 +67,27 @@ const Get = styled.div`
   grid-area: get;
   display: grid;
   align-content: space-between;
+  width: 18rem;
+  justify-self: center;
 `;
-
 const Batch = styled.select`
-  padding: 12px;
+  padding: 1rem;
+  width: 18rem;
   background-color: #58eac1;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 1rem;
   cursor: pointer;
   text-align: center;
+  margin-top: 1rem;
 `;
 
 const ReloadButton = styled.button`
-  padding: 12px;
+  padding: 1rem;
   background-color: #58eac1;
   font-weight: bold;
   border: none;
+  margin-top: 1rem;
   border-radius: 10px;
   cursor: pointer;
 
@@ -101,18 +107,26 @@ const ReloadButton = styled.button`
 `;
 
 const Filter = styled.div`
+  margin-top: 0rem;
   grid-area: filter;
-  border: 1px solid #58eac1;
-  border-radius: 2rem;
+  display: row;
+  max-width: 15rem;
+  min-width: 13rem;
+  justify-self: center;
 `;
 
 const LiContainer = styled.li`
   text-align: center;
-  padding: 4px;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  border-radius: 20px;
+  padding: 0.2rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  border-radius: 7rem;
   list-style: none;
+  margin: -0.5rem;
+  font-size: 1.1rem;
+  font-family: "Courier New", Courier, monospace;
+  padding: 0.8rem 0rem 0.8rem 0rem;
+
   cursor: pointer;
 
   :hover {

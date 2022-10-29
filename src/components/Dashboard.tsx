@@ -123,7 +123,7 @@ export default Dashboard;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 16% 24% 60%;
+  grid-template-columns: min(21rem) min(28rem) min(56rem);
   grid-template-areas: "sidebar main profilepage";
 `;
 

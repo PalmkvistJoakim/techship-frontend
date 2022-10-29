@@ -59,12 +59,13 @@ function TableBody(): JSX.Element {
 export default TableBody;
 
 const Container = styled.div`
+  margin-top: 1.5rem;
   display: grid;
   grid-template-rows: 1fr;
   border-collapse: collapse;
-  width: 128%;
+  width: 27rem;
   overflow-y: scroll;
-  height: 800px;
+  max-height: 39rem;
 `;
 
 const Tr = styled.tr`
@@ -72,19 +73,23 @@ const Tr = styled.tr`
   grid-template-areas:
     "mail name comment"
     "mail created stage";
-  grid-template-columns: 6% 60% 30%;
+  grid-template-columns: 2rem 12.5rem 10rem;
   grid-template-rows: 1fr 1fr;
   justify-items: stretch;
+  margin-top: 80px;
   margin: 2%;
+  padding-top: 0.5rem;
   :hover {
     background-color: grey;
   }
+  cursor: pointer;
 `;
 
 const TdEmail = styled.td`
   grid-area: mail;
   display: grid;
   grid-template-columns: 100%;
+  align-items: center;
 `;
 
 const TdName = styled.td`
@@ -92,6 +97,7 @@ const TdName = styled.td`
   font-weight: bold;
   display: row;
   grid-template-rows: 100%;
+  font-size: 1.18rem;
 `;
 
 const TdCreated = styled.td`
@@ -108,7 +114,7 @@ const TdStage = styled.td`
   grid-template-columns: 100%;
   grid-template-rows: 100%;
   margin-right: 0%;
-  font-size: small;
+  font-size: 12px;
   justify-self: end;
   font-weight: bold;
 `;
