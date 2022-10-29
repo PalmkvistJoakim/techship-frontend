@@ -1,17 +1,16 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import SearchContext from "../context/SearchContext";
+import { ISearchContext } from "../types/ISearch";
 
-interface Props {
-  value: string;
-  onChange: (searchQuery: string) => void;
-}
-
-function SearchBar({ value, onChange }: Props) {
+function SearchBar() {
+  const { searchQuery, onChange } = useContext(SearchContext) as ISearchContext;
   return (
     <div className="search">
       <Input
         type="text"
         placeholder="Sök på namn..."
-        value={value}
+        value={searchQuery}
         onChange={(e) => onChange(e.target.value)}
       />
     </div>

@@ -33,16 +33,18 @@ function App() {
   const token = localStorage.getItem("access_token");
   return (
     <>
-      <NavMain>
+      {/* <NavMain>
         <Navbar />
-      </NavMain>
+      </NavMain> */}
+
       <Routes>
-        <Route
+        {/* <Route
           path="/dashboard/:id"
           element={<ProfilePage data={[...data]} />}
-        />
+        /> */}
         <Route path="/application" element={<ApplicationForm />} />
         <Route path="/dashboard" element={<Dashboard data={[...data]} />} />
+        <Route path="/dashboard/:id" element={<Dashboard data={[...data]} />} />
         <Route path="/logout" element={<LogoutForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route

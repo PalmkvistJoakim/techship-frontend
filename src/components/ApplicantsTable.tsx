@@ -2,10 +2,10 @@ import DataContext from "../context/DataContext";
 import EmailContext from "../context/EmailContext";
 import { IEmail } from "../types/IEmail";
 import { IVideoask } from "../types/IVideoAsk";
-import Table from "./common/Table";
 import { Link } from "react-router-dom";
 import { useContext, FormEvent } from "react";
 import styled from "styled-components";
+import TableBody from "./common/TableBody";
 
 export interface IColumns {
   label: string | JSX.Element;
@@ -53,10 +53,16 @@ function ApplicantsTable() {
     { label: "Status", path: "status" },
   ];
 
-  return <Table columns={columns} />;
+  return <TableBody />;
 }
 
 export default ApplicantsTable;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-areas: "getapplications" "batches" "searchbar" "sendemailsort" "table";
+  grid-template-rows: 10% 10% 10% 10% 60%;
+`;
 
 const LinkStyle = styled(Link)`
   font-size: 16px;
