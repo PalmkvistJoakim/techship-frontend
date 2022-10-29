@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useContext, FormEvent } from "react";
 import styled from "styled-components";
 import TableBody from "./common/TableBody";
+import TableHeader from "./common/TableHeader";
 
 export interface IColumns {
   label: string | JSX.Element;
@@ -53,7 +54,11 @@ function ApplicantsTable() {
     { label: "Status", path: "status" },
   ];
 
-  return <TableBody />;
+  return (
+    <>
+      <TableHeader columns={columns} /> <TableBody />
+    </>
+  );
 }
 
 export default ApplicantsTable;
