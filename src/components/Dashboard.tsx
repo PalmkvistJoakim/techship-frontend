@@ -154,29 +154,11 @@ const MainGrid = styled.div`
   border: solid red 4px;
   margin: 0%;
   background-color: black;
-
-  button {
-    width: auto;
-    padding: 8px;
-    background-color: #58eac1;
-    font-weight: bold;
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-
-    :hover {
-      background-color: #b9e7db;
-    }
-
-    @media (width < 600px) {
-      width: auto;
-      margin-right: 30px;
-    }
-  }
 `;
 
 const ProfilePageGrid = styled.div`
+  display: grid;
+  grid-template-rows: 41rem;
   grid-area: profilepage;
   background-color: brown;
   border: solid red 4px;

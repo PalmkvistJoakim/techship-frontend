@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { IColumns } from "../ApplicantsTable";
 import EmailContext from "../../context/EmailContext";
 import { IEmail } from "../../types/IEmail";
-
+import { Link } from "react-router-dom";
 import _ from "lodash";
 
 function TableBody(): JSX.Element {
@@ -40,7 +40,9 @@ function TableBody(): JSX.Element {
                   </form>
                 }
               </TdEmail>
-              <TdName>{d.name}</TdName>
+              <TdName>
+                <Link to={`/dashboard/${d.contact_id}`}>{d.name}</Link>
+              </TdName>
               <TdCreated>
                 {d.created_at} ({d.status})
               </TdCreated>
@@ -65,7 +67,7 @@ const Container = styled.div`
   border-collapse: collapse;
   width: 27rem;
   overflow-y: scroll;
-  max-height: 39rem;
+  max-height: 30.5rem;
 `;
 
 const Tr = styled.tr`
@@ -100,6 +102,11 @@ const TdName = styled.td`
   display: row;
   grid-template-rows: 100%;
   font-size: 1.5rem;
+
+  &Link {
+    text-decoration: none;
+    color: #58eac1;
+  }
 `;
 
 const TdCreated = styled.td`

@@ -26,15 +26,15 @@ function Main() {
   };
 
   return (
-    <EmailContext.Provider value={{ onChange: handleChange }}>
-      <div>
+    <Container>
+      <EmailContext.Provider value={{ onChange: handleChange }}>
         <SearchBar />
-        <button type="submit" onClick={() => onSubmit()}>
+        <Button type="submit" onClick={() => onSubmit()}>
           Sänd Mejl
-        </button>
+        </Button>
         <ApplicantsTable />
-      </div>
-    </EmailContext.Provider>
+      </EmailContext.Provider>
+    </Container>
   );
 }
 
@@ -42,9 +42,20 @@ export default Main;
 
 const Container = styled.div`
   display: grid;
-  /* grid-template-areas:
-    "searchbar searchbar"
-    "sendemail sort"
-    "table table"; */
-  grid-template-rows: 10% 10% 80%;
+  grid-template-rows: 2rem 4rem 5rem;
+  grid-template-areas:
+    "searchbar"
+    "mail sort"
+    "list";
+`;
+
+const Button = styled.button`
+  background-color: #58eac1;
+  width: 5rem;
+  padding: 4px;
+
+  @media (width < 600px) {
+    width: auto;
+    margin-right: 30px;
+  }
 `;
