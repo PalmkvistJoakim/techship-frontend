@@ -5,6 +5,12 @@
   margin: 0;
 }
 
+/* @media (max-width: 5120px) {
+  * {
+    font-size: 12px;
+  }
+} */
+
 :root {
   --bodyColor: black;
   --color: white;
