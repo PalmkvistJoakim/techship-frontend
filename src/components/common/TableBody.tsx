@@ -2,7 +2,6 @@ import { useContext, FormEvent } from "react";
 import DataContext from "../../context/DataContext";
 import { IVideoask } from "../../types/IVideoAsk";
 import styled from "styled-components";
-import { IColumns } from "../ApplicantsTable";
 import EmailContext from "../../context/EmailContext";
 import { IEmail } from "../../types/IEmail";
 import { Link } from "react-router-dom";
@@ -11,10 +10,10 @@ import _ from "lodash";
 function TableBody(): JSX.Element {
   const data = useContext(DataContext) as IVideoask[];
 
-  const renderCell = (data: IVideoask, column: IColumns) => {
-    if (column.content) return column.content(data);
-    return _.get(data, column.path);
-  };
+  // const renderCell = (data: IVideoask) => {
+  //   if (column.content) return column.content(data);
+  //   return _.get(data, column.path);
+  // };
 
   const { onChange } = useContext(EmailContext) as IEmail;
 

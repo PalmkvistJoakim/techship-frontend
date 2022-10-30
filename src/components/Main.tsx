@@ -1,10 +1,11 @@
-import ApplicantsTable from "./ApplicantsTable";
 import SearchBar from "./SearchBar";
 import styled from "styled-components";
 import { useState } from "react";
 import { ChangeEvent } from "react";
 import { Sendmail } from "../services/emailService";
 import EmailContext from "../context/EmailContext";
+import TableHeader from "./common/TableHeader";
+import TableBody from "./common/TableBody";
 
 function Main() {
   const [checkEmail, setCheck] = useState<string | string[]>("");
@@ -32,7 +33,8 @@ function Main() {
         <Button type="submit" onClick={() => onSubmit()}>
           Sänd Mejl
         </Button>
-        <ApplicantsTable />
+        <TableHeader />
+        <TableBody />
       </EmailContext.Provider>
     </Container>
   );

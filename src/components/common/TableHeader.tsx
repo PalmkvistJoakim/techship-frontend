@@ -1,9 +1,7 @@
-import path from "path";
 import { useContext } from "react";
 import styled from "styled-components";
 import SortContext from "../../context/SortContext";
 import { ISort, ISorts } from "../../types/ISort";
-import { IColumns } from "../ApplicantsTable";
 
 const columns: string[] = [
   "email",

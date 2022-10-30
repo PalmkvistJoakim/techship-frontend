@@ -146,12 +146,12 @@ const SidebarGrid = styled.div`
   grid-template-columns: 1fr;
   display: grid;
   background-color: black;
-  border: solid red 4px;
+  /* border: solid red 4px; */
   margin: 0%;
 `;
 const MainGrid = styled.div`
   grid-area: main;
-  border: solid red 4px;
+  /* border: solid red 4px; */
   margin: 0%;
   background-color: black;
 `;
@@ -160,8 +160,8 @@ const ProfilePageGrid = styled.div`
   display: grid;
   grid-template-rows: 41rem;
   grid-area: profilepage;
-  background-color: brown;
-  border: solid red 4px;
+  background-color: black;
+  /* border: solid red 4px; */
   margin: 0%;
 
   @media (max-width: 600px) {

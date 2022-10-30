@@ -25,88 +25,104 @@ function ProfilePage({ data }: Props) {
 
   console.log(UserInfo);
 
-  return <Container></Container>;
+  return (
+    <>
+      {data.map((d) => {
+        if (params.id === d.contact_id)
+          return (
+            <Container>
+              <Info>
+                <Personal>
+                  Länk <br />
+                  {d.name.toUpperCase()}, Ålder
+                  <br />
+                  {d.created_at}
+                  <br />
+                  {d.email}
+                  <br />
+                  {d.phone_number}
+                </Personal>
+                <Stage>{d.stage.name}</Stage>
+                <Adress>Adress</Adress>
+                <Comment>Kommentar</Comment>
+              </Info>
+              {UserInfo.map((User) => (
+                <>
+                  <Media>
+                    {User.media_url ? (
+                      <ReactPlayer
+                        url={User.media_url}
+                        controls={true}
+                        width="200px"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </Media>
+                  <Description>
+                    {User.input_text ? <>{User.input_text}</> : null}
+                  </Description>
+                </>
+              ))}
+            </Container>
+          );
+      })}
+    </>
+  );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: grid;
+  grid-template-rows: 22rem 22rem;
+  grid-template-columns: 28.5rem 28.5rem;
+  grid-template-areas:
+    "info media"
+    "description description";
+`;
 
-const PageHeader = styled.div``;
+const Info = styled.div`
+  grid-area: info;
+  display: grid;
+  background-color: black;
+  grid-template-columns: 14.5rem 14.5rem;
+  grid-template-rows: 8rem 3rem 11rem;
+  grid-template-areas:
+    "personal stage"
+    "adress stage"
+    "comment comment";
+`;
+
+const Personal = styled.div`
+  grid-area: personal;
+  background-color: black;
+`;
+const Stage = styled.div`
+  grid-area: stage;
+  background-color: black;
+`;
+const Adress = styled.div`
+  grid-area: adress;
+  background-color: black;
+`;
+const Comment = styled.div`
+  grid-area: comment;
+  background-color: black;
+`;
 
 //Kolla med Aladin varför det kommer en ny flex varje gång man lägger till något nytt
 
-const MainPage = styled.div``;
+const Media = styled.div`
+  grid-area: media;
+  background-color: black;
+`;
 
-const Description = styled.div``;
+const Description = styled.div`
+  grid-area: description;
+  background-color: black;
+`;
 
 const Main = styled.div``;
 
 const ContactDetails = styled.div``;
 
 export default ProfilePage;
-
-// return (
-//   <>
-//     {data.map((d) => {
-//       if (params.id === d.contact_id)
-//         return (
-//           <Container>
-//             <PageHeader>
-//               <div>
-//                 <h1> {d.name.toUpperCase()} </h1>
-//               </div>
-//               <p>notis</p>
-//               <p>{d.status}</p>
-//             </PageHeader>
-//             {UserInfo.map((User) => (
-//               <>
-//                 <MainPage>
-//                   <Description>
-//                     <h3>Svar</h3>
-//                     <ol>
-//                       {User.input_text ? (
-//                         <>
-//                           <ol>{User.input_text}</ol>
-//                         </>
-//                       ) : null}
-//                     </ol>
-//                   </Description>
-//                   {User.thumbnail ? (
-//                     <>
-//                       <img src={User.thumbnail} alt="profil" />
-//                     </>
-//                   ) : (
-//                     //den går inte att sättas condistional för default profiler :/ måste fixas.
-//                     <img
-//                       src={"../img/profilbild.jpg"}
-//                       style={{ borderRadius: "50%" }}
-//                       alt="profil"
-//                     />
-//                   )}
-//                 </MainPage>
-//                 <Main>
-//                   <ContactDetails>
-//                     <h4>E-post:</h4>
-//                     <p>{d.email}</p>
-//                     <h4>Telefonnummer:</h4>
-//                     <p>{d.phone_number}</p>
-
-//                     {User.media_url ? (
-//                       <>
-//                         <ReactPlayer
-//                           url={User.media_url}
-//                           controls={true}
-//                           width="200px"
-//                         />
-//                       </>
-//                     ) : (
-//                       <></>
-//                     )}
-//                   </ContactDetails>
-//                 </Main>
-//               </>
-//             ))}
-//           </Container>
-//         );
-//     })}
-//   </>
-// )
