@@ -60,7 +60,6 @@ function TableHeader() {
 }
 
 export default TableHeader;
-<<<<<<< HEAD
 
 // const renderAndRaiseSortIcon = () => {
 //   if (sortColumn.path === "Sortera...") return null;
@@ -99,5 +98,3 @@ const I = styled.i`
   font-size: medium;
   margin-top: 1rem;
 `;
-=======
->>>>>>> 847c623b713dc8d17945c83dd37fdd2b5db325e2
