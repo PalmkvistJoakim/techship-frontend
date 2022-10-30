@@ -6,5 +6,4 @@ export interface ISort {
 export interface ISorts {
   sortColumn: ISort;
   onSort: (sortColumn: ISort) => void;
-  onSortOrder: (order: boolean | "asc" | "desc") => void;
 }
