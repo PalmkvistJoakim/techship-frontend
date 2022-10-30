@@ -56,7 +56,7 @@ function ApplicantsTable() {
 
   return (
     <>
-      <TableHeader columns={columns} /> <TableBody />
+      <TableHeader /> <TableBody />
     </>
   );
 }

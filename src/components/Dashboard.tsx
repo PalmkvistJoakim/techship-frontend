@@ -25,7 +25,7 @@ function Dashboard({ data }: Props): JSX.Element {
   });
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortColumn, setSortColumn] = useState<ISort>({
-    path: "skapad",
+    path: "",
     order: "asc",
   });
 
@@ -85,6 +85,14 @@ function Dashboard({ data }: Props): JSX.Element {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
 
+  const handleSortOrder = (order: boolean | "desc" | "asc") => {
+    console.log("kommer in", order);
+    setSortColumn({
+      path: sortColumn.path,
+      order: order,
+    });
+  };
+
   const sortedData = _.orderBy(
     filteredData,
     [sortColumn.path],
@@ -94,7 +102,13 @@ function Dashboard({ data }: Props): JSX.Element {
   return (
     <Container>
       <DataContext.Provider value={sortedData}>
-        <SortContext.Provider value={{ sortColumn, onSort: handleSort }}>
+        <SortContext.Provider
+          value={{
+            sortColumn,
+            onSort: handleSort,
+            onSortOrder: handleSortOrder,
+          }}
+        >
           <SearchContext.Provider
             value={{ searchQuery, onChange: handleSearch }}
           >

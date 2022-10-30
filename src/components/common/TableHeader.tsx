@@ -5,14 +5,19 @@ import SortContext from "../../context/SortContext";
 import { ISort, ISorts } from "../../types/ISort";
 import { IColumns } from "../ApplicantsTable";
 
-interface Props {
-  columns: IColumns[];
-}
+const columns: string[] = [
+  "email",
+  "comment",
+  "name",
+  "stage.name",
+  "created_at",
+  "status",
+];
 
-function TableHeader({ columns }: Props) {
-  const { sortColumn, onSort } = useContext(SortContext) as ISorts;
+function TableHeader() {
+  const { sortColumn, onSort, onSortOrder } = useContext(SortContext) as ISorts;
 
-  const raiseSort = (sortColumn: ISort) => {
+  const raiseSort = (path: string) => {
     if (sortColumn.path === sortColumn.path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     } else {
@@ -23,46 +28,37 @@ function TableHeader({ columns }: Props) {
   };
 
   // const renderSortIcon = () => {
-  //   if (sortColumn.order === "asc")
-  //     return <i className="fa-solid fa-sort-down" />;
+  //   class = sortColumn.order === "asc" ? (
+  //     <i onClick={() => onSortOrder("desc")} className="fa-solid fa-sort-up" />
+  //   ) : (
+  //     <i onClick={() => onSortOrder("asc")} className="fa-solid fa-sort-down" />
+  //   );}
 
-  //   return <i className="fa-solid fa-sort-up" />;
-  // };
+  // if (sortColumn.order === "desc")
+  //   return (
+  //     <i
+  //       onClick={() => onSortOrder("asc")}
+  //       className="fa-solid fa-sort-down"
+  //     />
+  //   );
+  // if (sortColumn.order === "asc")
+  //   return (
+  //     <i
+  //       onClick={() => onSortOrder("desc")}
+  //       className="fa-solid fa-sort-up"
+  //     />
+  //   );
 
   return (
     <>
-      <select
-        onChange={(e) =>
-          raiseSort({
-            path: e.target.value,
-            order: sortColumn.order,
-          })
-        }
-      >
+      <select onChange={(e) => raiseSort(e.target.value)}>
         {columns.map((column) => (
-          <option key={column.path} value={column.path}>
-            {column.path}
+          <option key={column} value={column}>
+            {column}
           </option>
         ))}
       </select>
-      <i
-        onClick={() =>
-          raiseSort({
-            path: sortColumn.path,
-            order: "desc",
-          })
-        }
-        className="fa-solid fa-sort-down"
-      />
-      <i
-        onClick={() =>
-          raiseSort({
-            path: sortColumn.path,
-            order: "asc",
-          })
-        }
-        className="fa-solid fa-sort-up"
-      />
+      {/* {renderSortIcon()} */}
     </>
   );
 }
