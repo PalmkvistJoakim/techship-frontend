@@ -87,7 +87,6 @@ const Form = styled.form`
     padding: 10px;
     margin-top: 30px;
     font-weight: bold;
-    border-radius: 20px;
     background-color: #58eac1;
     border: none;
 

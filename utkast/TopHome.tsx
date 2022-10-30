@@ -81,7 +81,6 @@ const Continer = styled.div`
     color: black;
     font-weight: bold;
     border: none;
-    border-radius: 1rem;
     padding: 10px;
     margin-top: 20px;
     left: 30%;

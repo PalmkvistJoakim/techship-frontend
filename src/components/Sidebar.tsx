@@ -39,19 +39,10 @@ function Sidebar({
             {s.name}
           </LiContainer>
         ))}
-        {/* Lägg till ochs tyla snyggt sen */}
-        {/* <Span>{filteredDataCount}</Span> */}
       </Filter>
       <Navigation>
-        {token ? (
-          <>
-            <div onClick={() => navigate("/logout")}>Logout</div>
-          </>
-        ) : (
-          <>
-            <div onClick={() => navigate("/login")}>Login</div>
-          </>
-        )}
+        <Number>{filteredDataCount}</Number>
+        <div onClick={() => navigate("/logout")}>Logout</div>
       </Navigation>
     </Container>
   );
@@ -59,7 +50,7 @@ function Sidebar({
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 9rem 7rem 14rem 2rem;
+  grid-template-rows: 10rem 6rem 10rem 3rem;
   grid-template-areas:
     "picture"
     "get"
@@ -90,7 +81,6 @@ const Batch = styled.select`
   background-color: #58eac1;
   font-weight: bold;
   border: none;
-  border-radius: 1rem;
   cursor: pointer;
   text-align: center;
   margin-top: 1rem;
@@ -102,7 +92,6 @@ const ReloadButton = styled.button`
   font-weight: bold;
   border: none;
   margin-top: 1rem;
-  border-radius: 10px;
   cursor: pointer;
 
   :hover {
@@ -127,6 +116,7 @@ const Filter = styled.div`
   max-width: 15rem;
   min-width: 13rem;
   justify-self: center;
+  text-align: end;
 `;
 
 const LiContainer = styled.li`
@@ -134,7 +124,6 @@ const LiContainer = styled.li`
   padding: 0.2rem;
   margin-bottom: 1rem;
   margin-top: 1rem;
-  border-radius: 7rem;
   list-style: none;
   margin: -0.5rem;
   font-size: 1.1rem;
@@ -148,24 +137,26 @@ const LiContainer = styled.li`
   }
 `;
 
+const Number = styled.div`
+  color: #58eac1;
+  text-align: end;
+`;
+
 const Navigation = styled.div`
   grid-area: navigation;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  list-style: none;
-  flex-wrap: wrap;
+  text-align: center;
+  margin-bottom: 89rem;
   div {
     margin: 5px;
-    align-items: center;
     font-weight: bold;
     margin-right: 20px;
 
     cursor: pointer;
+
+    :hover {
+      background-color: #58eac1;
+    }
   }
 `;
 
-const Span = styled.span`
-  color: #58eac1;
-`;
 export default Sidebar;

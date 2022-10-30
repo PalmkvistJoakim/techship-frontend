@@ -101,7 +101,6 @@ const PageHeader = styled.div`
   img {
     position: absolute;
     background-color: blue;
-    border-radius: 50%;
     height: 90px;
     top: 20%;
     margin-right: 10px;
@@ -121,7 +120,6 @@ const PageHeader = styled.div`
     margin-top: 2%;
     margin-bottom: 2%;
     border: 2px solid #40daae;
-    border-radius: 10px;
     padding: 8px;
     justify-content: right;
   }
