@@ -10,11 +10,6 @@ import _ from "lodash";
 function TableBody(): JSX.Element {
   const data = useContext(DataContext) as IVideoask[];
 
-  // const renderCell = (data: IVideoask) => {
-  //   if (column.content) return column.content(data);
-  //   return _.get(data, column.path);
-  // };
-
   const { onChange } = useContext(EmailContext) as IEmail;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -60,13 +55,13 @@ function TableBody(): JSX.Element {
 export default TableBody;
 
 const Container = styled.div`
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   display: grid;
   grid-template-rows: 1fr;
   border-collapse: collapse;
-  width: 27rem;
+  width: 27.5rem;
   overflow-y: scroll;
-  max-height: 30.5rem;
+  max-height: 36.5rem;
 `;
 
 const Tr = styled.tr`
@@ -102,7 +97,7 @@ const TdName = styled.td`
   grid-template-rows: 100%;
   font-size: 1.5rem;
 
-  &Link {
+  Link {
     text-decoration: none;
     color: #58eac1;
   }

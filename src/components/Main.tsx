@@ -44,7 +44,7 @@ export default Main;
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 2rem 4rem 5rem;
+  grid-template-rows: 1rem 2rem 2rem;
   grid-template-areas:
     "searchbar"
     "mail sort"
@@ -54,7 +54,10 @@ const Container = styled.div`
 const Button = styled.button`
   background-color: #58eac1;
   width: 5rem;
-  padding: 4px;
+  padding: 2px;
+  margin-top: 10px;
+  justify-self: start;
+  align-self: baseline;
 
   @media (width < 600px) {
     width: auto;

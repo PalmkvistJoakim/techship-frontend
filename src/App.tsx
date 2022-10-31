@@ -1,12 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import LoginForm from "./components/LoginForm";
-import ProfilePage from "./components/ProfilePage";
-import styled from "styled-components";
 import LogoutForm from "./components/LogoutForm";
 import { useState, useEffect } from "react";
 import { IVideoask } from "./types/IVideoAsk";
 import { http } from "./services/httpService";
+
 function App() {
   let [data, setData] = useState<IVideoask[]>([]);
 
@@ -30,13 +29,10 @@ function App() {
     GetDataFromVideoask();
   }, []);
   const token = localStorage.getItem("access_token");
+
   return (
     <>
       <Routes>
-        {/* <Route
-          path="/dashboard/:id"
-          element={<ProfilePage data={[...data]} />}
-        /> */}
         <Route path="/dashboard" element={<Dashboard data={[...data]} />} />
         <Route path="/dashboard/:id" element={<Dashboard data={[...data]} />} />
         <Route path="/logout" element={<LogoutForm />} />
@@ -51,8 +47,3 @@ function App() {
 }
 
 export default App;
-
-const NavMain = styled.div`
-  display: flex;
-  margin: 15px;
-`;

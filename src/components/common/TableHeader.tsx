@@ -43,56 +43,35 @@ function TableHeader() {
   };
 
   return (
-    <span>
-      <select onChange={(e) => raiseSort(e.target.value)}>
+    <Span>
+      <Select onChange={(e) => raiseSort(e.target.value)}>
         <option>created_at</option>
         {columns.map((column) => (
           <option key={column} value={column}>
             {column}
           </option>
         ))}
-      </select>
+      </Select>
       <span> {renderSortIcon()} </span>
-    </span>
+    </Span>
   );
 }
 
 export default TableHeader;
 
-// const renderAndRaiseSortIcon = () => {
-//   if (sortColumn.path === "Sortera...") return null;
-//   if (sortColumn.order === "desc")
-//     return (
-//       <i
-//         onClick={() => onSortOrder("asc")}
-//         className="fa-solid fa-sort-down"
-//       />
-//     );
-//   if (sortColumn.order === "asc")
-//     return (
-//       <i
-//         onClick={() => onSortOrder("desc")}
-//         className="fa-solid fa-sort-up"
-//       />
-//     );
-// };
-
-const Th = styled.th`
-  text-align: left;
-  margin: 2px;
-  padding: 4px;
-  margin-left: 6px;
-  cursor: pointer;
-`;
-
-const Tr = styled.tr`
-  display: grid;
-  grid-template-columns: 36px 36px 244px 248px 184px 178px;
-  border-collapse: collapse;
-  border: 1px solid;
-`;
-
 const I = styled.i`
   font-size: medium;
-  margin-top: 1rem;
+  margin-left: 3px;
+`;
+
+const Select = styled.select`
+  background-color: #58eac1;
+`;
+
+const Span = styled.span`
+  display: flex;
+  justify-content: end;
+  margin-right: 15px;
+  padding: 18px;
+  align-self: center;
 `;
