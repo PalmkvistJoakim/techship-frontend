@@ -37,7 +37,7 @@ function TableBody(): JSX.Element {
               <TdName>
                 <Link
                   to={`/dashboard/${d.contact_id}`}
-                  style={{ color: "#58eac1" }}
+                  style={{ color: "#58eac1", textDecoration: "none" }}
                 >
                   {d.name}
                 </Link>
