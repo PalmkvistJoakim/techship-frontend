@@ -5,6 +5,7 @@ import { GetUserIdVideoask } from "../services/videoaskService";
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import VideoAsk from "../sveg/VideoAsk";
+import Techshiplogo from "../sveg/Techshiplogo";
 
 interface Props {
   data: IVideoask[];
@@ -25,6 +26,8 @@ function ProfilePage({ data }: Props) {
   }, [params.id]);
 
   console.log(UserInfo);
+
+  if (!params.id) return <Techshiplogo />;
 
   return (
     <>
