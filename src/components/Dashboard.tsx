@@ -85,10 +85,6 @@ function Dashboard({ data }: Props): JSX.Element {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
 
-  console.log("ORDER", sortColumn.order);
-
-  console.log("PATH", sortColumn.path);
-
   const sortedData = _.orderBy(
     filteredData,
     [sortColumn.path],

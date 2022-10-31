@@ -18,7 +18,6 @@ function Sidebar({
 }: Props) {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("access_token");
   return (
     <Container>
       <Picture>
@@ -152,10 +151,6 @@ const Navigation = styled.div`
     margin-right: 20px;
 
     cursor: pointer;
-
-    :hover {
-      background-color: #58eac1;
-    }
   }
 `;
 
