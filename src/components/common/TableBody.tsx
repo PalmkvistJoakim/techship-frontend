@@ -35,7 +35,12 @@ function TableBody(): JSX.Element {
                 }
               </TdEmail>
               <TdName>
-                <Link to={`/dashboard/${d.contact_id}`}>{d.name}</Link>
+                <Link
+                  to={`/dashboard/${d.contact_id}`}
+                  style={{ color: "#58eac1" }}
+                >
+                  {d.name}
+                </Link>
               </TdName>
               <TdCreated>
                 {d.created_at} ({d.status})
@@ -96,11 +101,6 @@ const TdName = styled.td`
   display: row;
   grid-template-rows: 100%;
   font-size: 1.5rem;
-
-  Link {
-    text-decoration: none;
-    color: #58eac1;
-  }
 `;
 
 const TdCreated = styled.td`
