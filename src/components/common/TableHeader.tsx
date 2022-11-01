@@ -27,7 +27,7 @@ function TableHeader() {
   };
 
   const renderSortIcon = () => {
-    if (sortColumn.order === "asc")
+    if (sortColumn.order === "desc")
       return (
         <I
           onClick={() => raiseSort(sortColumn.path)}

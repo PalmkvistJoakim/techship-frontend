@@ -16,7 +16,7 @@ function Main() {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value + ";";
     const checked = e.target.checked;
     if (checked) {
       // @ts-ignore
@@ -30,9 +30,9 @@ function Main() {
     <Container>
       <EmailContext.Provider value={{ onChange: handleChange }}>
         <SearchBar />
-        <Button type="submit" onClick={() => onSubmit()}>
-          Sänd Mejl
-        </Button>
+        <SendMail href="mailto:nazih@intensivecode.se;aliya@gmail.com?subject=Kontaktformulär - En fråga till er!">
+          Sänd mejl
+        </SendMail>
         <TableHeader />
         <TableBody />
       </EmailContext.Provider>
@@ -51,14 +51,21 @@ const Container = styled.div`
     "list";
 `;
 
-const Button = styled.button`
+const SendMail = styled.a`
+  display: grid;
+  grid-template-columns: 1fr;
   background-color: #58eac1;
-  width: 5rem;
+  border: solid black 4px;
+  border-radius: 1rem;
+  width: 6rem;
+  height: 2rem;
   padding: 2px;
-  margin-top: 10px;
-  justify-self: start;
-  align-self: baseline;
-
+  margin-top: 1.8rem;
+  font-size: larger;
+  font-weight: bolder;
+  color: black;
+  text-decoration: none;
+  justify-content: center;
   @media (width < 600px) {
     width: auto;
     margin-right: 30px;
