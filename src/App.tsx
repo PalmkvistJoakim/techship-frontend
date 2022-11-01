@@ -5,9 +5,16 @@ import LogoutForm from "./components/LogoutForm";
 import { useState, useEffect } from "react";
 import { IVideoask } from "./types/IVideoAsk";
 import { http } from "./services/httpService";
+import { getAccessToken } from "./services/videoaskService";
 
 function App() {
   let [data, setData] = useState<IVideoask[]>([]);
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token") === null) {
+      getAccessToken(window.location.search);
+    }
+  }, []);
 
   const GetDataFromVideoask = async () => {
     const token = localStorage.getItem("access_token");

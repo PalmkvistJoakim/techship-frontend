@@ -27,10 +27,6 @@ function Sidebar({
         <Batch>
           <option>Batch</option>
         </Batch>
-        <ReloadButton onClick={() => window.location.reload()}>
-          <i className="fa-solid fa-download" />
-          Hämta ansökningar
-        </ReloadButton>
       </Get>
       <Filter>
         {stage.map((s) => (

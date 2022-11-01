@@ -29,16 +29,9 @@ function Dashboard({ data }: Props): JSX.Element {
     order: "desc",
   });
 
-  const handleToken = () => {
-    let parameters = new URLSearchParams(window.location.search);
-    const code = parameters.get("code");
-    localStorage.setItem("code", code || "");
-    getAccessToken(code);
-  };
-
   useEffect(() => {
-    if (localStorage.getItem("access_token") === null) {
-      handleToken();
+    if (localStorage.getItem("access_token") === "Bearer null") {
+      getAccessToken(window.location.search);
     }
     setStage(getStage());
   }, []);
