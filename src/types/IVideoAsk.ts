@@ -28,3 +28,11 @@ export interface IContactId extends IVideoask {
   input_text: string;
   question_id: string;
 }
+
+export interface IKomment {
+  _id: string;
+  contact_id: string;
+  createdAt: string;
+  stage: string;
+  kommentar: string;
+}

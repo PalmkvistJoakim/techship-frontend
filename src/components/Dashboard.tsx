@@ -9,7 +9,6 @@ import _ from "lodash";
 import { getAccessToken } from "../services/videoaskService";
 import { getStage } from "../services/mockStage";
 import { IStage } from "../types/IStage";
-import ProfilePage from "./ProfilePage";
 import Main from "./Main";
 import SearchContext from "../context/SearchContext";
 
@@ -107,9 +106,6 @@ function Dashboard({ data }: Props): JSX.Element {
             <MainGrid>
               <Main />
             </MainGrid>
-            <ProfilePageGrid>
-              <ProfilePage data={[...data]} />
-            </ProfilePageGrid>
           </SearchContext.Provider>
         </SortContext.Provider>
       </DataContext.Provider>
@@ -138,20 +134,4 @@ const MainGrid = styled.div`
   /* border: solid red 4px; */
   margin: 0%;
   background-color: black;
-`;
-
-const ProfilePageGrid = styled.div`
-  display: grid;
-  grid-template-rows: 41rem;
-  grid-area: profilepage;
-  background-color: black;
-  /* border: solid red 4px; */
-  margin: 0%;
-
-  @media (max-width: 600px) {
-    width: auto;
-    position: absolute;
-    right: 0;
-    top: 20%;
-  }
 `;

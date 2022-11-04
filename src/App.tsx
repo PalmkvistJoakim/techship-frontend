@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { IVideoask } from "./types/IVideoAsk";
 import { http } from "./services/httpService";
 import { getAccessToken } from "./services/videoaskService";
+import ProfilePage from "./components/ProfilePage";
+import Navbar from "./components/Navbar";
 
 function App() {
   let [data, setData] = useState<IVideoask[]>([]);
@@ -39,9 +41,14 @@ function App() {
 
   return (
     <>
+      {token ? <Navbar /> : <LoginForm />}
+
       <Routes>
+        <Route
+          path="/dashboard/:id"
+          element={<ProfilePage data={[...data]} />}
+        />
         <Route path="/dashboard" element={<Dashboard data={[...data]} />} />
-        <Route path="/dashboard/:id" element={<Dashboard data={[...data]} />} />
         <Route path="/logout" element={<LogoutForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route
