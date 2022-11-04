@@ -12,9 +12,11 @@ const Navbar = () => {
         <Techship width={"60px"} height={"50px"} />{" "}
       </Logo>
       <List>
-        <button onClick={() => navigate("/dashboard")}>Dashboard</button>
         {token ? (
-          <button onClick={() => navigate("/logout")}>Logout</button>
+          <>
+            <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+            <button onClick={() => navigate("/logout")}>Logout</button>
+          </>
         ) : (
           <div onClick={() => navigate("/login")} />
         )}

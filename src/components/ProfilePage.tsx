@@ -158,7 +158,6 @@ const Continer = styled.div`
     "userinfo sidebar sidebar"
     "userinfo sidebar sidebar ";
 `;
-
 const Userinfo = styled.div<StausColor>`
   grid-area: userinfo;
   display: flex;
@@ -227,6 +226,7 @@ const Dropdown = styled.div`
     border-radius: 2rem;
     font-size: 13px;
     font-weight: 700;
+    text-align: center;
 
     option {
       font-size: 16px;
