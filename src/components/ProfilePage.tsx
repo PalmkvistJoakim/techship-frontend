@@ -26,7 +26,7 @@ interface IKomment {
 const StageArray = ["APPLIED", "TECHSHIP_SCHOOL", "TECHSHIP_PROGRAMME"];
 
 const schema = Joi.object({
-  kommentar: Joi.string(),
+  kommentar: Joi.string().label("Kommentar"),
 });
 function ProfilePage({ data }: Props) {
   const [UserInfo, setUserInfo] = useState<IContactId[]>([]);
@@ -209,6 +209,7 @@ const Question = styled.div`
     display: flex;
     list-style: none;
     flex-direction: column;
+    margin-right: 20px;
     justify-content: space-between;
     font-weight: bold;
 
