@@ -1,17 +1,19 @@
-function Techship() {
+interface Props {
+  width: string;
+  height: string;
+}
+
+function Techship({ width, height }: Props) {
   return (
     <svg
       fill="#58eac1"
-      height="152"
-      width="224"
+      height={height}
+      width={width}
       id="Layer_1"
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 342.93 220.3"
     >
-      <defs>
-        <style>.cls-1</style>
-      </defs>
       <path
         className="cls-1"
         d="M36.63,190.6v40.53h-11V190.6H12.07v-9.72H50.23v9.72Z"

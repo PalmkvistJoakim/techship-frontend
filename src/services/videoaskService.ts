@@ -10,6 +10,30 @@ export const getAccessToken = async (code: string) => {
   localStorage.setItem("access_token", `Bearer ${Code}`);
 };
 
+export const GenerateKomment = async (
+  contact_id: string,
+  kommentar: string,
+  stage: string
+) => {
+  const body = {
+    contact_id: contact_id,
+    kommentar: kommentar,
+    stage: stage,
+  };
+  const { data } = await http.post(
+    "http://localhost:5000/api/application",
+    body
+  );
+
+  return data;
+};
+
+export const GetkommentarById = async () => {
+  const { data } = await http.get("http://localhost:5000/api/application/");
+
+  return data;
+};
+
 export const GetDataFromVideoask = async () => {
   const token = localStorage.getItem("access_token");
   const { data } = await http.get(

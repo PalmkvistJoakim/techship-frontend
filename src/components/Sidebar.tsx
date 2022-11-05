@@ -20,9 +20,8 @@ function Sidebar({
 
   return (
     <Container>
-      <Picture>
-        <Techship />
-      </Picture>
+      <Techship width="200px" height="200px" />
+
       <Get>
         <Batch>
           <option>Batch</option>
@@ -57,12 +56,6 @@ const Container = styled.div`
   align-content: center;
 `;
 
-const Picture = styled.div`
-  grid-area: picture;
-  margin-top: 0.8rem;
-  background-color: black;
-`;
-
 const Get = styled.div`
   grid-area: get;
   display: grid;
@@ -79,29 +72,6 @@ const Batch = styled.select`
   cursor: pointer;
   text-align: center;
   margin-top: 1rem;
-`;
-
-const ReloadButton = styled.button`
-  padding: 1rem;
-  background-color: #58eac1;
-  font-weight: bold;
-  border: none;
-  margin-top: 1rem;
-  cursor: pointer;
-
-  :hover {
-    background-color: #b9e7db;
-  }
-
-  @media (width < 600px) {
-    width: auto;
-    margin-right: 30px;
-  }
-
-  i {
-    margin-right: 5px;
-    font-size: 16px;
-  }
 `;
 
 const Filter = styled.div`

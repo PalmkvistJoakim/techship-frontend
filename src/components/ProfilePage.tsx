@@ -1,17 +1,48 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { IContactId, IVideoask } from "../types/IVideoAsk";
-import { GetUserIdVideoask } from "../services/videoaskService";
+import {
+  GenerateKomment,
+  GetUserIdVideoask,
+  GetkommentarById,
+} from "../services/videoaskService";
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
-import VideoAsk from "../sveg/VideoAsk";
-import Techshiplogo from "../sveg/Techshiplogo";
+import { useForm } from "../components/hooks/useForm";
+import { IprofileAdd, StageType } from "../types/IStage";
+import Joi from "joi";
 
 interface Props {
   data: IVideoask[];
 }
+
+interface IKomment {
+  _id: string;
+  contact_id: string;
+  createdAt: string;
+  stage: string;
+  kommentar: string;
+}
+const StageArray = ["APPLIED", "TECHSHIP_SCHOOL", "TECHSHIP_PROGRAMME"];
+
+const schema = Joi.object({
+  kommentar: Joi.string().label("Kommentar"),
+});
 function ProfilePage({ data }: Props) {
   const [UserInfo, setUserInfo] = useState<IContactId[]>([]);
+  const [stage, setStage] = useState<string>(StageType.applied);
+  const [comment, setComment] = useState<IKomment[]>([]);
+  const {
+    data: body,
+    renderInput,
+    handleSubmit,
+    renderButton,
+  } = useForm<IprofileAdd>(
+    {
+      kommentar: "",
+    },
+    schema
+  );
   const params = useParams();
 
   useEffect(() => {
@@ -25,149 +56,181 @@ function ProfilePage({ data }: Props) {
     handleUserInfo();
   }, [params.id]);
 
-  console.log(UserInfo);
+  useEffect(() => {
+    const fetchComment = async () => {
+      if (params.id) {
+        setComment(await GetkommentarById());
+      }
+    };
+    fetchComment();
+  }, [params.id]);
 
-  if (!params.id) return <Techshiplogo />;
+  async function doSubmit() {
+    if (params.id) {
+      try {
+        await GenerateKomment(params.id, body.kommentar, stage);
+        window.location.replace("/dashboard");
+      } catch (error) {
+        console.log("couldnt add kommentar", error);
+      }
+    }
+  }
+
+  console.log(UserInfo);
 
   return (
     <>
       {data.map((d) => {
         if (params.id === d.contact_id)
           return (
-            <Container>
-              <Info>
-                <Personal>
-                  {d.name.toUpperCase()}, (ålder)
-                  <br />
-                  {d.created_at}
-                  <br />
-                  {d.email}
-                  <br />
-                  {d.phone_number}
-                </Personal>
-                <Stage>
-                  {d.stage.name}
-                  <button>Techship Programme</button>
-                  <button>Techship School</button>
-                  <button>Ej Antagen</button>
-                </Stage>
-                <Adress>Adress</Adress>
-                <Comment>Kommentar av Aliya</Comment>
-              </Info>
-              {UserInfo.map((User) => (
-                <>
-                  <Media>
-                    {User.media_url ? (
-                      <ReactPlayer
-                        url={User.media_url}
-                        controls={true}
-                        width="300px"
-                      />
-                    ) : (
-                      <></>
+            <Continer>
+              <Userinfo
+                status={d.status === "completed" ? "completed" : "dropped_out"}
+              >
+                <h1>{d.name.toUpperCase()}</h1>
+                <p> {d.created_at}</p>
+                <p className="email">{d.email}</p>
+                <p>{d.phone_number}</p>
+                <p className="status">{d.status.toUpperCase()}</p>
+                <Dropdown>
+                  <select onChange={(e) => setStage(e.target.value)}>
+                    <option value="" disabled={true}>
+                      Välj Stage
+                    </option>
+                    {StageArray.map((s, i) => (
+                      <option key={i} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </Dropdown>
+              </Userinfo>
+              <Sidebar>
+                {UserInfo.map((User) => (
+                  <>
+                    <div>
+                      {User.media_url ? (
+                        <ReactPlayer
+                          url={User.media_url}
+                          controls={true}
+                          width="300px"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                    <Question>
+                      <ul>
+                        <li> {User.input_text}</li>
+                      </ul>
+                    </Question>
+                  </>
+                ))}
+                <div className="form">
+                  <form onSubmit={handleSubmit(doSubmit)}>
+                    {renderInput(
+                      "kommentar",
+                      "Fyll i ditt kommentar",
+                      "kommentar...",
+                      "text"
                     )}
-                    <button>
-                      Till Profil
-                      <VideoAsk />
-                    </button>
-                  </Media>
-                  <Description>
-                    {User.input_text ? <>{User.input_text}</> : null}
-                  </Description>
-                </>
-              ))}
-            </Container>
+                    {renderButton("Spara")}
+                  </form>
+                </div>
+              </Sidebar>
+            </Continer>
           );
       })}
     </>
   );
 }
 
-const Container = styled.div`
-  display: grid;
-  grid-template-rows: 22rem 22rem;
-  grid-template-columns: 29rem 29rem;
-  grid-template-areas:
-    "info media"
-    "description media";
-`;
+export default ProfilePage;
 
-const Info = styled.div`
-  grid-area: info;
-  display: grid;
-  background-color: black;
-  grid-template-columns: 14.5rem 14.5rem;
-  grid-template-rows: 8rem 3rem 11rem;
-  grid-template-areas:
-    "personal stage"
-    "adress stage"
-    "comment comment";
-`;
+interface StausColor {
+  status: "dropped_out" | "idle" | "completed";
+}
 
-const Personal = styled.div`
-  grid-area: personal;
+const Continer = styled.div`
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-template-areas:
+    "userinfo sidebar sidebar"
+    "userinfo sidebar sidebar ";
+`;
+const Userinfo = styled.div<StausColor>`
+  grid-area: userinfo;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
   align-items: center;
-  border: solid #58eac1 1px;
-  line-height: 18px;
-  /* background-color: black; */
-`;
-const Stage = styled.div`
-  grid-area: stage;
-  border: solid #58eac1 1px;
-  /* background-color: black; */
+  list-style: none;
+  font-weight: bold;
+  h1 {
+    font-size: 20px;
+  }
 
-  button {
-    width: 11rem;
-    background-color: #58eac1;
-    display: block;
-    border: none;
-    margin: 1.5rem;
-    cursor: pointer;
+  p {
+    font-size: 14px;
 
-    :hover {
-      background-color: #b9e7db;
+    &.email {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    &.status {
+      color: ${(props) => (props.status === "completed" ? "green" : "red")};
     }
   }
 `;
-const Adress = styled.div`
-  grid-area: adress;
-  border: solid #58eac1 1px;
-  /* background-color: black; */
-`;
-const Comment = styled.div`
-  grid-area: comment;
-  font-size: large;
-  display: flex;
-  align-items: center;
-  border: solid #58eac1 1px;
-  /* background-color: black; */
-`;
 
-//Kolla med Aladin varför det kommer en ny flex varje gång man lägger till något nytt
+const Sidebar = styled.div`
+  grid-area: sidebar;
+  height: 100vh;
 
-const Media = styled.div`
-  grid-area: media;
-  justify-self: center;
-  align-self: end;
-  /* border: solid #58eac1 1px; */
+  div {
+    display: flex;
+    justify-content: center;
+  }
 
-  button {
-    width: 18rem;
-    background-color: #58eac1;
-    margin: 3.5rem;
+  .form {
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   }
 `;
 
-const Video = styled.div``;
+const Question = styled.div`
+  ul {
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+    margin-right: 20px;
+    justify-content: space-between;
+    font-weight: bold;
 
-const Description = styled.div`
-  grid-area: description;
-  background-color: black;
-  font-size: small;
-  display: flex;
-  align-items: center;
-  border: solid #58eac1 1px;
+    li {
+      margin-top: 5rem;
+      font-size: 1.3rem;
+    }
+  }
 `;
 
-export default ProfilePage;
+const Dropdown = styled.div`
+  select {
+    border: none;
+    padding: 10px;
+    border-radius: 2rem;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+
+    option {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+`;
