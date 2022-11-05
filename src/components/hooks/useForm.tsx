@@ -125,7 +125,7 @@ const Button = styled.button`
   border-radius: 2rem;
   cursor: pointer;
   :hover {
-    background-color: #7f96ff;
+    background-color: #a8f5df;
     transform: scale(0.9);
   }
   :active {

@@ -4,14 +4,17 @@ import VideoAsk from "../sveg/VideoAsk";
 
 const LoginForm = () => {
   return (
-    <Container>
-      <video src={require("../assets/video.mp4")} loop muted autoPlay />
-      <Form>
-        <button onClick={() => handleLogin()}>
-          Connect Your account <VideoAsk />
-        </button>
-      </Form>
-    </Container>
+    <>
+      <Container>
+        <video src={require("../assets/video.mp4")} loop muted autoPlay />
+        <Form>
+          <h1>WELCOME BACK</h1>
+          <button onClick={() => handleLogin()}>
+            Connect Your account <VideoAsk />
+          </button>
+        </Form>
+      </Container>
+    </>
   );
 };
 
@@ -24,7 +27,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: black;
 
   video {
     position: absolute;
@@ -71,6 +73,7 @@ const Form = styled.form`
     text-align: center;
     color: #58eac1;
     margin-bottom: 40px;
+    font-size: 30px;
   }
 
   input {

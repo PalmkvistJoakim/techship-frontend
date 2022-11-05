@@ -41,8 +41,7 @@ function App() {
 
   return (
     <>
-      {token ? <Navbar /> : <LoginForm />}
-
+      {token === "Bearer null" ? <></> : <Navbar />}
       <Routes>
         <Route
           path="/dashboard/:id"
@@ -53,7 +52,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route
           path="/"
-          element={token ? <Dashboard data={[...data]} /> : <LoginForm />}
+          element={!token ? <LoginForm /> : <Dashboard data={[...data]} />}
         />
       </Routes>
     </>

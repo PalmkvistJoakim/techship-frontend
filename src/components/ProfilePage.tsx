@@ -11,6 +11,7 @@ import ReactPlayer from "react-player";
 import { useForm } from "../components/hooks/useForm";
 import { IprofileAdd, StageType } from "../types/IStage";
 import Joi from "joi";
+import { http } from "../services/httpService";
 
 interface Props {
   data: IVideoask[];
@@ -69,12 +70,24 @@ function ProfilePage({ data }: Props) {
     if (params.id) {
       try {
         await GenerateKomment(params.id, body.kommentar, stage);
-        window.location.replace("/dashboard");
+        window.location.reload();
       } catch (error) {
         console.log("couldnt add kommentar", error);
       }
     }
   }
+
+  const handleDelete = async (id: string) => {
+    const OrignalPost = [...comment];
+    const Comment = comment.filter((c) => c._id !== id);
+    setComment(Comment);
+
+    try {
+      await http.delete(`http://localhost:5000/api/application/${id}`);
+    } catch (error) {
+      setComment(OrignalPost);
+    }
+  };
 
   console.log(UserInfo);
 
@@ -87,6 +100,25 @@ function ProfilePage({ data }: Props) {
               <Userinfo
                 status={d.status === "completed" ? "completed" : "dropped_out"}
               >
+                <div>
+                  {comment.map((c) => {
+                    if (c.contact_id === params.id) {
+                      return (
+                        <CommentStyle>
+                          <div>
+                            {c.kommentar}{" "}
+                            <Icon
+                              className="fa-solid fa-delete-left"
+                              onClick={() => handleDelete(c._id)}
+                            />
+                          </div>
+
+                          <div> {c.stage} </div>
+                        </CommentStyle>
+                      );
+                    }
+                  })}
+                </div>
                 <h1>{d.name.toUpperCase()}</h1>
                 <p> {d.created_at}</p>
                 <p className="email">{d.email}</p>
@@ -233,4 +265,20 @@ const Dropdown = styled.div`
       font-weight: 500;
     }
   }
+`;
+
+const Icon = styled.i`
+  font-size: 20px;
+  color: red;
+  cursor: pointer;
+  :hover {
+    opacity: 0.7;
+  }
+`;
+
+const CommentStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
