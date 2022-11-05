@@ -6,22 +6,23 @@ const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
   return (
-    <Continer>
-      <Logo>
-        {" "}
-        <Techship width={"60px"} height={"50px"} />{" "}
-      </Logo>
-      <List>
-        {token ? (
-          <>
-            <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-            <button onClick={() => navigate("/logout")}>Logout</button>
-          </>
+    <>
+      <Continer>
+        {token === "Bearer null" ? (
+          <></>
         ) : (
-          <div onClick={() => navigate("/login")} />
+          <>
+            <Logo>
+              <Techship width={"60px"} height={"50px"} />
+            </Logo>
+            <List>
+              <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+              <button onClick={() => navigate("/logout")}>Logout</button>
+            </List>
+          </>
         )}
-      </List>
-    </Continer>
+      </Continer>
+    </>
   );
 };
 
