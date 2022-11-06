@@ -35,4 +35,10 @@ export interface IKomment {
   createdAt: string;
   stage: string;
   kommentar: string;
+  question_id: string;
+}
+
+export interface IForm {
+  form_id: string;
+  title: string;
 }

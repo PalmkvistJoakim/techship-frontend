@@ -3,7 +3,7 @@ import { http } from "../services/httpService";
 export const handleLogin = () => {
   window.open("http://localhost:5000/api/videoask/auth");
 };
-// /. Cors policy om man har dem i .env fil/
+
 export const getAccessToken = async (code: string) => {
   let parameters = new URLSearchParams(code);
   const Code = parameters.get("home");
@@ -53,8 +53,9 @@ export const GetDataFromVideoask = async () => {
 };
 export const GetUserIdVideoask = async (id: string | undefined) => {
   const token = localStorage.getItem("access_token");
+  const form = localStorage.getItem("form");
   const { data } = await http.get(
-    `https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts/${id}?include_answers=true&all_answers_transcoded=true`,
+    `https://api.videoask.com/forms/${form}/contacts/${id}?include_answers=true&all_answers_transcoded=true`,
     {
       headers: {
         Authorization: token,
@@ -80,4 +81,16 @@ export const GetQuestionById = async (id: string) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const handleDeleteKomment = async (id: string) => {
+  return await http.delete(`http://localhost:5000/api/application/${id}`);
+};
+
+export const GetallFormVideoask = async () => {
+  const token = localStorage.getItem("access_token");
+  const { data } = await http.get("http://localhost:5000/api/videoask/form", {
+    params: { token: token },
+  });
+  return data;
 };

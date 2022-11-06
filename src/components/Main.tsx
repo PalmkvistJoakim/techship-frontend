@@ -6,9 +6,15 @@ import { Sendmail } from "../services/emailService";
 import EmailContext from "../context/EmailContext";
 import TableHeader from "./common/TableHeader";
 import TableBody from "./common/TableBody";
+import { useContext } from "react";
+import { FormContext } from "../context/FormContext";
+import { IForm } from "../types/IVideoAsk";
+import { toast } from "react-toastify";
 
 function Main() {
+  const data = useContext(FormContext) as IForm[];
   const [checkEmail, setCheck] = useState<string | string[]>("");
+  const [selectedForm, setSelctedForm] = useState<string>("");
 
   const onSubmit = () => {
     Sendmail(checkEmail);
@@ -25,15 +31,65 @@ function Main() {
       setCheck(value);
     }
   };
+  function handleSelectForm({ target: input }: ChangeEvent<HTMLSelectElement>) {
+    const inputId = input.value;
+    setSelctedForm(inputId);
+    if (selectedForm === "") {
+      localStorage.removeItem("form");
+      toast.error("🦄 Network error! testa välj igen. ", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } else {
+      toast.success("🦄 Network Success!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+    localStorage.setItem("form", selectedForm);
+  }
 
+  function handleSubmit() {
+    window.location.reload();
+  }
+
+  console.log(selectedForm);
   return (
     <Container>
       <EmailContext.Provider value={{ onChange: handleChange }}>
-        <SearchBar />
-        <SendMail href="mailto:nazih@intensivecode.se;aliya@gmail.com?subject=Kontaktformulär - En fråga till er!">
-          Sänd mejl
-        </SendMail>
-        <TableHeader />
+        <form onSubmit={handleSubmit}>
+          <select onChange={handleSelectForm}>
+            <option value="" disabled={true}>
+              {" "}
+              Välj Batch{" "}
+            </option>
+            {data.map((f) => (
+              <option key={f.form_id} value={f.form_id}>
+                {f.title}
+              </option>
+            ))}
+          </select>
+          <button type="submit"> Hämta </button>
+        </form>
+        <HeadCss>
+          <SendMail href="mailto:aliya@gmail.com?subject=Kontaktformulär - En fråga till er!">
+            Sänd mejl
+          </SendMail>
+          <SearchBar />
+          <TableHeader />
+        </HeadCss>
         <TableBody />
       </EmailContext.Provider>
     </Container>
@@ -43,31 +99,77 @@ function Main() {
 export default Main;
 
 const Container = styled.div`
-  display: grid;
-  grid-template-rows: 1rem 2rem 2rem;
-  grid-template-areas:
-    "searchbar"
-    "mail sort"
-    "list";
+  display: flex;
+  flex-direction: column;
+
+  form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    select {
+      justify-content: center;
+      text-align: center;
+
+      border: none;
+      padding: 10px;
+      border-radius: 2rem;
+      align-items: center;
+      font-weight: 700;
+      background-color: #58eac1;
+
+      option {
+        border-radius: 2rem;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+      padding: 0.8rem;
+      border-radius: 2rem;
+      background-color: #58eac1;
+      transition: width 2s;
+
+      :hover {
+        opacity: 0.8;
+      }
+      :active {
+        transform: scale(0.8);
+      }
+    }
+  }
 `;
 
 const SendMail = styled.a`
-  display: grid;
   grid-template-columns: 1fr;
   background-color: #58eac1;
-  border: solid black 4px;
   border-radius: 1rem;
   width: 6rem;
-  height: 2rem;
-  padding: 2px;
-  margin-top: 1.8rem;
-  font-size: larger;
-  font-weight: bolder;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
   color: black;
   text-decoration: none;
   justify-content: center;
+  :hover {
+    opacity: 0.8;
+  }
+  :active {
+    transform: scale(0.8);
+  }
   @media (width < 600px) {
     width: auto;
     margin-right: 30px;
   }
+`;
+
+const HeadCss = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
 `;

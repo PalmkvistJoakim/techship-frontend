@@ -5,7 +5,6 @@ import styled from "styled-components";
 import EmailContext from "../../context/EmailContext";
 import { IEmail } from "../../types/IEmail";
 import { Link } from "react-router-dom";
-import _ from "lodash";
 
 function TableBody(): JSX.Element {
   const data = useContext(DataContext) as IVideoask[];
@@ -21,35 +20,33 @@ function TableBody(): JSX.Element {
       <Container>
         {data.map((d) => (
           <Tr key={d.answer_id}>
-            <>
-              <TdEmail>
-                {
-                  <form onSubmit={handleSubmit}>
-                    <input
-                      type="checkbox"
-                      onChange={onChange}
-                      value={d.email}
-                      name={d.email}
-                    />
-                  </form>
-                }
-              </TdEmail>
-              <TdName>
-                <Link
-                  to={`/dashboard/${d.contact_id}`}
-                  style={{ color: "#58eac1", textDecoration: "none" }}
-                >
-                  {d.name}
-                </Link>
-              </TdName>
-              <TdCreated>
-                {d.created_at} ({d.status})
-              </TdCreated>
-              <TdStage>{d.stage.name}</TdStage>
-              <TdComment>
-                <i className="fa-regular fa-comment" />
-              </TdComment>
-            </>
+            <TdEmail>
+              {
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="checkbox"
+                    onChange={onChange}
+                    value={d.email}
+                    name={d.email}
+                  />
+                </form>
+              }
+            </TdEmail>
+            <TdName>
+              <Link
+                to={`/dashboard/${d.contact_id}`}
+                style={{ color: "#58eac1", textDecoration: "none" }}
+              >
+                {d.name}
+              </Link>
+            </TdName>
+            <TdCreated>
+              {d.created_at} ({d.status})
+            </TdCreated>
+            <TdStage>{d.stage.name}</TdStage>
+            <TdComment>
+              <i className="fa-regular fa-comment" />
+            </TdComment>
           </Tr>
         ))}
       </Container>
@@ -64,7 +61,7 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 1fr;
   border-collapse: collapse;
-  width: 27.5rem;
+  width: 100%;
   overflow-y: scroll;
   max-height: 36.5rem;
 `;

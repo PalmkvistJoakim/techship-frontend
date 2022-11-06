@@ -1,17 +1,7 @@
 import { useContext } from "react";
-import { ScrollRestoration } from "react-router-dom";
 import styled from "styled-components";
 import SortContext from "../../context/SortContext";
-import { ISort, ISorts } from "../../types/ISort";
-
-const columns: string[] = [
-  "email",
-  "comment",
-  "name",
-  "stage.name",
-  "created_at",
-  "status",
-];
+import { ISorts } from "../../types/ISort";
 
 function TableHeader() {
   const { sortColumn, onSort } = useContext(SortContext) as ISorts;
@@ -29,30 +19,22 @@ function TableHeader() {
   const renderSortIcon = () => {
     if (sortColumn.order === "desc")
       return (
-        <I
-          onClick={() => raiseSort(sortColumn.path)}
-          className="fa-solid fa-arrow-down"
-        />
+        <Button onClick={() => raiseSort(sortColumn.path)}>
+          Sort
+          <I className="fa-solid fa-arrow-down" />
+        </Button>
       );
     return (
-      <I
-        onClick={() => raiseSort(sortColumn.path)}
-        className="fa-solid fa-arrow-up"
-      />
+      <Button onClick={() => raiseSort(sortColumn.path)}>
+        Sort
+        <I className="fa-solid fa-arrow-up" />
+      </Button>
     );
   };
 
   return (
     <Span>
-      <Select onChange={(e) => raiseSort(e.target.value)}>
-        <option>created_at</option>
-        {columns.map((column) => (
-          <option key={column} value={column}>
-            {column}
-          </option>
-        ))}
-      </Select>
-      <span> {renderSortIcon()} </span>
+      <span>{renderSortIcon()} </span>
     </Span>
   );
 }
@@ -61,17 +43,28 @@ export default TableHeader;
 
 const I = styled.i`
   font-size: medium;
-  margin-left: 3px;
-`;
-
-const Select = styled.select`
-  background-color: #58eac1;
+  margin-left: 5px;
 `;
 
 const Span = styled.span`
   display: flex;
   justify-content: end;
-  margin-right: 15px;
-  padding: 18px;
   align-self: center;
+`;
+
+const Button = styled.button`
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  padding: 0.8rem;
+  border-radius: 2rem;
+  background-color: #58eac1;
+  transition: width 2s;
+
+  :hover {
+    opacity: 0.8;
+  }
+  :active {
+    transform: scale(0.8);
+  }
 `;
