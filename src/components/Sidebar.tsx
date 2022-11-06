@@ -21,12 +21,6 @@ function Sidebar({
   return (
     <Container>
       <Techship width="200px" height="200px" />
-
-      <Get>
-        <Batch>
-          <option>Batch</option>
-        </Batch>
-      </Get>
       <Filter>
         {stage.map((s) => (
           <LiContainer key={s._id} onClick={() => onSelectStage(s)}>
@@ -54,24 +48,6 @@ const Container = styled.div`
   row-gap: 5rem;
   justify-content: center;
   align-content: center;
-`;
-
-const Get = styled.div`
-  grid-area: get;
-  display: grid;
-  align-content: space-between;
-  width: 18rem;
-  justify-self: center;
-`;
-const Batch = styled.select`
-  padding: 1rem;
-  width: 18rem;
-  background-color: #58eac1;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 1rem;
 `;
 
 const Filter = styled.div`

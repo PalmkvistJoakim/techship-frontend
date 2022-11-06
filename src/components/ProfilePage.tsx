@@ -1,29 +1,22 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { IContactId, IVideoask } from "../types/IVideoAsk";
+import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
 import {
   GenerateKomment,
   GetUserIdVideoask,
   GetkommentarById,
+  handleDeleteKomment,
 } from "../services/videoaskService";
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { useForm } from "../components/hooks/useForm";
 import { IprofileAdd, StageType } from "../types/IStage";
 import Joi from "joi";
-import { http } from "../services/httpService";
 
 interface Props {
   data: IVideoask[];
 }
 
-interface IKomment {
-  _id: string;
-  contact_id: string;
-  createdAt: string;
-  stage: string;
-  kommentar: string;
-}
 const StageArray = ["APPLIED", "TECHSHIP_SCHOOL", "TECHSHIP_PROGRAMME"];
 
 const schema = Joi.object({
@@ -83,7 +76,7 @@ function ProfilePage({ data }: Props) {
     setComment(Comment);
 
     try {
-      await http.delete(`http://localhost:5000/api/application/${id}`);
+      await handleDeleteKomment(id);
     } catch (error) {
       setComment(OrignalPost);
     }

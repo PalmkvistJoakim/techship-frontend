@@ -9,7 +9,7 @@ function SearchBar() {
     <div className="search">
       <Input
         type="text"
-        placeholder="Sök"
+        placeholder="Sök..."
         value={searchQuery}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -20,9 +20,9 @@ function SearchBar() {
 export default SearchBar;
 
 const Input = styled.input`
-  width: 5rem;
+  width: 8rem;
   padding: 8px;
-  border: none;
+  border-radius: 2rem;
   background-color: black;
   color: #58eac1;
 `;
