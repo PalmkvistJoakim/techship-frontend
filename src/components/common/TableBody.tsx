@@ -94,7 +94,7 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 1fr;
   border-collapse: collapse;
-  width: 27.5rem;
+  width: 100%;
   overflow-y: scroll;
   max-height: 36.5rem;
 `;

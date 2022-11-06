@@ -6,11 +6,16 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import SortContext from "../context/SortContext";
 import _ from "lodash";
-import { getAccessToken } from "../services/videoaskService";
+import {
+  getAccessToken,
+  GetallFormVideoask,
+} from "../services/videoaskService";
 import { getStage } from "../services/mockStage";
 import { IStage } from "../types/IStage";
 import Main from "./Main";
 import SearchContext from "../context/SearchContext";
+import { IForm } from "../types/IVideoAsk";
+import { FormContext } from "../context/FormContext";
 
 interface Props {
   data: IVideoask[];
@@ -27,11 +32,16 @@ function Dashboard({ data }: Props): JSX.Element {
     path: "created_at",
     order: "desc",
   });
+  const [form, setForm] = useState<IForm[]>([]);
 
   useEffect(() => {
     if (localStorage.getItem("access_token") === "Bearer null") {
       getAccessToken(window.location.search);
     }
+    const getform = async () => {
+      setForm(await GetallFormVideoask());
+    };
+    getform();
     setStage(getStage());
   }, []);
 
@@ -83,32 +93,36 @@ function Dashboard({ data }: Props): JSX.Element {
     [sortColumn.order]
   );
 
+  console.log("form videask", form);
+
   return (
     <Container>
-      <DataContext.Provider value={sortedData}>
-        <SortContext.Provider
-          value={{
-            sortColumn,
-            onSort: handleSort,
-          }}
-        >
-          <SearchContext.Provider
-            value={{ searchQuery, onChange: handleSearch }}
+      <FormContext.Provider value={form}>
+        <DataContext.Provider value={sortedData}>
+          <SortContext.Provider
+            value={{
+              sortColumn,
+              onSort: handleSort,
+            }}
           >
-            <SidebarGrid>
-              <Sidebar
-                filteredDataCount={filteredData.length}
-                stage={stage}
-                selectedStage={selectedStage}
-                onSelectStage={handleSelectStage}
-              />
-            </SidebarGrid>
-            <MainGrid>
-              <Main />
-            </MainGrid>
-          </SearchContext.Provider>
-        </SortContext.Provider>
-      </DataContext.Provider>
+            <SearchContext.Provider
+              value={{ searchQuery, onChange: handleSearch }}
+            >
+              <SidebarGrid>
+                <Sidebar
+                  filteredDataCount={filteredData.length}
+                  stage={stage}
+                  selectedStage={selectedStage}
+                  onSelectStage={handleSelectStage}
+                />
+              </SidebarGrid>
+              <MainGrid>
+                <Main />
+              </MainGrid>
+            </SearchContext.Provider>
+          </SortContext.Provider>
+        </DataContext.Provider>
+      </FormContext.Provider>
     </Container>
   );
 }
