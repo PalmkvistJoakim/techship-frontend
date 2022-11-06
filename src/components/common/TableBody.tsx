@@ -1,4 +1,5 @@
-import { useContext, FormEvent } from "react";
+import { useContext, FormEvent, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import DataContext from "../../context/DataContext";
 import { IVideoask } from "../../types/IVideoAsk";
 import styled from "styled-components";
@@ -6,9 +7,20 @@ import EmailContext from "../../context/EmailContext";
 import { IEmail } from "../../types/IEmail";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { IKomment } from "../../types/IVideoAsk";
+import {
+  GenerateKomment,
+  GetUserIdVideoask,
+  GetkommentarById,
+} from "../../services/videoaskService";
 
 function TableBody(): JSX.Element {
   const data = useContext(DataContext) as IVideoask[];
+
+  //Denna har jag satt här, men den behvöer flyttas upp till APP, där
+  //profilepage renderas, och därmed tas bort från profilepage.
+
+  const [comment, setComment] = useState<IKomment[]>([]);
 
   const { onChange } = useContext(EmailContext) as IEmail;
 
@@ -16,6 +28,17 @@ function TableBody(): JSX.Element {
     e.preventDefault();
   };
 
+  const params = useParams();
+
+  useEffect(() => {
+    const fetchComment = async () => {
+      setComment(await GetkommentarById());
+    };
+    fetchComment();
+  });
+
+  console.log("data", data);
+  console.log("commentobject", comment);
   return (
     <table>
       <Container>
@@ -45,7 +68,14 @@ function TableBody(): JSX.Element {
               <TdCreated>
                 {d.created_at} ({d.status})
               </TdCreated>
-              <TdStage>{d.stage.name}</TdStage>
+
+              <TdStage>
+                {comment.map((c) => {
+                  if (c.contact_id === d.contact_id) {
+                    return c.stage;
+                  }
+                })}
+              </TdStage>
               <TdComment>
                 <i className="fa-regular fa-comment" />
               </TdComment>
