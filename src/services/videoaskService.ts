@@ -34,23 +34,6 @@ export const GetkommentarById = async () => {
   return data;
 };
 
-export const GetDataFromVideoask = async () => {
-  const token = localStorage.getItem("access_token");
-  const { data } = await http.get(
-    //ÄNDRADE HÄR!!!
-    "https://api.videoask.com/forms/5625efd6-e7e9-4b5c-ac78-f2a7b429e79c/contacts?limit=200&offset=0",
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  );
-  try {
-    return data.results;
-  } catch (error) {
-    console.log(error);
-  }
-};
 export const GetUserIdVideoask = async (id: string | undefined) => {
   const token = localStorage.getItem("access_token");
   const form = localStorage.getItem("form");
@@ -93,4 +76,21 @@ export const GetallFormVideoask = async () => {
     params: { token: token },
   });
   return data;
+};
+
+export const GetDataFromVideoask = async (FormId: string) => {
+  const token = localStorage.getItem("access_token");
+  const { data } = await http.get(
+    `https://api.videoask.com/forms/${FormId}/contacts?limit=200&offset=0`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  try {
+    return data.results;
+  } catch (error) {
+    console.log(error);
+  }
 };

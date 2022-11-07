@@ -37,8 +37,6 @@ function TableBody(): JSX.Element {
     fetchComment();
   });
 
-  console.log("data", data);
-  console.log("commentobject", comment);
   return (
     <table>
       <Container>
