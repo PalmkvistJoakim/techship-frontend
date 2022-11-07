@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import DataContext from "../context/DataContext";
-import { IVideoask } from "../types/IVideoAsk";
+import { IKomment, IVideoask } from "../types/IVideoAsk";
 import { ISort } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import SortContext from "../context/SortContext";
-import _ from "lodash";
+import _, { filter } from "lodash";
 import {
   getAccessToken,
   GetallFormVideoask,
@@ -16,6 +16,7 @@ import Main from "./Main";
 import SearchContext from "../context/SearchContext";
 import { IForm } from "../types/IVideoAsk";
 import { FormContext } from "../context/FormContext";
+import { GetkommentarById } from "../services/videoaskService";
 
 interface Props {
   data: IVideoask[];
@@ -33,6 +34,7 @@ function Dashboard({ data }: Props): JSX.Element {
     order: "desc",
   });
   const [form, setForm] = useState<IForm[]>([]);
+  const [comment, setComment] = useState<IKomment[]>([]);
 
   useEffect(() => {
     if (localStorage.getItem("access_token") === "Bearer null") {
@@ -43,6 +45,10 @@ function Dashboard({ data }: Props): JSX.Element {
     };
     getform();
     setStage(getStage());
+    const fetchComment = async () => {
+      setComment(await GetkommentarById());
+    };
+    fetchComment();
   }, []);
 
   //Denna är för att filtrera bort alla ansökningar utan namn
@@ -110,6 +116,7 @@ function Dashboard({ data }: Props): JSX.Element {
             >
               <SidebarGrid>
                 <Sidebar
+                  //@ts-ignore
                   filteredDataCount={filteredData.length}
                   stage={stage}
                   selectedStage={selectedStage}
