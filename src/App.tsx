@@ -4,8 +4,10 @@ import LoginForm from "./components/LoginForm";
 import LogoutForm from "./components/LogoutForm";
 import { useState, useEffect } from "react";
 import { IVideoask } from "./types/IVideoAsk";
-import { http } from "./services/httpService";
-import { getAccessToken } from "./services/videoaskService";
+import {
+  getAccessToken,
+  GetDataFromVideoask,
+} from "./services/videoaskService";
 import ProfilePage from "./components/ProfilePage";
 import Navbar from "./components/Navbar";
 
@@ -16,28 +18,16 @@ function App() {
     if (localStorage.getItem("access_token") === null) {
       getAccessToken(window.location.search);
     }
+    const form = localStorage.getItem("form");
+    if (form) {
+      const fetchData = async () => {
+        setData(await GetDataFromVideoask(form));
+      };
+      fetchData();
+    }
   }, []);
 
-  const GetDataFromVideoask = async () => {
-    const token = localStorage.getItem("access_token");
-    const FormId = localStorage.getItem("form");
-    const { data } = await http.get(
-      `https://api.videoask.com/forms/${FormId}/contacts?limit=200&offset=0`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-    try {
-      setData(data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    GetDataFromVideoask();
-  }, []);
+  useEffect(() => {}, []);
   const token = localStorage.getItem("access_token");
 
   return (

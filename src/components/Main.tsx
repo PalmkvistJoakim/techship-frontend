@@ -9,7 +9,7 @@ import TableBody from "./common/TableBody";
 import { useContext } from "react";
 import { FormContext } from "../context/FormContext";
 import { IForm } from "../types/IVideoAsk";
-import { toast } from "react-toastify";
+import { GetDataFromVideoask } from "../services/videoaskService";
 
 function Main() {
   const data = useContext(FormContext) as IForm[];
@@ -31,38 +31,10 @@ function Main() {
       setCheck(value);
     }
   };
-  function handleSelectForm({ target: input }: ChangeEvent<HTMLSelectElement>) {
-    const inputId = input.value;
-    setSelctedForm(inputId);
-    if (selectedForm === "") {
-      localStorage.removeItem("form");
-      toast.error("🦄 Network error! testa välj igen. ", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    } else {
-      toast.success("🦄 Network Success!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }
-    localStorage.setItem("form", selectedForm);
-  }
 
-  function handleSubmit() {
-    window.location.reload();
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    localStorage.setItem("form", selectedForm);
+    await GetDataFromVideoask(selectedForm);
   }
 
   console.log(selectedForm);
@@ -70,11 +42,12 @@ function Main() {
     <Container>
       <EmailContext.Provider value={{ onChange: handleChange }}>
         <form onSubmit={handleSubmit}>
-          <select onChange={handleSelectForm}>
-            <option value="" disabled={true}>
-              {" "}
-              Välj Batch{" "}
-            </option>
+          <select
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setSelctedForm(e.target.value)
+            }
+          >
+            <option value=""> Välj Batch </option>
             {data.map((f) => (
               <option key={f.form_id} value={f.form_id}>
                 {f.title}
