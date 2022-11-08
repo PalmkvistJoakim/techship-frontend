@@ -2,6 +2,7 @@ import { useContext } from "react";
 import styled from "styled-components";
 import SortContext from "../../context/SortContext";
 import { ISorts } from "../../types/ISort";
+import { IVideoask } from "../../types/IVideoAsk";
 
 function TableHeader() {
   const { sortColumn, onSort } = useContext(SortContext) as ISorts;

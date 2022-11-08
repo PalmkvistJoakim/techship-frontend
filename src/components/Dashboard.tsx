@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import DataContext from "../context/DataContext";
-import { IKomment, IVideoask } from "../types/IVideoAsk";
 import { ISort } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
@@ -9,21 +7,23 @@ import _, { filter } from "lodash";
 import {
   getAccessToken,
   GetallFormVideoask,
+  GetDataFromVideoask,
 } from "../services/videoaskService";
 import { getStage } from "../services/mockStage";
 import { IStage } from "../types/IStage";
 import Main from "./Main";
 import SearchContext from "../context/SearchContext";
-import { IForm } from "../types/IVideoAsk";
-import { FormContext } from "../context/FormContext";
-import { GetkommentarById } from "../services/videoaskService";
+import { Getkommentar } from "../services/videoaskService";
+import { useDispatch, useSelector } from "react-redux";
+import { loadApplicant } from "../store/applicant";
+import { loadForm } from "../store/formvideoask";
+import { loadComment } from "../store/comment";
+import DataContext from "../context/DataContext";
+import { loadStage } from "../store/stage";
 
-interface Props {
-  data: IVideoask[];
-}
-
-function Dashboard({ data }: Props): JSX.Element {
-  const [stage, setStage] = useState<IStage[]>([]);
+function Dashboard(): JSX.Element {
+  const dispatch = useDispatch();
+  let applicants = useSelector((state: any) => state.entities.applicants);
   const [selectedStage, setSelectedStage] = useState<IStage>({
     _id: "",
     name: "Alla Ansökningar",
@@ -33,40 +33,30 @@ function Dashboard({ data }: Props): JSX.Element {
     path: "created_at",
     order: "desc",
   });
-  const [form, setForm] = useState<IForm[]>([]);
-  const [comment, setComment] = useState<IKomment[]>([]);
 
   useEffect(() => {
     if (localStorage.getItem("access_token") === "Bearer null") {
       getAccessToken(window.location.search);
     }
-    const getform = async () => {
-      setForm(await GetallFormVideoask());
-    };
-    getform();
-    setStage(getStage());
-    const fetchComment = async () => {
-      setComment(await GetkommentarById());
-    };
-    fetchComment();
-  }, []);
-
-  //Denna är för att filtrera bort alla ansökningar utan namn
-  data = data.filter((d) => d.name != null);
-
-  //Denna är för att göra om datumet mer läsbart än det videoask skickar
-  data.map((d) => (d.created_at = new Date(d.created_at).toLocaleString()));
-
-  // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme. DEN SKA BORT NÄR VI KOPPLAT MOT DATABAS
-  data.map((d) => {
-    if (data.indexOf(d) % 4 === 0)
-      d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
-    if (data.indexOf(d) % 4 === 1)
-      d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
-    if (data.indexOf(d) % 4 === 2)
-      d.stage = { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" };
-    if (data.indexOf(d) % 4 === 3)
-      d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
+    async function runLoadApplicant() {
+      const form = localStorage.getItem("form");
+      if (form) {
+        const applicants = await GetDataFromVideoask(form);
+        dispatch(loadApplicant(applicants));
+      }
+      async function getLoadForm() {
+        const form = await GetallFormVideoask();
+        dispatch(loadForm(form));
+      }
+      getLoadForm();
+    }
+    async function runLoadComment() {
+      const comments = await Getkommentar();
+      dispatch(loadComment(comments));
+    }
+    runLoadComment();
+    runLoadApplicant();
+    dispatch(loadStage(getStage()));
   });
 
   const handleSearch = (searchQuery: string) => {
@@ -77,14 +67,34 @@ function Dashboard({ data }: Props): JSX.Element {
     setSelectedStage(stage);
   };
 
+  // //Denna är för att filtrera bort alla ansökningar utan namn
+  // applicants = applicants.filter((d: any) => d.name != null);
+
+  // //Denna är för att göra om datumet mer läsbart än det videoask skickar
+  // applicants.map(
+  //   (d: any) => (d.created_at = new Date(d.created_at).toLocaleString())
+  // );
+
+  // // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme. DEN SKA BORT NÄR VI KOPPLAT MOT DATABAS
+  // applicants.map((d: any) => {
+  //   if (applicants.indexOf(d) % 4 === 0)
+  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
+  //   if (applicants.indexOf(d) % 4 === 1)
+  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
+  //   if (applicants.indexOf(d) % 4 === 2)
+  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" };
+  //   if (applicants.indexOf(d) % 4 === 3)
+  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
+  // });
+
   let filteredData = selectedStage._id
-    ? data.filter((d) => d.stage._id === selectedStage._id)
-    : data;
+    ? applicants.filter((d: any) => d.stage._id === selectedStage._id)
+    : applicants;
   if (selectedStage.name === "Antagna") {
-    filteredData = data.filter((d) => d.stage.name !== "Ej antagen");
+    filteredData = applicants.filter((d: any) => d.stage.name !== "Ej antagen");
   }
   if (searchQuery) {
-    filteredData = data.filter((d) =>
+    filteredData = applicants.filter((d: any) =>
       d.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
@@ -99,37 +109,32 @@ function Dashboard({ data }: Props): JSX.Element {
     [sortColumn.order]
   );
 
-  console.log("form videask", form);
-
   return (
     <Container>
-      <FormContext.Provider value={form}>
-        <DataContext.Provider value={sortedData}>
-          <SortContext.Provider
-            value={{
-              sortColumn,
-              onSort: handleSort,
-            }}
+      <DataContext.Provider value={sortedData}>
+        <SortContext.Provider
+          value={{
+            sortColumn,
+            onSort: handleSort,
+          }}
+        >
+          <SearchContext.Provider
+            value={{ searchQuery, onChange: handleSearch }}
           >
-            <SearchContext.Provider
-              value={{ searchQuery, onChange: handleSearch }}
-            >
-              <SidebarGrid>
-                <Sidebar
-                  //@ts-ignore
-                  filteredDataCount={filteredData.length}
-                  stage={stage}
-                  selectedStage={selectedStage}
-                  onSelectStage={handleSelectStage}
-                />
-              </SidebarGrid>
-              <MainGrid>
-                <Main />
-              </MainGrid>
-            </SearchContext.Provider>
-          </SortContext.Provider>
-        </DataContext.Provider>
-      </FormContext.Provider>
+            <SidebarGrid>
+              <Sidebar
+                //@ts-ignore
+                filteredDataCount={filteredData.length}
+                selectedStage={selectedStage}
+                onSelectStage={handleSelectStage}
+              />
+            </SidebarGrid>
+            <MainGrid>
+              <Main />
+            </MainGrid>
+          </SearchContext.Provider>
+        </SortContext.Provider>
+      </DataContext.Provider>
     </Container>
   );
 }

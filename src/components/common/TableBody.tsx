@@ -1,47 +1,26 @@
-import { useContext, FormEvent, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import DataContext from "../../context/DataContext";
-import { IVideoask } from "../../types/IVideoAsk";
+import { ChangeEvent, FormEvent } from "react";
 import styled from "styled-components";
-import EmailContext from "../../context/EmailContext";
-import { IEmail } from "../../types/IEmail";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { IKomment } from "../../types/IVideoAsk";
-import {
-  GenerateKomment,
-  GetUserIdVideoask,
-  GetkommentarById,
-} from "../../services/videoaskService";
+import { useSelector } from "react-redux";
 
-function TableBody(): JSX.Element {
-  const data = useContext(DataContext) as IVideoask[];
+interface Props {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
 
-  //Denna har jag satt här, men den behvöer flyttas upp till APP, där
-  //profilepage renderas, och därmed tas bort från profilepage.
-
-  const [comment, setComment] = useState<IKomment[]>([]);
-
-  const { onChange } = useContext(EmailContext) as IEmail;
+function TableBody({ onChange }: Props): JSX.Element {
+  const applicants = useSelector((state: any) => state.entities.applicants);
+  const comments = useSelector((state: any) => state.entities.comments);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
-  const params = useParams();
-
-  useEffect(() => {
-    const fetchComment = async () => {
-      setComment(await GetkommentarById());
-    };
-    fetchComment();
-  });
-
   return (
     <table>
       <Container>
-        {data.map((d) => (
-          <Tr key={d.answer_id}>
+        {applicants.map((applicant: any) => (
+          <Tr key={applicant.answer_id}>
             <>
               <TdEmail>
                 {
@@ -49,27 +28,27 @@ function TableBody(): JSX.Element {
                     <input
                       type="checkbox"
                       onChange={onChange}
-                      value={d.email}
-                      name={d.email}
+                      value={applicant.email}
+                      name={applicant.email}
                     />
                   </form>
                 }
               </TdEmail>
               <TdName>
                 <Link
-                  to={`/dashboard/${d.contact_id}`}
+                  to={`/dashboard/${applicant.contact_id}`}
                   style={{ color: "#58eac1", textDecoration: "none" }}
                 >
-                  {d.name}
+                  {applicant.name}
                 </Link>
               </TdName>
               <TdCreated>
-                {d.created_at} ({d.status})
+                {applicant.created_at} ({applicant.status})
               </TdCreated>
 
               <TdStage>
-                {comment.map((c) => {
-                  if (c.contact_id === d.contact_id) {
+                {comments.map((c: any) => {
+                  if (c.contact_id === applicant.contact_id) {
                     return c.stage;
                   }
                 })}
