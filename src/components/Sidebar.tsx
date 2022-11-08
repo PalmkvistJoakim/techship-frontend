@@ -2,27 +2,23 @@ import styled from "styled-components";
 import Techship from "../sveg/Techship";
 import { IStage } from "../types/IStage";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface Props {
-  stage: IStage[];
   selectedStage: IStage;
   onSelectStage: (stage: IStage) => void;
   filteredDataCount: number;
 }
 
-function Sidebar({
-  stage,
-  selectedStage,
-  onSelectStage,
-  filteredDataCount,
-}: Props) {
+function Sidebar({ selectedStage, onSelectStage, filteredDataCount }: Props) {
   const navigate = useNavigate();
+  const stage = useSelector((state: any) => state.entities.stage);
 
   return (
     <Container>
       <Techship width="200px" height="200px" />
       <Filter>
-        {stage.map((s) => (
+        {stage.map((s: any) => (
           <LiContainer key={s._id} onClick={() => onSelectStage(s)}>
             {s.name}
           </LiContainer>

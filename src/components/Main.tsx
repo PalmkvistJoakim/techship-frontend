@@ -2,16 +2,13 @@ import SearchBar from "./SearchBar";
 import styled from "styled-components";
 import { useState } from "react";
 import { ChangeEvent } from "react";
-import EmailContext from "../context/EmailContext";
 import TableHeader from "./common/TableHeader";
 import TableBody from "./common/TableBody";
-import { useContext } from "react";
-import { FormContext } from "../context/FormContext";
-import { IForm } from "../types/IVideoAsk";
 import { GetDataFromVideoask } from "../services/videoaskService";
+import { useSelector } from "react-redux";
 
 function Main() {
-  const data = useContext(FormContext) as IForm[];
+  const forms = useSelector((state: any) => state.entities.forms);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
 
@@ -27,36 +24,34 @@ function Main() {
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     localStorage.setItem("form", selectedForm);
-    await GetDataFromVideoask(selectedForm);
   }
 
-  console.log(selectedForm);
   return (
     <Container>
-      <EmailContext.Provider value={{ onChange: handleChange }}>
-        <form onSubmit={handleSubmit}>
-          <select
-            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-              setSelctedForm(e.target.value)
-            }
-          >
-            <option value=""> Välj Batch </option>
-            {data.map((f) => (
-              <option key={f.form_id} value={f.form_id}>
-                {f.title}
-              </option>
-            ))}
-          </select>
-          <button type="submit"> Hämta </button>
-        </form>
-        <HeadCss>
-          <SendMail href={`mailto:?bcc=${checkEmail}`}>Sänd mejl</SendMail>
-          <SearchBar />
-          <TableHeader />
-        </HeadCss>
-        <TableBody />
-      </EmailContext.Provider>
+      <form onSubmit={handleSubmit}>
+        <select
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            setSelctedForm(e.target.value)
+          }
+          value={selectedForm}
+        >
+          <option value=""> Välj Batch </option>
+          {forms.map((f: any) => (
+            <option key={f.form_id} value={f.form_id}>
+              {f.title}
+            </option>
+          ))}
+        </select>
+        <button type="submit"> Hämta </button>
+      </form>
+      <HeadCss>
+        <SendMail href={`mailto:?bcc=${checkEmail}`}>Sänd mejl</SendMail>
+        <SearchBar />
+        <TableHeader />
+      </HeadCss>
+      <TableBody onChange={handleChange} />
     </Container>
   );
 }

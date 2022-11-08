@@ -1,31 +1,31 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
 import {
   GenerateKomment,
   GetUserIdVideoask,
-  GetkommentarById,
   handleDeleteKomment,
 } from "../services/videoaskService";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import ReactPlayer from "react-player";
 import { useForm } from "../components/hooks/useForm";
 import { IprofileAdd, StageType } from "../types/IStage";
 import Joi from "joi";
-
-interface Props {
-  data: IVideoask[];
-}
+import { useDispatch, useSelector } from "react-redux";
+import { loadContacts } from "../store/contacts";
+import { deleteComment } from "../store/comment";
+import { toast } from "react-toastify";
 
 const StageArray = ["APPLIED", "TECHSHIP_SCHOOL", "TECHSHIP_PROGRAMME"];
 
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
 });
-function ProfilePage({ data }: Props) {
-  const [UserInfo, setUserInfo] = useState<IContactId[]>([]);
-  const [stage, setStage] = useState<string>(StageType.applied);
-  const [comment, setComment] = useState<IKomment[]>([]);
+function ProfilePage() {
+  const dispatch = useDispatch();
+  const applicants = useSelector((state: any) => state.entities.applicants);
+  const contacts = useSelector((state: any) => state.entities.contacts);
+  const comments = useSelector((state: any) => state.entities.comments);
+  const [stage, setStage] = useState<string>("");
   const {
     data: body,
     renderInput,
@@ -40,30 +40,17 @@ function ProfilePage({ data }: Props) {
   const params = useParams();
 
   useEffect(() => {
-    const handleUserInfo = async () => {
-      try {
-        setUserInfo(await GetUserIdVideoask(params.id));
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    async function handleUserInfo() {
+      const contacts = await GetUserIdVideoask(params.id);
+      dispatch(loadContacts(contacts));
+    }
     handleUserInfo();
-  }, [params.id]);
-
-  useEffect(() => {
-    const fetchComment = async () => {
-      if (params.id) {
-        setComment(await GetkommentarById());
-      }
-    };
-    fetchComment();
-  }, [params.id]);
+  }, []);
 
   async function doSubmit() {
     if (params.id) {
       try {
         await GenerateKomment(params.id, body.kommentar, stage);
-        window.location.reload();
       } catch (error) {
         console.log("couldnt add kommentar", error);
       }
@@ -71,22 +58,20 @@ function ProfilePage({ data }: Props) {
   }
 
   const handleDelete = async (id: string) => {
-    const OrignalPost = [...comment];
-    const Comment = comment.filter((c) => c._id !== id);
-    setComment(Comment);
-
     try {
+      dispatch(deleteComment(id));
       await handleDeleteKomment(id);
     } catch (error) {
-      setComment(OrignalPost);
+      toast.error("kunde inte radera!");
     }
   };
 
-  console.log(UserInfo);
+  console.log(applicants);
+  console.log(contacts);
 
   return (
     <>
-      {data.map((d) => {
+      {applicants.map((d: any) => {
         if (params.id === d.contact_id)
           return (
             <Continer>
@@ -94,7 +79,7 @@ function ProfilePage({ data }: Props) {
                 status={d.status === "completed" ? "completed" : "dropped_out"}
               >
                 <div>
-                  {comment.map((c) => {
+                  {comments.map((c: any) => {
                     if (c.contact_id === params.id) {
                       return (
                         <CommentStyle>
@@ -118,20 +103,25 @@ function ProfilePage({ data }: Props) {
                 <p>{d.phone_number}</p>
                 <p className="status">{d.status.toUpperCase()}</p>
                 <Dropdown>
-                  <select onChange={(e) => setStage(e.target.value)}>
-                    <option value="" disabled={true}>
-                      Välj Stage
-                    </option>
-                    {StageArray.map((s, i) => (
-                      <option key={i} value={s}>
-                        {s}
+                  <form>
+                    <select
+                      onChange={(e) => setStage(e.target.value)}
+                      value={stage}
+                    >
+                      <option value="" disabled={true}>
+                        Välj Stage
                       </option>
-                    ))}
-                  </select>
+                      {StageArray.map((s, i) => (
+                        <option key={i} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  </form>
                 </Dropdown>
               </Userinfo>
               <Sidebar>
-                {UserInfo.map((User) => (
+                {contacts.map((User: any) => (
                   <>
                     <div>
                       {User.media_url ? (

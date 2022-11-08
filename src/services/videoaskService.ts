@@ -28,7 +28,7 @@ export const GenerateKomment = async (
   return data;
 };
 
-export const GetkommentarById = async () => {
+export const Getkommentar = async () => {
   const { data } = await http.get("http://localhost:5000/api/application/");
 
   return data;
