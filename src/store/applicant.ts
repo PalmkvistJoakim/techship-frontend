@@ -6,10 +6,14 @@ const slice = createSlice({
   initialState: [] as IVideoask[],
   reducers: {
     loadApplicant: (applicants, action) => {
-      return action.payload;
+      return action.payload.filter(
+        (applicant: IVideoask) => applicant.name !== null
+      );
     },
     filterApplicant: (applicants, action) => {
-      return applicants.filter((d: any) => d.name != null);
+      return applicants.filter((applicant: IVideoask) =>
+        applicant.name.toLowerCase().startsWith(action.payload.toLowerCase())
+      );
     },
   },
 });

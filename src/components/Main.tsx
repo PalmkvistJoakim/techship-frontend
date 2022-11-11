@@ -1,13 +1,18 @@
 import SearchBar from "./SearchBar";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChangeEvent } from "react";
 import TableHeader from "./common/TableHeader";
 import TableBody from "./common/TableBody";
-import { GetDataFromVideoask } from "../services/videoaskService";
-import { useSelector } from "react-redux";
+import {
+  GetallFormVideoask,
+  GetDataFromVideoask,
+} from "../services/videoaskService";
+import { useSelector, useDispatch } from "react-redux";
+import { loadForm } from "../store/formvideoask";
 
 function Main() {
+  const dispatch = useDispatch();
   const forms = useSelector((state: any) => state.entities.forms);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
@@ -23,8 +28,15 @@ function Main() {
     }
   };
 
+  useEffect(() => {
+    async function getLoadForm() {
+      const form = await GetallFormVideoask();
+      dispatch(loadForm(form));
+    }
+    getLoadForm();
+  }, []);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
     localStorage.setItem("form", selectedForm);
   }
 

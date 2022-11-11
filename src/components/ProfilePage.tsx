@@ -83,7 +83,7 @@ function ProfilePage() {
                     if (c.contact_id === params.id) {
                       return (
                         <CommentStyle>
-                          <div>
+                          <div key={c._id}>
                             {c.kommentar}{" "}
                             <Icon
                               className="fa-solid fa-delete-left"
