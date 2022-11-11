@@ -4,8 +4,10 @@ import {
   GenerateKomment,
   GetUserIdVideoask,
   handleDeleteKomment,
+  RemoveProfile,
 } from "../services/videoaskService";
 import { useState, useEffect, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { useForm } from "../components/hooks/useForm";
 import { IprofileAdd, StageType } from "../types/IStage";
@@ -14,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadContacts } from "../store/contacts";
 import { deleteComment } from "../store/comment";
 import { toast } from "react-toastify";
+import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
 
 const StageArray = ["APPLIED", "TECHSHIP_SCHOOL", "TECHSHIP_PROGRAMME"];
 
@@ -22,9 +25,12 @@ const schema = Joi.object({
 });
 function ProfilePage() {
   const dispatch = useDispatch();
-  const applicants = useSelector((state: any) => state.entities.applicants);
-  const contacts = useSelector((state: any) => state.entities.contacts);
-  const comments = useSelector((state: any) => state.entities.comments);
+  const navigate = useNavigate();
+  const applicants = useSelector(
+    (state: IVideoask) => state.entities.applicants
+  );
+  const contacts = useSelector((state: IContactId) => state.entities.contacts);
+  const comments = useSelector((state: IKomment) => state.entities.comments);
   const [stage, setStage] = useState<string>("");
   const {
     data: body,
@@ -52,7 +58,7 @@ function ProfilePage() {
       try {
         await GenerateKomment(params.id, body.kommentar, stage);
       } catch (error) {
-        console.log("couldnt add kommentar", error);
+        toast.error("🦄 something worng", { theme: "dark" });
       }
     }
   }
@@ -62,12 +68,23 @@ function ProfilePage() {
       dispatch(deleteComment(id));
       await handleDeleteKomment(id);
     } catch (error) {
-      toast.error("kunde inte radera!");
+      toast.error("🦄 kunde inte radera!", { theme: "dark" });
     }
   };
 
+  const handleRemoveProfile = async (id: string) => {
+    try {
+      toast.success(`🦄 User was successed removed`, { theme: "dark" });
+      window.setInterval(handleRefresh, 2000);
+    } catch (error) {
+      toast.error("🦄 Something went worng.", { theme: "dark" });
+    }
+  };
+  function handleRefresh() {
+    window.location.href = "/dashboard";
+  }
+
   console.log(applicants);
-  console.log(contacts);
 
   return (
     <>
@@ -102,28 +119,14 @@ function ProfilePage() {
                 <p className="email">{d.email}</p>
                 <p>{d.phone_number}</p>
                 <p className="status">{d.status.toUpperCase()}</p>
-                <Dropdown>
-                  <form>
-                    <select
-                      onChange={(e) => setStage(e.target.value)}
-                      value={stage}
-                    >
-                      <option value="" disabled={true}>
-                        Välj Stage
-                      </option>
-                      {StageArray.map((s, i) => (
-                        <option key={i} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
-                  </form>
-                </Dropdown>
+                <Button onClick={() => handleRemoveProfile(d.respondent_id)}>
+                  Remove Profile
+                </Button>
               </Userinfo>
               <Sidebar>
                 {contacts.map((User: any) => (
                   <>
-                    <div>
+                    <div key={User.contact_id}>
                       {User.media_url ? (
                         <ReactPlayer
                           url={User.media_url}
@@ -149,6 +152,21 @@ function ProfilePage() {
                       "kommentar...",
                       "text"
                     )}
+                    <Dropdown>
+                      <select
+                        onChange={(e) => setStage(e.target.value)}
+                        value={stage}
+                      >
+                        <option value="" disabled={true}>
+                          Välj Stage
+                        </option>
+                        {StageArray.map((s, i) => (
+                          <option key={i} value={s}>
+                            {s}
+                          </option>
+                        ))}
+                      </select>
+                    </Dropdown>
                     {renderButton("Spara")}
                   </form>
                 </div>
@@ -236,6 +254,7 @@ const Question = styled.div`
 
 const Dropdown = styled.div`
   select {
+    margin-top: 10px;
     border: none;
     padding: 10px;
     border-radius: 2rem;
@@ -264,4 +283,25 @@ const CommentStyle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const Button = styled.button`
+  cursor: pointer;
+  border: none;
+  place-self: center;
+  margin-top: 30px;
+  font-weight: bold;
+  padding: 0.8rem;
+  width: 90px;
+  border-radius: 1rem;
+  background-color: red;
+  color: white;
+  transition: width 2s;
+
+  :hover {
+    opacity: 0.8;
+  }
+  :active {
+    transform: scale(0.8);
+  }
 `;

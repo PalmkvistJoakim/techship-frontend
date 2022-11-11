@@ -94,3 +94,11 @@ export const GetDataFromVideoask = async (FormId: string) => {
     console.log(error);
   }
 };
+
+export const RemoveProfile = (id: string) => {
+  const token = localStorage.getItem("access_token");
+  const data = http.get(`http://localhost:5000/api/videoask/profile`, {
+    params: { token: token, respondentId: id },
+  });
+  return data;
+};
