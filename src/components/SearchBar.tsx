@@ -1,17 +1,40 @@
 import styled from "styled-components";
-import { useContext } from "react";
-import SearchContext from "../context/SearchContext";
-import { ISearchContext } from "../types/ISearch";
+import { useState, useEffect, ChangeEvent } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { IVideoask } from "../types/IVideoAsk";
+import { filterApplicant } from "../store/applicant";
+import { toast } from "react-toastify";
 
 function SearchBar() {
-  const { searchQuery, onChange } = useContext(SearchContext) as ISearchContext;
+  const dispatch = useDispatch();
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const applicants = useSelector(
+    (state: IVideoask) => state.entities.applicants
+  );
+  const handleChange = (searchQuery: string) => {
+    if (applicants.length === 0) {
+      setSearchQuery(searchQuery);
+      toast("🦄 ingen träff, sök på namn igen.", { theme: "light" });
+      window.setInterval(handleRefresh, 2000);
+    } else {
+      setSearchQuery(searchQuery);
+      dispatch(filterApplicant(searchQuery));
+    }
+  };
+
+  function handleRefresh() {
+    window.location.reload();
+  }
+
+  console.log(searchQuery);
   return (
     <div className="search">
       <Input
         type="text"
         placeholder="Sök..."
         value={searchQuery}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => handleChange(e.target.value)}
       />
     </div>
   );

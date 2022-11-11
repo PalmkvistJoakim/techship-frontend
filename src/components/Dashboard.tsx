@@ -3,7 +3,7 @@ import { ISort } from "../types/ISort";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import SortContext from "../context/SortContext";
-import _, { filter } from "lodash";
+import _ from "lodash";
 import {
   getAccessToken,
   GetallFormVideoask,
@@ -12,7 +12,6 @@ import {
 import { getStage } from "../services/mockStage";
 import { IStage } from "../types/IStage";
 import Main from "./Main";
-import SearchContext from "../context/SearchContext";
 import { Getkommentar } from "../services/videoaskService";
 import { useDispatch, useSelector } from "react-redux";
 import { loadApplicant } from "../store/applicant";
@@ -20,15 +19,19 @@ import { loadForm } from "../store/formvideoask";
 import { loadComment } from "../store/comment";
 import DataContext from "../context/DataContext";
 import { loadStage } from "../store/stage";
+import { IVideoask } from "../types/IVideoAsk";
 
 function Dashboard(): JSX.Element {
   const dispatch = useDispatch();
-  let applicants = useSelector((state: any) => state.entities.applicants);
+  const filterApplicants = useSelector(
+    (state: IVideoask) => state.entities.filterApplicant
+  );
+  let applicants = useSelector((state: IVideoask) => state.entities.applicants);
   const [selectedStage, setSelectedStage] = useState<IStage>({
     _id: "",
     name: "Alla Ansökningar",
   });
-  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const [sortColumn, setSortColumn] = useState<ISort>({
     path: "created_at",
     order: "desc",
@@ -44,24 +47,17 @@ function Dashboard(): JSX.Element {
         const applicants = await GetDataFromVideoask(form);
         dispatch(loadApplicant(applicants));
       }
-      async function getLoadForm() {
-        const form = await GetallFormVideoask();
-        dispatch(loadForm(form));
-      }
-      getLoadForm();
     }
+
     async function runLoadComment() {
       const comments = await Getkommentar();
       dispatch(loadComment(comments));
     }
+
     runLoadComment();
     runLoadApplicant();
     dispatch(loadStage(getStage()));
-  });
-
-  const handleSearch = (searchQuery: string) => {
-    setSearchQuery(searchQuery);
-  };
+  }, []);
 
   const handleSelectStage = (stage: IStage) => {
     setSelectedStage(stage);
@@ -87,24 +83,19 @@ function Dashboard(): JSX.Element {
   //     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
   // });
 
-  let filteredData = selectedStage._id
-    ? applicants.filter((d: any) => d.stage._id === selectedStage._id)
-    : applicants;
-  if (selectedStage.name === "Antagna") {
-    filteredData = applicants.filter((d: any) => d.stage.name !== "Ej antagen");
-  }
-  if (searchQuery) {
-    filteredData = applicants.filter((d: any) =>
-      d.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
+  // let [...filteredData] = selectedStage._id
+  //   ? applicants.filter((d: any) => d.stage._id === selectedStage._id)
+  //   : applicants;
+  // if (selectedStage.name === "Antagna") {
+  //   filteredData = applicants.filter((d: any) => d.stage.name !== "Ej antagen");
+  // }
 
   const handleSort = (sortColumn: ISort) => {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
 
   const sortedData = _.orderBy(
-    filteredData,
+    filterApplicants,
     [sortColumn.path],
     [sortColumn.order]
   );
@@ -118,21 +109,17 @@ function Dashboard(): JSX.Element {
             onSort: handleSort,
           }}
         >
-          <SearchContext.Provider
-            value={{ searchQuery, onChange: handleSearch }}
-          >
-            <SidebarGrid>
-              <Sidebar
-                //@ts-ignore
-                filteredDataCount={filteredData.length}
-                selectedStage={selectedStage}
-                onSelectStage={handleSelectStage}
-              />
-            </SidebarGrid>
-            <MainGrid>
-              <Main />
-            </MainGrid>
-          </SearchContext.Provider>
+          <SidebarGrid>
+            <Sidebar
+              //@ts-ignore
+              filteredDataCount={applicants.length}
+              selectedStage={selectedStage}
+              onSelectStage={handleSelectStage}
+            />
+          </SidebarGrid>
+          <MainGrid>
+            <Main />
+          </MainGrid>
         </SortContext.Provider>
       </DataContext.Provider>
     </Container>

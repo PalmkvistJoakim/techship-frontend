@@ -1,6 +1,7 @@
 import { IStage } from "./IStage";
 
 export interface IVideoask {
+  entities: any;
   answer_id: string;
   name: string;
   email: string;
