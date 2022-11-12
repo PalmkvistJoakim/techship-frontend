@@ -13,12 +13,12 @@ export const getAccessToken = async (code: string) => {
 export const GenerateKomment = async (
   contact_id: string,
   kommentar: string,
-  stage: string
+  categoryId: string
 ) => {
   const body = {
     contact_id: contact_id,
     kommentar: kommentar,
-    stage: stage,
+    categoryId: categoryId,
   };
   const { data } = await http.post(
     "http://localhost:5000/api/application",

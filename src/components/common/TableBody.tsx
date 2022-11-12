@@ -49,7 +49,7 @@ function TableBody({ onChange }: Props): JSX.Element {
               <TdStage>
                 {comments.map((c: any) => {
                   if (c.contact_id === applicant.contact_id) {
-                    return c.stage;
+                    return c.categoryId.name;
                   }
                 })}
               </TdStage>

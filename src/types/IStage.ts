@@ -14,9 +14,3 @@ export interface IprofileAdd {
 export interface Ikommentar {
   text: string;
 }
-
-export enum StageType {
-  applied = "APPLIED",
-  techship_school = "TECHSHIP_SCHOOL",
-  techship_program = "TECHSHIP_PROGRAMME",
-}

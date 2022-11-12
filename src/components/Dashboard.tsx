@@ -20,6 +20,7 @@ import { loadComment } from "../store/comment";
 import DataContext from "../context/DataContext";
 import { loadStage } from "../store/stage";
 import { IVideoask } from "../types/IVideoAsk";
+import { getCategoryStage } from "../services/categoryService";
 
 function Dashboard(): JSX.Element {
   const dispatch = useDispatch();
@@ -49,6 +50,11 @@ function Dashboard(): JSX.Element {
       }
     }
 
+    async function runLoadStage() {
+      const stage = await getCategoryStage();
+      dispatch(loadStage(stage));
+    }
+
     async function runLoadComment() {
       const comments = await Getkommentar();
       dispatch(loadComment(comments));
@@ -56,7 +62,7 @@ function Dashboard(): JSX.Element {
 
     runLoadComment();
     runLoadApplicant();
-    dispatch(loadStage(getStage()));
+    runLoadStage();
   }, []);
 
   const handleSelectStage = (stage: IStage) => {
