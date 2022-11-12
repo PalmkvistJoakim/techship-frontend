@@ -10,15 +10,14 @@ import { useState, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { useForm } from "../components/hooks/useForm";
-import { IprofileAdd, StageType } from "../types/IStage";
+import { IprofileAdd } from "../types/IStage";
 import Joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
 import { loadContacts } from "../store/contacts";
 import { deleteComment } from "../store/comment";
 import { toast } from "react-toastify";
 import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
-
-const StageArray = ["APPLIED", "TECHSHIP_SCHOOL", "TECHSHIP_PROGRAMME"];
+import { ICategory } from "../store/stage";
 
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
@@ -31,6 +30,7 @@ function ProfilePage() {
   );
   const contacts = useSelector((state: IContactId) => state.entities.contacts);
   const comments = useSelector((state: IKomment) => state.entities.comments);
+  const stages = useSelector((state: ICategory) => state.entities.stage);
   const [stage, setStage] = useState<string>("");
   const {
     data: body,
@@ -58,7 +58,7 @@ function ProfilePage() {
       try {
         await GenerateKomment(params.id, body.kommentar, stage);
       } catch (error) {
-        toast.error("🦄 something worng", { theme: "dark" });
+        toast.error("🦄 något gick fel.", { theme: "dark" });
       }
     }
   }
@@ -77,14 +77,14 @@ function ProfilePage() {
       toast.success(`🦄 User was successed removed`, { theme: "dark" });
       window.setInterval(handleRefresh, 2000);
     } catch (error) {
-      toast.error("🦄 Something went worng.", { theme: "dark" });
+      toast.error("🦄 något gick fel.", { theme: "dark" });
     }
   };
   function handleRefresh() {
     window.location.href = "/dashboard";
   }
 
-  console.log(applicants);
+  console.log(comments);
 
   return (
     <>
@@ -95,25 +95,6 @@ function ProfilePage() {
               <Userinfo
                 status={d.status === "completed" ? "completed" : "dropped_out"}
               >
-                <div>
-                  {comments.map((c: any) => {
-                    if (c.contact_id === params.id) {
-                      return (
-                        <CommentStyle>
-                          <div key={c._id}>
-                            {c.kommentar}{" "}
-                            <Icon
-                              className="fa-solid fa-delete-left"
-                              onClick={() => handleDelete(c._id)}
-                            />
-                          </div>
-
-                          <div> {c.stage} </div>
-                        </CommentStyle>
-                      );
-                    }
-                  })}
-                </div>
                 <h1>{d.name.toUpperCase()}</h1>
                 <p> {d.created_at}</p>
                 <p className="email">{d.email}</p>
@@ -160,16 +141,33 @@ function ProfilePage() {
                         <option value="" disabled={true}>
                           Välj Stage
                         </option>
-                        {StageArray.map((s, i) => (
-                          <option key={i} value={s}>
-                            {s}
+                        {stages.map((s: ICategory) => (
+                          <option key={s._id} value={s._id}>
+                            {s.name}
                           </option>
                         ))}
                       </select>
+                      {renderButton("Spara")}
                     </Dropdown>
-                    {renderButton("Spara")}
                   </form>
                 </div>
+                {comments.map((c: any) => {
+                  if (c.contact_id === params.id) {
+                    return (
+                      <CommentStyle>
+                        <div key={c._id}>
+                          {c.kommentar}{" "}
+                          <Icon
+                            className="fa-solid fa-delete-left"
+                            onClick={() => handleDelete(c._id)}
+                          />
+                        </div>
+
+                        <div> {c.categoryId.name} </div>
+                      </CommentStyle>
+                    );
+                  }
+                })}
               </Sidebar>
             </Continer>
           );
@@ -253,6 +251,7 @@ const Question = styled.div`
 `;
 
 const Dropdown = styled.div`
+  gap: 12px;
   select {
     margin-top: 10px;
     border: none;
@@ -283,6 +282,8 @@ const CommentStyle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 12px;
+  margin-top: 20px;
 `;
 
 const Button = styled.button`

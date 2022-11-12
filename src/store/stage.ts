@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { StageType } from "../types/IStage";
+
+export interface ICategory {
+  entities?: any;
+  _id: string;
+  name: string;
+}
 
 const slice = createSlice({
   name: "stage" as string,
-  initialState: [],
+  initialState: [] as ICategory[],
   reducers: {
     loadStage: (stage, action) => {
       return action.payload;
