@@ -27,7 +27,6 @@ function SearchBar() {
     window.location.reload();
   }
 
-  console.log(searchQuery);
   return (
     <div className="search">
       <Input

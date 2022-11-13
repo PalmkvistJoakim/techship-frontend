@@ -19,13 +19,13 @@ import { loadForm } from "../store/formvideoask";
 import { loadComment } from "../store/comment";
 import DataContext from "../context/DataContext";
 import { loadStage } from "../store/stage";
-import { IVideoask } from "../types/IVideoAsk";
+import { IKomment, IVideoask } from "../types/IVideoAsk";
 import { getCategoryStage } from "../services/categoryService";
 
 function Dashboard(): JSX.Element {
   const dispatch = useDispatch();
-  const filterApplicants = useSelector(
-    (state: IVideoask) => state.entities.filterApplicant
+  let ApplicationsFromDb = useSelector(
+    (state: IKomment) => state.entities.comments
   );
   let applicants = useSelector((state: IVideoask) => state.entities.applicants);
   const [selectedStage, setSelectedStage] = useState<IStage>({
@@ -63,45 +63,32 @@ function Dashboard(): JSX.Element {
     runLoadComment();
     runLoadApplicant();
     runLoadStage();
-  }, []);
+  }, [selectedStage._id === ""]);
 
   const handleSelectStage = (stage: IStage) => {
     setSelectedStage(stage);
   };
 
-  // //Denna är för att filtrera bort alla ansökningar utan namn
-  // applicants = applicants.filter((d: any) => d.name != null);
-
-  // //Denna är för att göra om datumet mer läsbart än det videoask skickar
-  // applicants.map(
-  //   (d: any) => (d.created_at = new Date(d.created_at).toLocaleString())
-  // );
-
-  // // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme. DEN SKA BORT NÄR VI KOPPLAT MOT DATABAS
-  // applicants.map((d: any) => {
-  //   if (applicants.indexOf(d) % 4 === 0)
-  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
-  //   if (applicants.indexOf(d) % 4 === 1)
-  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
-  //   if (applicants.indexOf(d) % 4 === 2)
-  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" };
-  //   if (applicants.indexOf(d) % 4 === 3)
-  //     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
-  // });
-
-  // let [...filteredData] = selectedStage._id
-  //   ? applicants.filter((d: any) => d.stage._id === selectedStage._id)
-  //   : applicants;
-  // if (selectedStage.name === "Antagna") {
-  //   filteredData = applicants.filter((d: any) => d.stage.name !== "Ej antagen");
-  // }
-
   const handleSort = (sortColumn: ISort) => {
     setSortColumn({ path: sortColumn.path, order: sortColumn.order });
   };
 
+  let filteredApplicants: any;
+  if (selectedStage._id) {
+    let NewApplicationsFromDb = ApplicationsFromDb.filter(
+      (application: any) => application.stage === selectedStage.name
+    );
+    NewApplicationsFromDb.map((a: any) => {
+      filteredApplicants = applicants.filter(
+        (applicant: any) => applicant.contact_id === a.contact_id
+      );
+    });
+    //Om du avkommenterar dispatch här unde så blir det kaos med reload haha
+    // dispatch(loadApplicant(filteredApplicants));
+  }
+
   const sortedData = _.orderBy(
-    filterApplicants,
+    applicants,
     [sortColumn.path],
     [sortColumn.order]
   );
@@ -154,3 +141,30 @@ const MainGrid = styled.div`
   margin: 0%;
   background-color: black;
 `;
+
+// //Denna är för att filtrera bort alla ansökningar utan namn
+// applicants = applicants.filter((d: any) => d.name != null);
+
+// //Denna är för att göra om datumet mer läsbart än det videoask skickar
+// applicants.map(
+//   (d: any) => (d.created_at = new Date(d.created_at).toLocaleString())
+// );
+
+// // Denna är till för att lägga till properties stage. Den sätter var tredje ej antagen, techship School, techship programme. DEN SKA BORT NÄR VI KOPPLAT MOT DATABAS
+// applicants.map((d: any) => {
+//   if (applicants.indexOf(d) % 4 === 0)
+//     d.stage = { _id: "5b21ca3eeb7f6fbccd471822", name: "Techship Programme" };
+//   if (applicants.indexOf(d) % 4 === 1)
+//     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
+//   if (applicants.indexOf(d) % 4 === 2)
+//     d.stage = { _id: "5b21ca3eeb7f6fbccd471826", name: "Techship School" };
+//   if (applicants.indexOf(d) % 4 === 3)
+//     d.stage = { _id: "5b21ca3eeb7f6fbccd471820", name: "Ej antagen" };
+// });
+
+// let [...filteredData] = selectedStage._id
+//   ? applicants.filter((d: any) => d.stage._id === selectedStage._id)
+//   : applicants;
+// if (selectedStage.name === "Antagna") {
+//   filteredData = applicants.filter((d: any) => d.stage.name !== "Ej antagen");
+// }
