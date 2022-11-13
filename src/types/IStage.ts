@@ -1,6 +1,7 @@
 export interface IStage {
   _id: string;
   name: string;
+  entities?: any;
 }
 
 export interface IStagee {

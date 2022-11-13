@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
   GenerateKomment,
+  GetDataFromVideoask,
   GetUserIdVideoask,
   handleDeleteKomment,
   RemoveProfile,
@@ -18,6 +19,7 @@ import { deleteComment } from "../store/comment";
 import { toast } from "react-toastify";
 import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
 import { ICategory } from "../store/stage";
+import { loadApplicant } from "../store/applicant";
 
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
@@ -50,13 +52,23 @@ function ProfilePage() {
       const contacts = await GetUserIdVideoask(params.id);
       dispatch(loadContacts(contacts));
     }
+    async function runLoadApplicant() {
+      const form = localStorage.getItem("form");
+      if (form) {
+        const applicants = await GetDataFromVideoask(form);
+        dispatch(loadApplicant(applicants));
+      }
+    }
+    runLoadApplicant();
     handleUserInfo();
-  }, []);
+  }, [dispatch]);
 
   async function doSubmit() {
     if (params.id) {
       try {
         await GenerateKomment(params.id, body.kommentar, stage);
+        toast.success(`🦄 Success.`, { theme: "dark" });
+        window.setInterval(handleRefresh, 2000);
       } catch (error) {
         toast.error("🦄 något gick fel.", { theme: "dark" });
       }

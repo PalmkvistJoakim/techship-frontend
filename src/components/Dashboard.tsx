@@ -21,6 +21,7 @@ import DataContext from "../context/DataContext";
 import { loadStage } from "../store/stage";
 import { IVideoask } from "../types/IVideoAsk";
 import { getCategoryStage } from "../services/categoryService";
+import ProfilePage from "./ProfilePage";
 
 function Dashboard(): JSX.Element {
   const dispatch = useDispatch();
@@ -125,6 +126,7 @@ function Dashboard(): JSX.Element {
           </SidebarGrid>
           <MainGrid>
             <Main />
+            <ProfilePage />
           </MainGrid>
         </SortContext.Provider>
       </DataContext.Provider>

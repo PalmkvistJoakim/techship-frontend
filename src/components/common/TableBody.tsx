@@ -37,13 +37,22 @@ function TableBody({ onChange }: Props): JSX.Element {
               <TdName>
                 <Link
                   to={`/dashboard/${applicant.contact_id}`}
-                  style={{ color: "#58eac1", textDecoration: "none" }}
+                  style={{
+                    color: "white",
+                    textDecoration: "none",
+                    fontSize: "17px",
+                  }}
                 >
                   {applicant.name}
                 </Link>
               </TdName>
-              <TdCreated>
-                {applicant.created_at} ({applicant.status})
+              <TdCreated
+                status={
+                  applicant.status === "completed" ? "completed" : "dropped_out"
+                }
+              >
+                <p className="status">{applicant.status.toUpperCase()} </p>
+                {applicant.created_at}{" "}
               </TdCreated>
 
               <TdStage>
@@ -65,6 +74,10 @@ function TableBody({ onChange }: Props): JSX.Element {
 }
 
 export default TableBody;
+
+interface StausColor {
+  status: "dropped_out" | "idle" | "completed";
+}
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -110,13 +123,17 @@ const TdName = styled.td`
   font-size: 1.5rem;
 `;
 
-const TdCreated = styled.td`
+const TdCreated = styled.td<StausColor>`
   grid-area: created;
   display: grid;
   grid-template-rows: 100%;
   font-size: x-small;
   font-weight: 100;
   font-size: 0.8rem;
+
+  .status {
+    color: ${(props) => (props.status === "completed" ? "green" : "red")};
+  }
 `;
 
 const TdStage = styled.td`

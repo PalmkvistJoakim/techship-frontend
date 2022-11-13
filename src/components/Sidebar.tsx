@@ -12,7 +12,7 @@ interface Props {
 
 function Sidebar({ selectedStage, onSelectStage, filteredDataCount }: Props) {
   const navigate = useNavigate();
-  const stage = useSelector((state: any) => state.entities.stage);
+  const stage = useSelector((state: IStage) => state.entities.stage);
 
   return (
     <Container>

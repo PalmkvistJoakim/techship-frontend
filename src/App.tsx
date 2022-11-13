@@ -20,7 +20,7 @@ function App() {
 
   return (
     <>
-      {token === "Bearer null" ? <></> : <Navbar />}
+      <Navbar />
       <Routes>
         <Route path="/dashboard/:id" element={<ProfilePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
