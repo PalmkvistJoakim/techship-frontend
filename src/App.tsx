@@ -8,6 +8,7 @@ import { http } from "./services/httpService";
 import { getAccessToken } from "./services/videoaskService";
 import ProfilePage from "./components/ProfilePage";
 import Navbar from "./components/Navbar";
+import MailForm from "./components/MailForm";
 
 function App() {
   useEffect(() => {
@@ -22,8 +23,9 @@ function App() {
     <>
       {token === "Bearer null" ? <></> : <Navbar />}
       <Routes>
-        <Route path="/dashboard/:id" element={<ProfilePage />} />
+        <Route path="/dashboard/:id" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/mail" element={<MailForm />} />
         <Route path="/logout" element={<LogoutForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={!token ? <LoginForm /> : <Dashboard />} />
