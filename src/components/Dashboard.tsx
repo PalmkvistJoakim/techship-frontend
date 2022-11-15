@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import { ISort } from "../types/ISort";
 import styled from "styled-components";
-import Sidebar from "./Sidebar";
-import SortContext from "../context/SortContext";
 import _ from "lodash";
 import {
   getAccessToken,
   GetallFormVideoask,
   GetDataFromVideoask,
 } from "../services/videoaskService";
-import { getStage } from "../services/mockStage";
 import { IStage } from "../types/IStage";
 import Main from "./Main";
 import { Getkommentar } from "../services/videoaskService";
 import { useDispatch, useSelector } from "react-redux";
-import { loadApplicant } from "../store/applicant";
+import { loadApplicant, listGroupApplicant } from "../store/applicant";
 import { loadForm } from "../store/formvideoask";
 import { loadComment } from "../store/comment";
-import DataContext from "../context/DataContext";
 import { loadStage } from "../store/stage";
 import { IKomment, IVideoask } from "../types/IVideoAsk";
 import { getCategoryStage } from "../services/categoryService";
@@ -31,11 +26,6 @@ function Dashboard(): JSX.Element {
   const [selectedStage, setSelectedStage] = useState<IStage>({
     _id: "",
     name: "Alla Ansökningar",
-  });
-
-  const [sortColumn, setSortColumn] = useState<ISort>({
-    path: "created_at",
-    order: "desc",
   });
 
   useEffect(() => {
@@ -69,52 +59,18 @@ function Dashboard(): JSX.Element {
     setSelectedStage(stage);
   };
 
-  const handleSort = (sortColumn: ISort) => {
-    setSortColumn({ path: sortColumn.path, order: sortColumn.order });
-  };
-
-  let filteredApplicants: any;
   if (selectedStage._id) {
-    let NewApplicationsFromDb = ApplicationsFromDb.filter(
-      (application: any) => application.stage === selectedStage.name
-    );
-    NewApplicationsFromDb.map((a: any) => {
-      filteredApplicants = applicants.filter(
-        (applicant: any) => applicant.contact_id === a.contact_id
-      );
-    });
-    //Om du avkommenterar dispatch här unde så blir det kaos med reload haha
-    // dispatch(loadApplicant(filteredApplicants));
+    const stage = selectedStage.name;
+    dispatch(listGroupApplicant({ stage, ApplicationsFromDb }));
   }
-
-  const sortedData = _.orderBy(
-    applicants,
-    [sortColumn.path],
-    [sortColumn.order]
-  );
+  console.log("applicants", applicants);
+  console.log("stage", selectedStage.name);
 
   return (
     <Container>
-      <DataContext.Provider value={sortedData}>
-        <SortContext.Provider
-          value={{
-            sortColumn,
-            onSort: handleSort,
-          }}
-        >
-          <SidebarGrid>
-            <Sidebar
-              //@ts-ignore
-              filteredDataCount={applicants.length}
-              selectedStage={selectedStage}
-              onSelectStage={handleSelectStage}
-            />
-          </SidebarGrid>
-          <MainGrid>
-            <Main />
-          </MainGrid>
-        </SortContext.Provider>
-      </DataContext.Provider>
+      <MainGrid>
+        <Main />
+      </MainGrid>
     </Container>
   );
 }
@@ -123,18 +79,10 @@ export default Dashboard;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: min(21rem) min(28rem) min(57.5rem);
-  grid-template-areas: "sidebar main profilepage";
+  grid-template-columns: min(28rem) min(57.5rem);
+  grid-template-areas: "main profilepage";
 `;
 
-const SidebarGrid = styled.div`
-  grid-area: sidebar;
-  grid-template-columns: 1fr;
-  display: grid;
-  background-color: black;
-  /* border: solid red 4px; */
-  margin: 0%;
-`;
 const MainGrid = styled.div`
   grid-area: main;
   /* border: solid red 4px; */

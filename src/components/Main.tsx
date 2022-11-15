@@ -2,12 +2,8 @@ import SearchBar from "./SearchBar";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { ChangeEvent } from "react";
-import TableHeader from "./common/TableHeader";
 import TableBody from "./common/TableBody";
-import {
-  GetallFormVideoask,
-  GetDataFromVideoask,
-} from "../services/videoaskService";
+import { GetallFormVideoask } from "../services/videoaskService";
 import { useSelector, useDispatch } from "react-redux";
 import { loadForm } from "../store/formvideoask";
 
@@ -16,6 +12,8 @@ function Main() {
   const forms = useSelector((state: any) => state.entities.forms);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
+
+  const stage = useSelector((state: any) => state.entities.stage);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -57,11 +55,14 @@ function Main() {
           ))}
         </select>
         <button type="submit"> Hämta </button>
+        <select>
+          {stage.map((s: any) => (
+            <option key={s._id}>{s.name}</option>
+          ))}
+        </select>
       </form>
       <HeadCss>
-        <SendMail href={`mailto:?bcc=${checkEmail}`}>Sänd mejl</SendMail>
         <SearchBar />
-        <TableHeader />
       </HeadCss>
       <TableBody onChange={handleChange} />
     </Container>
@@ -113,29 +114,6 @@ const Container = styled.div`
         transform: scale(0.8);
       }
     }
-  }
-`;
-
-const SendMail = styled.a`
-  grid-template-columns: 1fr;
-  background-color: #58eac1;
-  border-radius: 1rem;
-  width: 6rem;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-  color: black;
-  text-decoration: none;
-  justify-content: center;
-  :hover {
-    opacity: 0.8;
-  }
-  :active {
-    transform: scale(0.8);
-  }
-  @media (width < 600px) {
-    width: auto;
-    margin-right: 30px;
   }
 `;
 

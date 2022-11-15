@@ -15,8 +15,22 @@ const slice = createSlice({
         applicant.name.toLowerCase().startsWith(action.payload.toLowerCase())
       );
     },
+    listGroupApplicant: (applicants, action) => {
+      let filteredApplicants;
+      let NewApplicationsFromDb = action.payload.ApplicationsFromDb.filter(
+        (application: any) =>
+          application.categoryId.name === action.payload.stage
+      );
+      console.log("NewApplicationsFromDb", NewApplicationsFromDb);
+      return NewApplicationsFromDb.map((a: any) => {
+        filteredApplicants = applicants.filter(
+          (applicant: any) => applicant.contact_id === a.contact_id
+        );
+      });
+    },
   },
 });
 
-export const { loadApplicant, filterApplicant } = slice.actions;
+export const { loadApplicant, filterApplicant, listGroupApplicant } =
+  slice.actions;
 export default slice.reducer;
