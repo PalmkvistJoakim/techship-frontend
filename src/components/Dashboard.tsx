@@ -16,6 +16,8 @@ import { loadComment } from "../store/comment";
 import { loadStage } from "../store/stage";
 import { IKomment, IVideoask } from "../types/IVideoAsk";
 import { getCategoryStage } from "../services/categoryService";
+import MailForm from "./MailForm";
+import ProfilePage from "./ProfilePage";
 
 function Dashboard(): JSX.Element {
   const dispatch = useDispatch();
@@ -67,11 +69,19 @@ function Dashboard(): JSX.Element {
   console.log("stage", selectedStage.name);
 
   return (
-    <Container>
-      <MainGrid>
-        <Main />
-      </MainGrid>
-    </Container>
+    <>
+      <Container>
+        <MainGrid>
+          <Main />
+        </MainGrid>
+        <ProfilePageStyle>
+          <h1 style={{ color: "red", fontSize: "20px" }}>
+            Radera inte checkboxerna på tabellen jag försöker nåt med mail
+          </h1>
+          <ProfilePage />
+        </ProfilePageStyle>
+      </Container>
+    </>
   );
 }
 
@@ -88,6 +98,13 @@ const MainGrid = styled.div`
   /* border: solid red 4px; */
   margin: 0%;
   background-color: black;
+`;
+
+const ProfilePageStyle = styled.div`
+  grid-area: profilepage;
+  display: flex;
+  flex-direction: column;
+  margin-left: 5rem;
 `;
 
 // //Denna är för att filtrera bort alla ansökningar utan namn
