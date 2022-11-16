@@ -73,7 +73,7 @@ const Container = styled.div`
   border-collapse: collapse;
   width: 100%;
   overflow-y: scroll;
-  max-height: 36.5rem;
+  max-height: 30rem;
 `;
 
 const Tr = styled.tr`

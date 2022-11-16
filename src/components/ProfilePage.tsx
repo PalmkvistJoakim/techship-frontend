@@ -91,7 +91,7 @@ function ProfilePage() {
       {applicants.map((d: any) => {
         if (params.id === d.contact_id)
           return (
-            <Continer>
+            <Container>
               <Userinfo
                 status={d.status === "completed" ? "completed" : "dropped_out"}
               >
@@ -100,39 +100,12 @@ function ProfilePage() {
                 <p className="email">{d.email}</p>
                 <p>{d.phone_number}</p>
                 <p className="status">{d.status.toUpperCase()}</p>
-                <Button onClick={() => handleRemoveProfile(d.respondent_id)}>
+                {/* <Button onClick={() => handleRemoveProfile(d.respondent_id)}>
                   Remove Profile
-                </Button>
-              </Userinfo>
-              <Sidebar>
-                {contacts.map((User: any) => (
-                  <>
-                    <div key={User.contact_id}>
-                      {User.media_url ? (
-                        <ReactPlayer
-                          url={User.media_url}
-                          controls={true}
-                          width="300px"
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <Question>
-                      <ul>
-                        <li> {User.input_text}</li>
-                      </ul>
-                    </Question>
-                  </>
-                ))}
+                </Button> */}
                 <div className="form">
                   <form onSubmit={handleSubmit(doSubmit)}>
-                    {renderInput(
-                      "kommentar",
-                      "Fyll i ditt kommentar",
-                      "kommentar...",
-                      "text"
-                    )}
+                    {renderInput("kommentar", "Kommentar...", "text")}
                     <Dropdown>
                       <select
                         onChange={(e) => setStage(e.target.value)}
@@ -156,7 +129,7 @@ function ProfilePage() {
                     return (
                       <CommentStyle>
                         <div key={c._id}>
-                          {c.kommentar}{" "}
+                          {c.kommentar}
                           <Icon
                             className="fa-solid fa-delete-left"
                             onClick={() => handleDelete(c._id)}
@@ -168,8 +141,25 @@ function ProfilePage() {
                     );
                   }
                 })}
-              </Sidebar>
-            </Continer>
+              </Userinfo>
+              <Question>
+                {contacts.map((User: any) => (
+                  <>
+                    {User.media_url ? (
+                      <li>
+                        <ReactPlayer
+                          url={User.media_url}
+                          controls={true}
+                          width="300px"
+                        />
+                      </li>
+                    ) : (
+                      <li key={User.contact_id}> {User?.input_text}</li>
+                    )}
+                  </>
+                ))}
+              </Question>
+            </Container>
           );
       })}
     </>
@@ -182,22 +172,21 @@ interface StausColor {
   status: "dropped_out" | "idle" | "completed";
 }
 
-const Continer = styled.div`
+const Container = styled.div`
   display: grid;
-  grid-template-columns: 20% 80%;
-  grid-template-areas:
-    "userinfo sidebar sidebar"
-    "userinfo sidebar sidebar ";
+  grid-template-columns: 20rem 48rem;
+  grid-template-areas: "userinfo answer";
 `;
 const Userinfo = styled.div<StausColor>`
   grid-area: userinfo;
-  display: flex;
-  flex-direction: column;
+  display: block;
   justify-content: center;
-  gap: 20px;
-  align-items: center;
+  justify-self: center;
   list-style: none;
   font-weight: bold;
+  max-height: 60rem;
+  line-height: 3rem;
+
   h1 {
     font-size: 20px;
   }
@@ -212,46 +201,45 @@ const Userinfo = styled.div<StausColor>`
     &.status {
       color: ${(props) => (props.status === "completed" ? "green" : "red")};
     }
-  }
-`;
-
-const Sidebar = styled.div`
-  grid-area: sidebar;
-  height: 100vh;
-
-  div {
-    display: flex;
-    justify-content: center;
-  }
-
-  .form {
-    form {
+    div {
       display: flex;
-      flex-direction: column;
       justify-content: center;
-      align-items: center;
+    }
+
+    .form {
+      form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 `;
 
-const Question = styled.div`
-  ul {
-    display: flex;
-    list-style: none;
-    flex-direction: column;
-    margin-right: 20px;
-    justify-content: space-between;
-    font-weight: bold;
+const Question = styled.ul`
+  grid-area: answer;
+  flex-direction: row;
+  text-align: left;
+  justify-content: center;
+  overflow-y: scroll;
+  max-height: 40rem;
+  display: grid;
+  list-style: none;
+  row-gap: 2rem;
+  font-weight: bold;
 
-    li {
-      margin-top: 5rem;
-      font-size: 1.3rem;
-    }
+  li {
+    font-size: 1.3rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
   }
 `;
 
 const Dropdown = styled.div`
+  display: grid;
   gap: 12px;
+  justify-content: center;
   select {
     margin-top: 10px;
     border: none;
@@ -286,23 +274,23 @@ const CommentStyle = styled.div`
   margin-top: 20px;
 `;
 
-const Button = styled.button`
-  cursor: pointer;
-  border: none;
-  place-self: center;
-  margin-top: 30px;
-  font-weight: bold;
-  padding: 0.8rem;
-  width: 90px;
-  border-radius: 1rem;
-  background-color: red;
-  color: white;
-  transition: width 2s;
+// const Button = styled.button`
+//   cursor: pointer;
+//   border: none;
+//   place-self: center;
+//   margin-top: 30px;
+//   font-weight: bold;
+//   padding: 0.8rem;
+//   width: 90px;
+//   border-radius: 1rem;
+//   background-color: red;
+//   color: white;
+//   transition: width 2s;
 
-  :hover {
-    opacity: 0.8;
-  }
-  :active {
-    transform: scale(0.8);
-  }
-`;
+//   :hover {
+//     opacity: 0.8;
+//   }
+//   :active {
+//     transform: scale(0.8);
+//   }
+// `;

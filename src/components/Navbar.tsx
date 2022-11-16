@@ -7,7 +7,7 @@ const Navbar = () => {
   const token = localStorage.getItem("access_token");
   return (
     <>
-      <Continer>
+      <Container>
         {token === "Bearer null" ? (
           <></>
         ) : (
@@ -21,14 +21,14 @@ const Navbar = () => {
             </List>
           </>
         )}
-      </Continer>
+      </Container>
     </>
   );
 };
 
 export default Navbar;
 
-const Continer = styled.div`
+const Container = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 10px;

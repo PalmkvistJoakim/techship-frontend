@@ -66,15 +66,13 @@ export function useForm<FormData>(
 
   function renderInput(
     name: keyof FormData,
-    label: string,
     placeholder: string,
     type: string
   ): JSX.Element {
     return (
       <>
-        <Label>{label}</Label>
         <Input
-          placeholder={placeholder.toUpperCase()}
+          placeholder={placeholder}
           type={type}
           name={name as string}
           value={data[name] as string}
@@ -117,9 +115,10 @@ const Button = styled.button`
   margin-top: 10px;
   margin-bottom: 10px;
   align-self: center;
+  justify-self: center;
   width: 8rem;
   border: none;
-  padding: 10px;
+  padding: 8px;
   color: black;
   font-weight: bold;
   border-radius: 2rem;
@@ -134,8 +133,9 @@ const Button = styled.button`
 `;
 
 const Input = styled.input`
+  display: flex;
   border: none;
-  width: 30rem;
+  width: 16rem;
   border-radius: 20px;
   margin-top: 10px;
   padding: 10px;
