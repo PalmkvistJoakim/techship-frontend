@@ -6,6 +6,9 @@ import TableBody from "./common/TableBody";
 import { GetallFormVideoask } from "../services/videoaskService";
 import { useSelector, useDispatch } from "react-redux";
 import { loadForm } from "../store/formvideoask";
+import MailForm from "./MailForm";
+import { Link } from "react-router-dom";
+import { getEmails } from "../store/contacts";
 
 function Main() {
   const dispatch = useDispatch();
@@ -65,6 +68,31 @@ function Main() {
         <SearchBar />
       </HeadCss>
       <TableBody onChange={handleChange} />
+      {checkEmail ? (
+        <Email to="/mail" onClick={() => dispatch(getEmails(checkEmail))}>
+          SÄND
+          <i
+            className="fa-solid fa-envelope"
+            style={{
+              fontSize: "18px",
+              backgroundColor: "black",
+              marginLeft: "10px",
+            }}
+          ></i>
+        </Email>
+      ) : (
+        <Text>
+          {" "}
+          <i
+            className="fa-solid fa-arrow-up"
+            style={{
+              fontSize: "12px",
+              marginRight: "10px",
+            }}
+          ></i>
+          VÄLJ MEJL
+        </Text>
+      )}
     </Container>
   );
 }
@@ -74,10 +102,11 @@ export default Main;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 1rem;
 
   form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     gap: 1rem;
     select {
@@ -122,4 +151,27 @@ const HeadCss = styled.div`
   justify-content: space-around;
   align-items: center;
   margin-top: 1rem;
+`;
+
+const Email = styled(Link)`
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  opacity: 0.6;
+  text-decoration: double underline red;
+  cursor: pointer;
+
+  :hover {
+    opacity: 1;
+  }
+  :active {
+    transform: scale(1.3);
+  }
+`;
+
+const Text = styled.div`
+  margin-left: 10px;
 `;

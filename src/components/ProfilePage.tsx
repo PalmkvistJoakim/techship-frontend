@@ -2,14 +2,14 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
   GenerateKomment,
+  GetDataFromVideoask,
   GetUserIdVideoask,
   handleDeleteKomment,
   RemoveProfile,
 } from "../services/videoaskService";
-import { useState, useEffect, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
-import { useForm } from "../components/hooks/useForm";
+import { useForm } from "../hooks/useForm";
 import { IprofileAdd } from "../types/IStage";
 import Joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,19 +18,20 @@ import { deleteComment } from "../store/comment";
 import { toast } from "react-toastify";
 import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
 import { ICategory } from "../store/stage";
+import { loadApplicant } from "../store/applicant";
 
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
 });
 function ProfilePage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const applicants = useSelector(
     (state: IVideoask) => state.entities.applicants
   );
   const contacts = useSelector((state: IContactId) => state.entities.contacts);
   const comments = useSelector((state: IKomment) => state.entities.comments);
   const stages = useSelector((state: ICategory) => state.entities.stage);
+  const [answers, setAnswers] = useState<IContactId>();
   const [stage, setStage] = useState<string>("");
   const {
     data: body,
@@ -49,14 +50,25 @@ function ProfilePage() {
     async function handleUserInfo() {
       const contacts = await GetUserIdVideoask(params.id);
       dispatch(loadContacts(contacts));
+      setAnswers(contacts);
     }
+
+    async function runLoadApplicant() {
+      const form = localStorage.getItem("form");
+      if (form) {
+        const applicants = await GetDataFromVideoask(form);
+        dispatch(loadApplicant(applicants));
+      }
+    }
+    runLoadApplicant();
     handleUserInfo();
-  }, []);
+  }, []); //answers
 
   async function doSubmit() {
-    if (params.id) {
+    const { id } = params;
+    if (id) {
       try {
-        await GenerateKomment(params.id, body.kommentar, stage);
+        await GenerateKomment(id, body.kommentar, stage);
       } catch (error) {
         toast.error("🦄 något gick fel.", { theme: "dark" });
       }
@@ -65,11 +77,11 @@ function ProfilePage() {
 
   const handleDelete = async (id: string) => {
     try {
-      dispatch(deleteComment(id));
       await handleDeleteKomment(id);
     } catch (error) {
       toast.error("🦄 kunde inte radera!", { theme: "dark" });
     }
+    dispatch(deleteComment(id));
   };
 
   const handleRemoveProfile = async (id: string) => {
@@ -84,11 +96,9 @@ function ProfilePage() {
     window.location.href = "/dashboard";
   }
 
-  console.log(comments);
-
   return (
     <>
-      {applicants.map((d: any) => {
+      {applicants.map((d: IVideoask) => {
         if (params.id === d.contact_id)
           return (
             <Container>
@@ -97,7 +107,7 @@ function ProfilePage() {
               >
                 <h1>{d.name.toUpperCase()}</h1>
                 <p> {d.created_at}</p>
-                <p className="email">{d.email}</p>
+                <p className="email"> {d.email}</p>
                 <p>{d.phone_number}</p>
                 <p className="status">{d.status.toUpperCase()}</p>
                 {/* <Button onClick={() => handleRemoveProfile(d.respondent_id)}>

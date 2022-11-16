@@ -8,9 +8,7 @@ const Navbar = () => {
   return (
     <>
       <Container>
-        {token === "Bearer null" ? (
-          <></>
-        ) : (
+        {token ? (
           <>
             <Logo>
               <Techship width={"60px"} height={"50px"} />
@@ -19,6 +17,12 @@ const Navbar = () => {
               <button onClick={() => navigate("/dashboard")}>Dashboard</button>
               <button onClick={() => navigate("/logout")}>Logout</button>
             </List>
+          </>
+        ) : (
+          <>
+            <Logo>
+              <Techship width={"60px"} height={"50px"} />
+            </Logo>
           </>
         )}
       </Container>

@@ -16,6 +16,7 @@ import { loadComment } from "../store/comment";
 import { loadStage } from "../store/stage";
 import { IKomment, IVideoask } from "../types/IVideoAsk";
 import { getCategoryStage } from "../services/categoryService";
+import MailForm from "./MailForm";
 import ProfilePage from "./ProfilePage";
 
 function Dashboard(): JSX.Element {
@@ -30,7 +31,7 @@ function Dashboard(): JSX.Element {
   });
 
   useEffect(() => {
-    if (localStorage.getItem("access_token") === "Bearer null") {
+    if (!localStorage.getItem("access_token")) {
       getAccessToken(window.location.search);
     }
     async function runLoadApplicant() {
@@ -54,7 +55,7 @@ function Dashboard(): JSX.Element {
     runLoadComment();
     runLoadApplicant();
     runLoadStage();
-  }, [selectedStage._id === ""]);
+  }, []);
 
   const handleSelectStage = (stage: IStage) => {
     setSelectedStage(stage);

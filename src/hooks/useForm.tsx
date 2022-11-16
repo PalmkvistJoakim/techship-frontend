@@ -41,6 +41,15 @@ export function useForm<FormData>(
     setData({ ...data });
     console.log(data);
   }
+  function handleChangeText({
+    target: input,
+  }: ChangeEvent<HTMLTextAreaElement>) {
+    setData((prevState) => ({
+      ...prevState,
+      [input.name]: input.value,
+    }));
+    console.log(data);
+  }
 
   function validateProperty({ name, value }: HTMLInputElement) {
     const subSchema = schema.extract(name);
@@ -82,6 +91,23 @@ export function useForm<FormData>(
       </>
     );
   }
+  function renderTextArea(
+    name: keyof FormData,
+    label: string,
+    placeholder: string
+  ): JSX.Element {
+    return (
+      <>
+        <textarea
+          placeholder={placeholder.toUpperCase()}
+          name={name as string}
+          value={data[name] as string}
+          onChange={handleChangeText}
+        />
+        {errors[name] && <ErrorMsg>{errors[name]}</ErrorMsg>}
+      </>
+    );
+  }
 
   function renderButton(label: string): JSX.Element {
     return <Button disabled={!!validate()}>{label}</Button>;
@@ -93,6 +119,7 @@ export function useForm<FormData>(
     handleSubmit,
     renderButton,
     renderInput,
+    renderTextArea,
   };
 }
 
