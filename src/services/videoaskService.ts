@@ -7,7 +7,7 @@ export const handleLogin = () => {
 export const getAccessToken = async (code: string) => {
   let parameters = new URLSearchParams(code);
   const Code = parameters.get("home");
-  localStorage.setItem("access_token", `Bearer ${Code}`);
+  localStorage.setItem("access_token", `${Code}`);
 };
 
 export const GenerateKomment = async (
@@ -41,7 +41,7 @@ export const GetUserIdVideoask = async (id: string | undefined) => {
     `https://api.videoask.com/forms/${form}/contacts/${id}?include_answers=true&all_answers_transcoded=true`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
@@ -55,7 +55,7 @@ export const GetQuestionById = async (id: string) => {
   const token = localStorage.getItem("access_token");
   const { data } = await http.get(`https://api.videoask.com/questions/${id}`, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
       "organization-id": "ea431fe4-8776-4ca5-b512-3fcc8a8e9c32",
     },
   });
@@ -84,7 +84,7 @@ export const GetDataFromVideoask = async (FormId: string) => {
     `https://api.videoask.com/forms/${FormId}/contacts?limit=200&offset=0`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
     }
   );

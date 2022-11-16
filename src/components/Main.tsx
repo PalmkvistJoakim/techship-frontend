@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loadForm } from "../store/formvideoask";
 import MailForm from "./MailForm";
 import { Link } from "react-router-dom";
+import { getEmails } from "../store/contacts";
 
 function Main() {
   const dispatch = useDispatch();
@@ -67,17 +68,31 @@ function Main() {
         <SearchBar />
       </HeadCss>
       <TableBody onChange={handleChange} />
-      <Email to="/mail">
-        SEND EMAILS
-        <i
-          className="fa-solid fa-envelope"
-          style={{
-            fontSize: "18px",
-            backgroundColor: "black",
-            marginLeft: "10px",
-          }}
-        ></i>
-      </Email>
+      {checkEmail ? (
+        <Email to="/mail" onClick={() => dispatch(getEmails(checkEmail))}>
+          SÄND
+          <i
+            className="fa-solid fa-envelope"
+            style={{
+              fontSize: "18px",
+              backgroundColor: "black",
+              marginLeft: "10px",
+            }}
+          ></i>
+        </Email>
+      ) : (
+        <Text>
+          {" "}
+          <i
+            className="fa-solid fa-arrow-up"
+            style={{
+              fontSize: "12px",
+              marginRight: "10px",
+            }}
+          ></i>
+          VÄLJ MEJL
+        </Text>
+      )}
     </Container>
   );
 }
@@ -155,4 +170,8 @@ const Email = styled(Link)`
   :active {
     transform: scale(1.3);
   }
+`;
+
+const Text = styled.div`
+  margin-left: 10px;
 `;

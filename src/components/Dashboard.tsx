@@ -31,7 +31,7 @@ function Dashboard(): JSX.Element {
   });
 
   useEffect(() => {
-    if (localStorage.getItem("access_token") === "Bearer null") {
+    if (!localStorage.getItem("access_token")) {
       getAccessToken(window.location.search);
     }
     async function runLoadApplicant() {
@@ -55,7 +55,7 @@ function Dashboard(): JSX.Element {
     runLoadComment();
     runLoadApplicant();
     runLoadStage();
-  }, [selectedStage._id === ""]);
+  }, []);
 
   const handleSelectStage = (stage: IStage) => {
     setSelectedStage(stage);
@@ -75,9 +75,6 @@ function Dashboard(): JSX.Element {
           <Main />
         </MainGrid>
         <ProfilePageStyle>
-          <h1 style={{ color: "red", fontSize: "20px" }}>
-            Radera inte checkboxerna på tabellen jag försöker nåt med mail
-          </h1>
           <ProfilePage />
         </ProfilePageStyle>
       </Container>

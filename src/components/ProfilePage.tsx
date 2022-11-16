@@ -7,10 +7,9 @@ import {
   handleDeleteKomment,
   RemoveProfile,
 } from "../services/videoaskService";
-import { useState, useEffect, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
-import { useForm } from "../components/hooks/useForm";
+import { useForm } from "../hooks/useForm";
 import { IprofileAdd } from "../types/IStage";
 import Joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
@@ -63,7 +62,7 @@ function ProfilePage() {
     }
     runLoadApplicant();
     handleUserInfo();
-  }, []);
+  }, []); //answers
 
   async function doSubmit() {
     const { id } = params;
@@ -229,7 +228,7 @@ const Userinfo = styled.div<StausColor>`
 const Sidebar = styled.div`
   grid-area: sidebar;
   height: 100vh;
-  margin-left: 3rem;
+  margin-left: 20rem;
 
   div {
     display: flex;
