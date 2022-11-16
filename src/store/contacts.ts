@@ -8,9 +8,12 @@ const slice = createSlice({
     loadContacts: (contacts, action) => {
       return action.payload;
     },
+    getEmails: (sate, action) => {
+      return action.payload;
+    },
   },
 });
 
 export default slice.reducer;
 
-export const { loadContacts } = slice.actions;
+export const { loadContacts, getEmails } = slice.actions;

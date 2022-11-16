@@ -1,11 +1,8 @@
 import Joi from "joi";
-import { ChangeEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SendEmail } from "../services/mejlService";
-import { ICategory } from "../store/stage";
-import { useForm } from "./hooks/useForm";
-import { useParams } from "react-router-dom";
+import { useForm } from "../hooks/useForm";
 
 interface IMail {
   subject: string;
@@ -18,8 +15,8 @@ const schema = Joi.object({
 });
 
 const MailForm = () => {
-  const params = useParams();
-  const [checkEmail, setCheck] = useState<string | string[]>("");
+  const allMail = useSelector((state: any) => state.entities.contacts);
+
   const { data, renderInput, renderButton, handleSubmit, renderTextArea } =
     useForm<IMail>(
       {
@@ -32,7 +29,7 @@ const MailForm = () => {
   async function doSubmit() {
     try {
       const res = await SendEmail({
-        email: "",
+        email: allMail,
         subject: data.subject,
         message: data.text,
       });
@@ -41,31 +38,25 @@ const MailForm = () => {
       console.log(error);
     }
   }
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value + ",";
-    const checked = e.target.checked;
-    if (checked) {
-      // @ts-ignore
-      setCheck([...checkEmail, value]);
-    } else {
-      setCheck(value);
-    }
-  };
+  console.log(allMail);
   return (
     <div>
       <StyledForm>
         <form onSubmit={handleSubmit(doSubmit)}>
-          <h1> Send Email </h1>
-          {renderInput("subject", "", "Subject", "text")}
-          {renderTextArea("text", "", "message")}
+          <h1> Fyll i formuläret</h1>
+          <Dropdown>
+            <select>
+              <option disabled={true}> All mejl du valde... </option>
+              {allMail.map((mail: any, i: number) => (
+                <option key={i} value={mail}>
+                  {mail}
+                </option>
+              ))}
+            </select>
+          </Dropdown>
+          {renderInput("subject", "", "Subject...", "text")}
+          {renderTextArea("text", "", "message...")}
           {renderButton("Send")}
-          <input
-            type="checkbox"
-            onChange={handleChange}
-            value={checkEmail}
-            name="email"
-          />
         </form>
       </StyledForm>
     </div>
@@ -81,12 +72,17 @@ const StyledForm = styled.div`
   left: 50%;
   form {
     padding: 3rem;
-    height: 320px;
+    height: 380px;
     border-radius: 20px;
     border: 1px solid white;
     text-align: center;
     position: relative;
     transition: all 0.2s ease-in-out;
+
+    h1 {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
 
     textarea {
       width: 100%;
@@ -95,5 +91,18 @@ const StyledForm = styled.div`
       border-radius: 1rem;
       margin-top: 5px;
     }
+  }
+`;
+
+const Dropdown = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  select {
+    padding: 8px;
+    font-weight: bold;
+  }
+  option {
+    font-weight: bold;
   }
 `;
