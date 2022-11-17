@@ -160,7 +160,6 @@ const Button = styled.button`
 `;
 
 const Input = styled.input`
-  display: flex;
   border: none;
   width: 16rem;
   border-radius: 20px;

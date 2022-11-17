@@ -115,8 +115,8 @@ function ProfilePage() {
                 </Button> */}
                 <div className="form">
                   <form onSubmit={handleSubmit(doSubmit)}>
-                    {renderInput("kommentar", "Kommentar...", "text")}
                     <Dropdown>
+                      {renderInput("kommentar", "Kommentar...", "text")}
                       <select
                         onChange={(e) => setStage(e.target.value)}
                         value={stage}
@@ -184,7 +184,7 @@ interface StausColor {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 20rem 48rem;
+  grid-template-columns: 24rem 42rem;
   grid-template-areas: "userinfo answer";
 `;
 const Userinfo = styled.div<StausColor>`
@@ -212,16 +212,10 @@ const Userinfo = styled.div<StausColor>`
       color: ${(props) => (props.status === "completed" ? "green" : "red")};
     }
     div {
-      display: flex;
-      justify-content: center;
     }
 
     .form {
       form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
       }
     }
   }
