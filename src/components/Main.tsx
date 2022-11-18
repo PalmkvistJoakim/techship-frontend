@@ -6,9 +6,9 @@ import TableBody from "./common/TableBody";
 import { GetallFormVideoask } from "../services/videoaskService";
 import { useSelector, useDispatch } from "react-redux";
 import { loadForm } from "../store/formvideoask";
-import MailForm from "./MailForm";
 import { Link } from "react-router-dom";
 import { getEmails } from "../store/contacts";
+import { useGetCategoriesQuery } from "../store/Api";
 
 function Main() {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ function Main() {
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
 
-  const stage = useSelector((state: any) => state.entities.stage);
+  const { data: Category } = useGetCategoriesQuery("category");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -59,7 +59,7 @@ function Main() {
         </select>
         <button type="submit"> Hämta </button>
         <select>
-          {stage.map((s: any) => (
+          {Category?.map((s: any) => (
             <option key={s._id}>{s.name}</option>
           ))}
         </select>

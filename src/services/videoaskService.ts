@@ -10,30 +10,6 @@ export const getAccessToken = async (code: string) => {
   localStorage.setItem("access_token", `${Code}`);
 };
 
-export const GenerateKomment = async (
-  contact_id: string,
-  kommentar: string,
-  categoryId: string
-) => {
-  const body = {
-    contact_id: contact_id,
-    kommentar: kommentar,
-    categoryId: categoryId,
-  };
-  const { data } = await http.post(
-    "http://localhost:5000/api/application",
-    body
-  );
-
-  return data;
-};
-
-export const Getkommentar = async () => {
-  const { data } = await http.get("http://localhost:5000/api/application/");
-
-  return data;
-};
-
 export const GetUserIdVideoask = async (id: string | undefined) => {
   const token = localStorage.getItem("access_token");
   const form = localStorage.getItem("form");
@@ -64,10 +40,6 @@ export const GetQuestionById = async (id: string) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-export const handleDeleteKomment = async (id: string) => {
-  return await http.delete(`http://localhost:5000/api/application/${id}`);
 };
 
 export const GetallFormVideoask = async () => {
