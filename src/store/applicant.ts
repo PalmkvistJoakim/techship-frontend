@@ -6,6 +6,12 @@ const slice = createSlice({
   initialState: [] as IVideoask[],
   reducers: {
     loadApplicant: (applicants, action) => {
+      action.payload.map(
+        (applicant: any) =>
+          (applicant.created_at = new Date(
+            applicant.created_at
+          ).toLocaleString())
+      );
       return action.payload.filter(
         (applicant: IVideoask) => applicant.name !== null
       );
