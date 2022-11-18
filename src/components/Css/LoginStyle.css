@@ -1,0 +1,65 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 20%;
+  right: 10%;
+}
+
+.wrapper .static-text {
+  color: white;
+  opacity: 0.9;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.wrapper .dynamic-txts {
+  margin-left: 15px;
+  line-height: 87px;
+  height: 90px;
+  overflow: hidden;
+}
+
+.dynamic-txts li {
+  list-style: none;
+  color: #58eac1;
+  font-size: 20px;
+  font-weight: 300;
+  position: relative;
+  top: 0;
+  animation: slide 12s steps(4) infinite;
+}
+
+@keyframes slide {
+  100% {
+    top: -360px;
+  }
+}
+
+.dynamic-txts li {
+  position: relative;
+  letter-spacing: 4px;
+}
+
+.dynamic-txts li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  border-left: 2px solid #58eac1;
+  animation: typing 3s steps(5) infinite;
+}
+
+@keyframes typing {
+  40%,
+  60% {
+    left: calc(100% + 30px);
+  }
+  100% {
+    left: 0;
+  }
+}

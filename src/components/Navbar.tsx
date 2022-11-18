@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Techship from "../sveg/Techship";
 import { useNavigate } from "react-router-dom";
+import Techshiplogo from "../sveg/Techshiplogo";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,17 +12,17 @@ const Navbar = () => {
         {token ? (
           <>
             <Logo>
-              <Techship width={"60px"} height={"50px"} />
+              <Techshiplogo width={"200px"} height={"75px"} />
             </Logo>
             <List>
-              <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-              <button onClick={() => navigate("/logout")}>Logout</button>
+              <h1 onClick={() => navigate("/dashboard")}>Dashboard</h1>
+              <h1 onClick={() => navigate("/logout")}>Logout</h1>
             </List>
           </>
         ) : (
           <>
             <Logo>
-              <Techship width={"60px"} height={"50px"} />
+              <Techshiplogo width={"200px"} height={"75px"} />
             </Logo>
           </>
         )}
@@ -50,17 +51,17 @@ const List = styled.div`
   gap: 10px;
   margin-right: 3rem;
 
-  button {
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
-    padding: 0.8rem;
-    border-radius: 2rem;
-    background-color: #58eac1;
-    transition: width 2s;
-
+  h1 {
+    text-decoration: underline #58eac1;
     :hover {
-      opacity: 0.8;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+      padding: 0.8rem;
+      border-radius: 2rem;
+      background-color: #58eac1;
+      transition: width 2s;
+      opacity: 0.9;
     }
     :active {
       transform: scale(0.8);
