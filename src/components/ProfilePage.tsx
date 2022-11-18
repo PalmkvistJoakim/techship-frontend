@@ -92,6 +92,7 @@ function ProfilePage() {
   const handleDelete = async (id: string) => {
     try {
       await RemoveComment(id);
+      toast.info("Cooment removed Successfully");
     } catch (error) {
       toast.error("🦄 kunde inte radera!", { theme: "dark" });
     }
