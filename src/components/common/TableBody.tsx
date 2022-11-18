@@ -3,14 +3,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import { useSelector } from "react-redux";
-
+import { useCommentsDbQuery } from "../../store/Api";
 interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TableBody({ onChange }: Props): JSX.Element {
   const applicants = useSelector((state: any) => state.entities.applicants);
-  const comments = useSelector((state: any) => state.entities.comments);
+
+  const { data: comments } = useCommentsDbQuery("comments");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

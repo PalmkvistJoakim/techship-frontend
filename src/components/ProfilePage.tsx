@@ -1,10 +1,8 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
-  GenerateKomment,
   GetDataFromVideoask,
   GetUserIdVideoask,
-  handleDeleteKomment,
   RemoveProfile,
 } from "../services/videoaskService";
 import { useState, useEffect } from "react";
@@ -14,23 +12,34 @@ import { IprofileAdd } from "../types/IStage";
 import Joi from "joi";
 import { useDispatch, useSelector } from "react-redux";
 import { loadContacts } from "../store/contacts";
-import { deleteComment } from "../store/comment";
 import { toast } from "react-toastify";
-import { IContactId, IKomment, IVideoask } from "../types/IVideoAsk";
-import { ICategory } from "../store/stage";
+import { IContactId, IVideoask } from "../types/IVideoAsk";
 import { loadApplicant } from "../store/applicant";
+import {
+  useCommentsDbQuery,
+  useCommentsAddMutation,
+  useCommentsRemoveMutation,
+  useGetCategoriesQuery,
+} from "../store/Api";
 
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
 });
 function ProfilePage() {
   const dispatch = useDispatch();
+  const {
+    data: comments = [],
+    isLoading,
+    isSuccess,
+  } = useCommentsDbQuery("comments");
+  const [addComment] = useCommentsAddMutation();
+  const [RemoveComment] = useCommentsRemoveMutation();
+
   const applicants = useSelector(
     (state: IVideoask) => state.entities.applicants
   );
   const contacts = useSelector((state: IContactId) => state.entities.contacts);
-  const comments = useSelector((state: IKomment) => state.entities.comments);
-  const stages = useSelector((state: ICategory) => state.entities.stage);
+  const { data: Category } = useGetCategoriesQuery("category");
   const [answers, setAnswers] = useState<IContactId>();
   const [stage, setStage] = useState<string>("");
   const {
@@ -44,11 +53,11 @@ function ProfilePage() {
     },
     schema
   );
-  const params = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     async function handleUserInfo() {
-      const contacts = await GetUserIdVideoask(params.id);
+      const contacts = await GetUserIdVideoask(id);
       dispatch(loadContacts(contacts));
       setAnswers(contacts);
     }
@@ -62,13 +71,18 @@ function ProfilePage() {
     }
     runLoadApplicant();
     handleUserInfo();
-  }, []); //answers
+  }, [id]); //answers
 
   async function doSubmit() {
-    const { id } = params;
     if (id) {
+      const commentsView = {
+        contact_id: id,
+        kommentar: body.kommentar,
+        categoryId: stage,
+      };
       try {
-        await GenerateKomment(id, body.kommentar, stage);
+        await addComment(commentsView);
+        toast.success("Comment added Successfully");
       } catch (error) {
         toast.error("🦄 något gick fel.", { theme: "dark" });
       }
@@ -77,11 +91,10 @@ function ProfilePage() {
 
   const handleDelete = async (id: string) => {
     try {
-      await handleDeleteKomment(id);
+      await RemoveComment(id);
     } catch (error) {
       toast.error("🦄 kunde inte radera!", { theme: "dark" });
     }
-    dispatch(deleteComment(id));
   };
 
   const handleRemoveProfile = async (id: string) => {
@@ -96,10 +109,11 @@ function ProfilePage() {
     window.location.href = "/dashboard";
   }
 
+  console.log("redux comment", comments);
   return (
     <>
       {applicants.map((d: IVideoask) => {
-        if (params.id === d.contact_id)
+        if (id === d.contact_id)
           return (
             <Container>
               <Userinfo
@@ -124,7 +138,7 @@ function ProfilePage() {
                         <option value="" disabled={true}>
                           Välj Stage
                         </option>
-                        {stages.map((s: ICategory) => (
+                        {Category?.map((s: any) => (
                           <option key={s._id} value={s._id}>
                             {s.name}
                           </option>
@@ -134,8 +148,8 @@ function ProfilePage() {
                     </Dropdown>
                   </form>
                 </div>
-                {comments.map((c: any) => {
-                  if (c.contact_id === params.id) {
+                {comments?.map((c: any) => {
+                  if (c.contact_id === id) {
                     return (
                       <CommentStyle>
                         <div key={c._id}>
