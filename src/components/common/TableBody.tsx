@@ -54,7 +54,7 @@ function TableBody({ onChange }: Props): JSX.Element {
                 })}
               </TdStage>
               <TdComment>
-                <i className="fa-regular fa-comment" />
+                <i className="fa-regular fa-trash-can"></i>
               </TdComment>
             </>
           </Tr>
@@ -81,7 +81,7 @@ const Tr = styled.tr`
   grid-template-areas:
     "mail name comment"
     "mail created stage";
-  grid-template-columns: 2rem 12.5rem 10rem;
+  grid-template-columns: 2rem 18rem 6rem;
   grid-template-rows: 1fr 1fr;
   justify-items: stretch;
   margin-top: 80px;

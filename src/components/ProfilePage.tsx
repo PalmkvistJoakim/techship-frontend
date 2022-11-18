@@ -184,7 +184,7 @@ interface StausColor {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 24rem 42rem;
+  grid-template-columns: 32rem 42rem;
   grid-template-areas: "userinfo answer";
 `;
 const Userinfo = styled.div<StausColor>`
