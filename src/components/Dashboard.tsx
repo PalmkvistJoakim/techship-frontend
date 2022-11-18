@@ -84,7 +84,7 @@ export default Dashboard;
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: min(37rem) min(66rem);
+  grid-template-columns: min(30rem) min(75rem);
   grid-template-areas: "main profilepage";
 `;
 
