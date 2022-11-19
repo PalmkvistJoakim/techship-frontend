@@ -7,7 +7,6 @@ import MailForm from "./components/MailForm";
 
 function App() {
   const token = localStorage.getItem("access_token");
-  console.log("token", token);
   return (
     <>
       <Navbar />

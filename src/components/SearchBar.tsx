@@ -31,7 +31,7 @@ function SearchBar() {
     <div className="search">
       <Input
         type="text"
-        placeholder="Sök..."
+        placeholder="Sök på namn..."
         value={searchQuery}
         onChange={(e) => handleChange(e.target.value)}
       />
