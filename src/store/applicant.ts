@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { array } from "joi";
+import { filter } from "lodash";
 import { IVideoask } from "../types/IVideoAsk";
 
 const slice = createSlice({
@@ -22,17 +24,22 @@ const slice = createSlice({
       );
     },
     listGroupApplicant: (applicants, action) => {
-      let filteredApplicants;
-      let NewApplicationsFromDb = action.payload.ApplicationsFromDb.filter(
+      let filteredApplicant = [];
+      let sho;
+      //@ts-ignore
+      let filteredApplicants: array = [];
+      let NewApplicationsFromDb = action.payload.applicantsFromDb.filter(
         (application: any) =>
-          application.categoryId.name === action.payload.stage
+          application.categoryId.name === action.payload.value
       );
-      console.log("NewApplicationsFromDb", NewApplicationsFromDb);
-      return NewApplicationsFromDb.map((a: any) => {
-        filteredApplicants = applicants.filter(
+      for (const a of NewApplicationsFromDb) {
+        filteredApplicant = action.payload.applicantsFromVideoAsk.filter(
           (applicant: any) => applicant.contact_id === a.contact_id
         );
-      });
+        filteredApplicants = filteredApplicants.concat(filteredApplicant);
+      }
+      console.log("filteredApplicant", filteredApplicants);
+      return filteredApplicants;
     },
   },
 });
@@ -40,3 +47,9 @@ const slice = createSlice({
 export const { loadApplicant, filterApplicant, listGroupApplicant } =
   slice.actions;
 export default slice.reducer;
+
+// filteredApplicant = action.payload.applicantsFromVideoAsk.filter(
+//   (applicant: any) =>
+//     applicant.contact_id ==
+//     NewApplicationsFromDb.map((a: any) => a.contact_id)
+// );

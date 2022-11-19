@@ -29,6 +29,7 @@ function Dashboard(): JSX.Element {
     _id: "",
     name: "Alla Ansökningar",
   });
+  console.log("applicants i dashboard", applicants);
 
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
@@ -61,12 +62,10 @@ function Dashboard(): JSX.Element {
     setSelectedStage(stage);
   };
 
-  if (selectedStage._id) {
-    const stage = selectedStage.name;
-    dispatch(listGroupApplicant({ stage, ApplicationsFromDb }));
-  }
-  console.log("applicants", applicants);
-  console.log("stage", selectedStage.name);
+  // if (selectedStage._id) {
+  //   const stage = selectedStage.name;
+  //   dispatch(listGroupApplicant({ stage, ApplicationsFromDb }));
+  // }
 
   return (
     <Container>

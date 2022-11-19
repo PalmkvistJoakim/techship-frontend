@@ -9,6 +9,7 @@ import { loadForm } from "../store/formvideoask";
 import MailForm from "./MailForm";
 import { Link } from "react-router-dom";
 import { getEmails } from "../store/contacts";
+import { listGroupApplicant } from "../store/applicant";
 
 function Main() {
   const dispatch = useDispatch();
@@ -17,6 +18,10 @@ function Main() {
   const [selectedForm, setSelctedForm] = useState<string>("");
 
   const stage = useSelector((state: any) => state.entities.stage);
+  const applicantsFromDb = useSelector((state: any) => state.entities.comments);
+  const applicantsFromVideoAsk = useSelector(
+    (state: any) => state.entities.applicants
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -27,6 +32,16 @@ function Main() {
     } else {
       setCheck(value);
     }
+  };
+
+  const handleOnChange = (value: any) => {
+    dispatch(
+      listGroupApplicant({
+        value,
+        applicantsFromDb,
+        applicantsFromVideoAsk,
+      })
+    );
   };
 
   useEffect(() => {
@@ -58,7 +73,7 @@ function Main() {
           ))}
         </select>
         <button type="submit"> Hämta </button>
-        <select>
+        <select onChange={(e) => handleOnChange(e.target.value)}>
           {stage.map((s: any) => (
             <option key={s._id}>{s.name}</option>
           ))}
