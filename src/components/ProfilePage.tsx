@@ -27,11 +27,7 @@ const schema = Joi.object({
 });
 function ProfilePage() {
   const dispatch = useDispatch();
-  const {
-    data: comments = [],
-    isLoading,
-    isSuccess,
-  } = useCommentsDbQuery("comments");
+  const { data: comments = [] } = useCommentsDbQuery("comments");
   const [addComment] = useCommentsAddMutation();
   const [RemoveComment] = useCommentsRemoveMutation();
 
