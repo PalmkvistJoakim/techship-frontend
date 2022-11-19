@@ -148,7 +148,7 @@ const Button = styled.button`
   padding: 8px;
   color: black;
   font-weight: bold;
-  border-radius: 2rem;
+  border-radius: 0.3rem;
   cursor: pointer;
   :hover {
     background-color: #a8f5df;
@@ -160,9 +160,10 @@ const Button = styled.button`
 `;
 
 const Input = styled.input`
-  border: none;
-  width: 16rem;
-  border-radius: 20px;
-  margin-top: 10px;
-  padding: 10px;
+  width: 20rem;
+  margin-right: 20px;
+  padding: 8px;
+  border-radius: 2rem;
+  background-color: black;
+  color: #58eac1;
 `;

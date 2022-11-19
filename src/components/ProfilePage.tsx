@@ -22,6 +22,14 @@ import {
   useGetCategoriesQuery,
 } from "../store/Api";
 
+const reactionEmoji = {
+  thumbsUp: "👍",
+  hooray: "🎉",
+  heart: "❤️",
+  rocket: "🚀",
+  eyes: "👀",
+};
+
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
 });
@@ -82,9 +90,9 @@ function ProfilePage() {
       };
       try {
         await addComment(commentsView);
-        toast.success("Comment added Successfully");
+        toast.success("👍 Kommentar har lagts till", { theme: "dark" });
       } catch (error) {
-        toast.error("🦄 något gick fel.", { theme: "dark" });
+        toast.error("👀 något gick fel.", { theme: "dark" });
       }
     }
   }
@@ -92,17 +100,18 @@ function ProfilePage() {
   const handleDelete = async (id: string) => {
     try {
       await RemoveComment(id);
+      toast.success("👍 Kommentar borttagen.", { theme: "dark" });
     } catch (error) {
-      toast.error("🦄 kunde inte radera!", { theme: "dark" });
+      toast.error("👀 kunde inte radera!", { theme: "dark" });
     }
   };
 
   const handleRemoveProfile = async (id: string) => {
     try {
-      toast.success(`🦄 User was successed removed`, { theme: "dark" });
+      toast.success(`👍 Användaren borttagen`, { theme: "dark" });
       window.setInterval(handleRefresh, 2000);
     } catch (error) {
-      toast.error("🦄 något gick fel.", { theme: "dark" });
+      toast.error("👀 något gick fel.", { theme: "dark" });
     }
   };
   function handleRefresh() {
