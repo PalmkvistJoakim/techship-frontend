@@ -82,7 +82,7 @@ function Main() {
       toast.success("🦄 Stage har lagts till", { theme: "dark" });
     } catch (error) {}
   }
-
+  const form = localStorage.getItem("form");
   console.log("selctedStagecategory", selectedStage);
   return (
     <Container>
@@ -109,7 +109,7 @@ function Main() {
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             setSelctedForm(e.target.value)
           }
-          value={selectedForm}
+          value={form ? form : selectedForm}
         >
           <option value="" disabled={true}>
             {" "}

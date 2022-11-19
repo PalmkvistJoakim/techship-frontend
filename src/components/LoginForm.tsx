@@ -161,6 +161,7 @@ const Right = styled.div`
 
     button {
       display: flex;
+      align-items: center;
       padding: 10px;
       font-weight: bold;
       background-color: #58eac1;
