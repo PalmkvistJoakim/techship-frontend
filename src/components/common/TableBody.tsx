@@ -1,25 +1,56 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import { useSelector } from "react-redux";
-
+import { useCommentsDbQuery } from "../../store/Api";
 interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TableBody({ onChange }: Props): JSX.Element {
   const applicants = useSelector((state: any) => state.entities.applicants);
-  const comments = useSelector((state: any) => state.entities.comments);
+  const stage = useSelector((state: any) => state.entities.stage);
+  const searchQuery = useSelector((state: any) => state.entities.searchquery);
+  const {
+    data: comments = [],
+    isLoading,
+    isSuccess,
+  } = useCommentsDbQuery("comments");
+  console.log("comments", comments);
+  console.log("stage", stage);
+  console.log("searchquery", searchQuery);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
+  let filteredApplicant = [];
+  //@ts-ignore
+  let filteredApplicants = [];
+
+  if (searchQuery) {
+    filteredApplicants = applicants.filter((a: any) =>
+      a.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  } else if (stage !== "APPLIED") {
+    let NewApplicationsFromDb = comments.filter(
+      (application: any) => application.categoryId.name === stage
+    );
+    console.log("NewApplicationsFromDb", applicants);
+    for (const a of NewApplicationsFromDb) {
+      filteredApplicant = applicants.filter(
+        (applicant: any) => applicant.contact_id === a.contact_id
+      );
+      //@ts-ignore
+      filteredApplicants = filteredApplicants.concat(filteredApplicant);
+    }
+  } else filteredApplicants = applicants;
+
   return (
     <table>
       <Container>
-        {applicants.map((applicant: any) => (
+        {filteredApplicants.map((applicant: any) => (
           <Tr key={applicant.answer_id}>
             <>
               <TdEmail>

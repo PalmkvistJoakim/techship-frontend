@@ -6,22 +6,25 @@ import TableBody from "./common/TableBody";
 import { GetallFormVideoask } from "../services/videoaskService";
 import { useSelector, useDispatch } from "react-redux";
 import { loadForm } from "../store/formvideoask";
-import MailForm from "./MailForm";
 import { Link } from "react-router-dom";
 import { getEmails } from "../store/contacts";
-import { listGroupApplicant } from "../store/applicant";
+import { useGetCategoriesQuery } from "../store/Api";
+import { useCommentsDbQuery } from "../store/Api";
+import { GetDataFromVideoask } from "../services/videoaskService";
+import { loadApplicant } from "../store/applicant";
+import { setStage } from "../store/stage";
 
 function Main() {
   const dispatch = useDispatch();
   const forms = useSelector((state: any) => state.entities.forms);
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
-
-  const stage = useSelector((state: any) => state.entities.stage);
-  const applicantsFromDb = useSelector((state: any) => state.entities.comments);
   const applicantsFromVideoAsk = useSelector(
     (state: any) => state.entities.applicants
   );
+  const { data: comments } = useCommentsDbQuery("comments");
+
+  const { data: Category } = useGetCategoriesQuery("category");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -34,14 +37,8 @@ function Main() {
     }
   };
 
-  const handleOnChange = (value: any) => {
-    dispatch(
-      listGroupApplicant({
-        value,
-        applicantsFromDb,
-        applicantsFromVideoAsk,
-      })
-    );
+  const handleSetStage = (value: any) => {
+    dispatch(setStage(value));
   };
 
   useEffect(() => {
@@ -50,6 +47,15 @@ function Main() {
       dispatch(loadForm(form));
     }
     getLoadForm();
+
+    async function runLoadApplicant() {
+      const form = localStorage.getItem("form");
+      if (form) {
+        const applicants = await GetDataFromVideoask(form);
+        dispatch(loadApplicant(applicants));
+      }
+    }
+    runLoadApplicant();
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -73,8 +79,12 @@ function Main() {
           ))}
         </select>
         <button type="submit"> Hämta </button>
-        <select onChange={(e) => handleOnChange(e.target.value)}>
-          {stage.map((s: any) => (
+        <select
+          onChange={(e) => {
+            handleSetStage(e.target.value);
+          }}
+        >
+          {Category?.map((s: any) => (
             <option key={s._id}>{s.name}</option>
           ))}
         </select>

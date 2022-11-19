@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const slice = createSlice({
-  name: "stage" as string,
-  initialState: "APPLIED" as string,
+  name: "searchquery",
+  initialState: "" as string,
   reducers: {
-    setStage: (stage, action) => {
+    searchQuery: (searchquery, action) => {
       return action.payload;
     },
   },
 });
-export const { setStage } = slice.actions;
+
+export const { searchQuery } = slice.actions;
 export default slice.reducer;

@@ -31,7 +31,7 @@ export interface IContactId extends IVideoask {
 }
 
 export interface IKomment {
-  entities: any;
+  entities?: any;
   _id: string;
   contact_id: string;
   createdAt: string;

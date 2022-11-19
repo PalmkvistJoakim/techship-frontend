@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { array } from "joi";
-import { filter } from "lodash";
+
 import { IVideoask } from "../types/IVideoAsk";
 
 const slice = createSlice({
@@ -18,38 +17,33 @@ const slice = createSlice({
         (applicant: IVideoask) => applicant.name !== null
       );
     },
-    filterApplicant: (applicants, action) => {
-      return applicants.filter((applicant: IVideoask) =>
-        applicant.name.toLowerCase().startsWith(action.payload.toLowerCase())
-      );
-    },
-    listGroupApplicant: (applicants, action) => {
-      let filteredApplicant = [];
-      let sho;
-      //@ts-ignore
-      let filteredApplicants: array = [];
-      let NewApplicationsFromDb = action.payload.applicantsFromDb.filter(
-        (application: any) =>
-          application.categoryId.name === action.payload.value
-      );
-      for (const a of NewApplicationsFromDb) {
-        filteredApplicant = action.payload.applicantsFromVideoAsk.filter(
-          (applicant: any) => applicant.contact_id === a.contact_id
-        );
-        filteredApplicants = filteredApplicants.concat(filteredApplicant);
-      }
-      console.log("filteredApplicant", filteredApplicants);
-      return filteredApplicants;
-    },
+    // filterApplicant: (applicants, action) => {
+    //   return applicants.filter((applicant: IVideoask) =>
+    //     applicant.name.toLowerCase().startsWith(action.payload.toLowerCase())
+    //   );
+    // },
   },
 });
 
-export const { loadApplicant, filterApplicant, listGroupApplicant } =
-  slice.actions;
+export const { loadApplicant } = slice.actions;
 export default slice.reducer;
 
-// filteredApplicant = action.payload.applicantsFromVideoAsk.filter(
-//   (applicant: any) =>
-//     applicant.contact_id ==
-//     NewApplicationsFromDb.map((a: any) => a.contact_id)
-// );
+// let filteredApplicant = [];
+//       //@ts-ignore
+//       let filteredApplicants = [];
+//       console.log(action.payload.comments);
+//       let NewApplicationsFromDb = action.payload.comments.filter(
+//         (application: any) =>
+//           application.categoryId.name === action.payload.value
+//       );
+//       console.log(
+//         "NewApplicationsFromDb",
+//         action.payload.applicantsFromVideoAsk
+//       );
+//       for (const a of NewApplicationsFromDb) {
+//         filteredApplicant = action.payload.applicantsFromVideoAsk.filter(
+//           (applicant: any) => applicant.contact_id === a.contact_id
+//         );
+//         //@ts-ignore
+//         filteredApplicants = filteredApplicants.concat(filteredApplicant);
+//       }

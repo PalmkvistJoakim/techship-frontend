@@ -17,3 +17,23 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const { loadContacts, getEmails } = slice.actions;
+
+// let filteredApplicant = [];
+//       //@ts-ignore
+//       let filteredApplicants = [];
+//       console.log(action.payload.comments);
+//       let NewApplicationsFromDb = action.payload.comments.filter(
+//         (application: any) =>
+//           application.categoryId.name === action.payload.value
+//       );
+//       console.log(
+//         "NewApplicationsFromDb",
+//         action.payload.applicantsFromVideoAsk
+//       );
+//       for (const a of NewApplicationsFromDb) {
+//         filteredApplicant = action.payload.applicantsFromVideoAsk.filter(
+//           (applicant: any) => applicant.contact_id === a.contact_id
+//         );
+//         //@ts-ignore
+//         filteredApplicants = filteredApplicants.concat(filteredApplicant);
+//       }
