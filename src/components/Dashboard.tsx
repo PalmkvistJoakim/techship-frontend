@@ -44,13 +44,13 @@ export default Dashboard;
 
 const Container = styled.div`
   display: grid;
+  height: 100vh;
   grid-template-columns: min(30rem) min(75rem);
   grid-template-areas: "main profilepage";
 `;
 
 const MainGrid = styled.div`
   grid-area: main;
-  /* border: solid red 4px; */
 `;
 
 const ProfileGrid = styled.div`

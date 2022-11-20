@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { useCommentsDbQuery } from "../../store/Api";
+import { useGetCategoriesQuery } from "../../store/Api";
 interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -11,15 +12,10 @@ interface Props {
 function TableBody({ onChange }: Props): JSX.Element {
   const applicants = useSelector((state: any) => state.entities.applicants);
   const stage = useSelector((state: any) => state.entities.stage);
+  const { data: category = [] } = useGetCategoriesQuery("category");
   const searchQuery = useSelector((state: any) => state.entities.searchquery);
-  const {
-    data: comments = [],
-    isLoading,
-    isSuccess,
-  } = useCommentsDbQuery("comments");
-  console.log("comments", comments);
+  const { data: comments = [] } = useCommentsDbQuery("comments");
   console.log("stage", stage);
-  console.log("searchquery", searchQuery);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,11 +29,10 @@ function TableBody({ onChange }: Props): JSX.Element {
     filteredApplicants = applicants.filter((a: any) =>
       a.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  } else if (stage !== "APPLIED") {
+  } else if (stage !== "636febaf89043be7c2d17c37") {
     let NewApplicationsFromDb = comments.filter(
-      (application: any) => application.categoryId.name === stage
+      (application: any) => application.categoryId._id === stage
     );
-    console.log("NewApplicationsFromDb", applicants);
     for (const a of NewApplicationsFromDb) {
       filteredApplicant = applicants.filter(
         (applicant: any) => applicant.contact_id === a.contact_id

@@ -27,9 +27,21 @@ export const Api = createApi({
     }),
     // category
     GetCategories: builder.query({
-      query: () => ({
-        url: "/category",
-        method: "GET",
+      query: () => "/category",
+      providesTags: ["Category"],
+    }),
+    AddCategory: builder.mutation({
+      query: (data) => ({
+        url: `/category`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Category"],
+    }),
+    RemoveCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["Category"],
     }),
@@ -41,4 +53,6 @@ export const {
   useGetCategoriesQuery,
   useCommentsAddMutation,
   useCommentsRemoveMutation,
+  useAddCategoryMutation,
+  useRemoveCategoryMutation,
 } = Api;
