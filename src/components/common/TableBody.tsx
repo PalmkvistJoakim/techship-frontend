@@ -20,44 +20,48 @@ function TableBody(): JSX.Element {
   const searchQuery = useSelector((state: any) => state.entities.searchquery);
   const dispatch = useDispatch();
   const stage = useSelector((state: any) => state.entities.stage);
-
+  const filterApplicantsFromRedux = useSelector(
+    (state: any) => state.entities.filterApplicant
+  );
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
   console.log("searchQuery", searchQuery);
 
-  useEffect(() => {}, [stage, searchQuery, contacts]);
+  useEffect(() => {
+    contacts = contacts?.filter((c: IVideoask) => c.name !== null);
+    let filterOneApplicant = [];
+    //@ts-ignore
+    let allFilteredApplicants = [];
+
+    if (searchQuery) {
+      allFilteredApplicants = contacts.filter((a: any) =>
+        a.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    } else if (stage !== "636febaf89043be7c2d17c37") {
+      let NewApplicationsFromDb = comments.filter(
+        (application: any) => application.categoryId._id === stage
+      );
+      for (const a of NewApplicationsFromDb) {
+        filterOneApplicant = contacts.filter(
+          (applicant: any) => applicant.contact_id === a.contact_id
+        );
+        //@ts-ignore
+        allFilteredApplicants =
+          //@ts-ignore
+          allFilteredApplicants.concat(filterOneApplicant);
+      }
+    } else {
+      allFilteredApplicants = contacts;
+    }
+
+    dispatch(filterApplicant(allFilteredApplicants));
+  }, [stage, searchQuery, contacts]);
 
   // function dispatchFilterApplicant(allFilteredApplicants: any) {
   //   return dispatch(filterApplicant(allFilteredApplicants));
   // }
-
-  contacts = contacts?.filter((c: IVideoask) => c.name !== null);
-  let filterOneApplicant = [];
-  //@ts-ignore
-  let allFilteredApplicants = [];
-
-  if (searchQuery) {
-    allFilteredApplicants = contacts.filter((a: any) =>
-      a.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  } else if (stage !== "636febaf89043be7c2d17c37") {
-    let NewApplicationsFromDb = comments.filter(
-      (application: any) => application.categoryId._id === stage
-    );
-    for (const a of NewApplicationsFromDb) {
-      filterOneApplicant = contacts.filter(
-        (applicant: any) => applicant.contact_id === a.contact_id
-      );
-      //@ts-ignore
-      allFilteredApplicants =
-        //@ts-ignore
-        allFilteredApplicants.concat(filterOneApplicant);
-    }
-  } else {
-    allFilteredApplicants = contacts;
-  }
 
   async function handleRemove(id: string) {
     try {
@@ -83,7 +87,7 @@ function TableBody(): JSX.Element {
   return (
     <table>
       <Container>
-        {allFilteredApplicants?.map((applicant: IVideoask) => (
+        {filterApplicantsFromRedux?.map((applicant: IVideoask) => (
           <Tr key={applicant.answer_id}>
             <>
               {/* <TdEmail>
