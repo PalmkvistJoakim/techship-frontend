@@ -54,7 +54,7 @@ const MailForm = () => {
               ))}
             </select>
           </Dropdown>
-          {renderInput("subject", "", "Subject...")}
+          {renderInput("subject", "Subject...", "subject")}
           {renderTextArea("text", "", "message...")}
           {renderButton("Send")}
         </form>
@@ -97,6 +97,7 @@ const StyledForm = styled.div`
 const Dropdown = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 
   select {
     padding: 8px;

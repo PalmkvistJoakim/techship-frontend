@@ -1,54 +1,34 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import {
-  GetDataFromVideoask,
-  GetUserIdVideoask,
-  RemoveProfile,
-} from "../services/videoaskService";
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { useForm } from "../hooks/useForm";
 import { IprofileAdd } from "../types/IStage";
 import Joi from "joi";
-import { useDispatch, useSelector } from "react-redux";
-import { loadContacts } from "../store/contacts";
 import { toast } from "react-toastify";
-import { IContactId, IVideoask } from "../types/IVideoAsk";
-import { loadApplicant } from "../store/applicant";
+import { IVideoask } from "../types/IVideoAsk";
 import {
   useCommentsDbQuery,
   useCommentsAddMutation,
   useCommentsRemoveMutation,
   useGetCategoriesQuery,
+  useGetApplicantIdVideaskQuery,
+  useGetUserbyIdVideaskQuery,
 } from "../store/Api";
-
-const reactionEmoji = {
-  thumbsUp: "👍",
-  hooray: "🎉",
-  heart: "❤️",
-  rocket: "🚀",
-  eyes: "👀",
-};
 
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
 });
+const form = localStorage.getItem("form");
 function ProfilePage() {
-  const dispatch = useDispatch();
-  const {
-    data: comments = [],
-    isLoading,
-    isSuccess,
-  } = useCommentsDbQuery("comments");
+  const { id } = useParams();
+  const { data: comments } = useCommentsDbQuery("comments");
   const [addComment] = useCommentsAddMutation();
   const [RemoveComment] = useCommentsRemoveMutation();
-
-  const applicants = useSelector(
-    (state: IVideoask) => state.entities.applicants
-  );
-  const contacts = useSelector((state: IContactId) => state.entities.contacts);
+  const { data: Answers } = useGetUserbyIdVideaskQuery(id);
+  const { data: contacts } = useGetApplicantIdVideaskQuery(form);
   const { data: Category } = useGetCategoriesQuery("category");
-  const [answers, setAnswers] = useState<IContactId>();
+
   const [stage, setStage] = useState<string>("");
   const {
     data: body,
@@ -61,25 +41,8 @@ function ProfilePage() {
     },
     schema
   );
-  const { id } = useParams();
 
-  useEffect(() => {
-    async function handleUserInfo() {
-      const contacts = await GetUserIdVideoask(id);
-      dispatch(loadContacts(contacts));
-      setAnswers(contacts);
-    }
-
-    async function runLoadApplicant() {
-      const form = localStorage.getItem("form");
-      if (form) {
-        const applicants = await GetDataFromVideoask(form);
-        dispatch(loadApplicant(applicants));
-      }
-    }
-    runLoadApplicant();
-    handleUserInfo();
-  }, [id]); //answers
+  useEffect(() => {}, [form, contacts, Answers, stage]); //answers
 
   async function doSubmit() {
     if (id) {
@@ -106,22 +69,11 @@ function ProfilePage() {
     }
   };
 
-  const handleRemoveProfile = async (id: string) => {
-    try {
-      toast.success(`👍 Användaren borttagen`, { theme: "dark" });
-      window.setInterval(handleRefresh, 2000);
-    } catch (error) {
-      toast.error("👀 något gick fel.", { theme: "dark" });
-    }
-  };
-  function handleRefresh() {
-    window.location.href = "/dashboard";
-  }
-
-  console.log("redux comment", comments);
+  console.log("redux contacts", contacts);
+  console.log("redux Answers", Answers);
   return (
     <>
-      {applicants.map((d: IVideoask) => {
+      {contacts?.map((d: IVideoask) => {
         if (id === d.contact_id)
           return (
             <Container>
@@ -133,9 +85,6 @@ function ProfilePage() {
                 <p className="email"> {d.email}</p>
                 <p>{d.phone_number}</p>
                 <p className="status">{d.status.toUpperCase()}</p>
-                {/* <Button onClick={() => handleRemoveProfile(d.respondent_id)}>
-                  Remove Profile
-                </Button> */}
                 <div className="form">
                   <form onSubmit={handleSubmit(doSubmit)}>
                     <Dropdown>
@@ -145,7 +94,7 @@ function ProfilePage() {
                         value={stage}
                       >
                         <option value="" disabled={true}>
-                          Välj Stage
+                          Lägg till Stage
                         </option>
                         {Category?.map((s: any) => (
                           <option key={s._id} value={s._id}>
@@ -164,7 +113,7 @@ function ProfilePage() {
                         <div key={c._id}>
                           {c.kommentar}
                           <Icon
-                            className="fa-solid fa-delete-left"
+                            className="fa-solid fa-xmark"
                             onClick={() => handleDelete(c._id)}
                           />
                         </div>
@@ -176,7 +125,7 @@ function ProfilePage() {
                 })}
               </Userinfo>
               <Question>
-                {contacts.map((User: any) => (
+                {Answers?.map((User: any) => (
                   <>
                     {User.media_url ? (
                       <li>
@@ -285,6 +234,7 @@ const Dropdown = styled.div`
 
 const Icon = styled.i`
   font-size: 20px;
+  margin-left: 20px;
   color: red;
   cursor: pointer;
   :hover {

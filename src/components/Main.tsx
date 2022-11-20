@@ -1,17 +1,16 @@
 import SearchBar from "./SearchBar";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { ChangeEvent } from "react";
 import TableBody from "./common/TableBody";
-import { GetallFormVideoask } from "../services/videoaskService";
-import { useSelector, useDispatch } from "react-redux";
-import { loadForm } from "../store/formvideoask";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { getEmails } from "../store/contacts";
 import {
   useGetCategoriesQuery,
   useAddCategoryMutation,
   useRemoveCategoryMutation,
+  useGetFormVideaskQuery,
 } from "../store/Api";
 import { useForm } from "../hooks/useForm";
 import Joi from "joi";
@@ -37,7 +36,7 @@ function Main() {
     schema
   );
   const dispatch = useDispatch();
-  const forms = useSelector((state: any) => state.entities.forms);
+  const { data: forms } = useGetFormVideaskQuery("Form");
   const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
   const [selectedStage, setStage] = useState<string>("");
@@ -56,15 +55,7 @@ function Main() {
     }
   };
 
-  useEffect(() => {
-    async function getLoadForm() {
-      const form = await GetallFormVideoask();
-      dispatch(loadForm(form));
-    }
-    getLoadForm();
-  }, [selectedForm, selectedStage, Category]);
-
-  async function handleSubmitSelect(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmitSelect(e: FormEvent<HTMLFormElement>) {
     localStorage.setItem("form", selectedForm);
   }
 
@@ -72,18 +63,26 @@ function Main() {
 
   async function handleRemoveStage() {
     try {
-      await RemoveStage(selectedStage);
-      toast.success("🦄 Stage borttagen", { theme: "dark" });
+      const result = window.confirm(`Är du säkert du vill radera Staget ?`);
+      if (result === true) {
+        await RemoveStage(selectedStage);
+        toast.success("🦄 Stage borttagen", { theme: "dark" });
+      } else {
+        return;
+      }
     } catch (error) {}
   }
   async function handleAddStage() {
     try {
       await addCategory(body);
       toast.success("🦄 Stage har lagts till", { theme: "dark" });
-    } catch (error) {}
+    } catch (error) {
+      toast.error("👀 Något gick fel!", { theme: "dark" });
+    }
   }
   const form = localStorage.getItem("form");
   console.log("selctedStagecategory", selectedStage);
+  console.log("form redux", forms);
   return (
     <Container>
       <HeadCss>
@@ -115,13 +114,13 @@ function Main() {
             {" "}
             Batch{" "}
           </option>
-          {forms.map((f: any) => (
+          {forms?.map((f: any) => (
             <option key={f.form_id} value={f.form_id}>
               {f.title}
             </option>
           ))}
         </select>
-        <button type="submit"> ^ </button>
+        <Button type="submit"> ^ </Button>
 
         <select
           onChange={(e) => setStage(e.target.value)}
@@ -267,4 +266,15 @@ const Email = styled(Link)`
 const Text = styled.div`
   margin-left: 10px;
   margin-top: 5%;
+`;
+
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: none;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  text-align: center;
 `;

@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IKomment } from "../types/IVideoAsk";
 
 export const Api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-  tagTypes: ["Comments", "Category"],
+  tagTypes: ["Comments", "Category", "Form"],
   endpoints: (builder) => ({
     //comment mongodb
     commentsDb: builder.query({
@@ -45,6 +44,48 @@ export const Api = createApi({
       }),
       invalidatesTags: ["Category"],
     }),
+    GetFormVideask: builder.query({
+      query: () => {
+        const token = localStorage.getItem("access_token");
+        return {
+          providesTags: ["Form"],
+          url: "/videoask/form",
+          params: { token: token },
+        };
+      },
+    }),
+    GetApplicantIdVideask: builder.query({
+      query: (id) => {
+        const token = localStorage.getItem("access_token");
+        return {
+          url: `/videoask/form/${id}`,
+          params: { token: token },
+        };
+      },
+      invalidatesTags: ["Form"],
+    }),
+    GetUserbyIdVideask: builder.query({
+      query: (id) => {
+        const token = localStorage.getItem("access_token");
+        const form = localStorage.getItem("form");
+        return {
+          url: `/videoask/users/${id}`,
+          params: { token: token, form: form },
+        };
+      },
+      invalidatesTags: ["Form"],
+    }),
+    RemoveProfileBYId: builder.mutation({
+      query: (id) => {
+        const token = localStorage.getItem("access_token");
+        return {
+          url: `/videoask/profile/${id}`,
+          method: "GET",
+          params: { token: token },
+        };
+      },
+      invalidatesTags: ["Form"],
+    }),
   }),
 });
 
@@ -55,4 +96,8 @@ export const {
   useCommentsRemoveMutation,
   useAddCategoryMutation,
   useRemoveCategoryMutation,
+  useGetFormVideaskQuery,
+  useGetApplicantIdVideaskQuery,
+  useGetUserbyIdVideaskQuery,
+  useRemoveProfileBYIdMutation,
 } = Api;

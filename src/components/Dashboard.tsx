@@ -1,32 +1,17 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import _ from "lodash";
-import {
-  getAccessToken,
-  GetDataFromVideoask,
-} from "../services/videoaskService";
+import { getAccessToken } from "../services/videoaskService";
 import Main from "./Main";
-import { useDispatch } from "react-redux";
-import { loadApplicant } from "../store/applicant";
 import ProfilePage from "./ProfilePage";
 
 function Dashboard(): JSX.Element {
-  const dispatch = useDispatch();
-
+  const token = localStorage.getItem("access_token");
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
       getAccessToken(window.location.search);
+      window.location.reload();
     }
-    async function runLoadApplicant() {
-      const form = localStorage.getItem("form");
-      if (form) {
-        const applicants = await GetDataFromVideoask(form);
-        dispatch(loadApplicant(applicants));
-      }
-    }
-
-    runLoadApplicant();
-  }, []);
+  }, [token]);
 
   return (
     <Container>
