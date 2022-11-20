@@ -5,6 +5,7 @@ import { ChangeEvent } from "react";
 import TableBody from "./common/TableBody";
 import { GetallFormVideoask } from "../services/videoaskService";
 import { useSelector, useDispatch } from "react-redux";
+
 import { loadForm } from "../store/formvideoask";
 import { Link } from "react-router-dom";
 import { getEmails } from "../store/contacts";
@@ -42,11 +43,16 @@ function Main() {
   );
   const dispatch = useDispatch();
   const forms = useSelector((state: any) => state.entities.forms);
-  const [checkEmail, setCheck] = useState<string | string[]>("");
+  // // // const [checkEmail, setCheck] = useState<string | string[]>("");
   const [selectedForm, setSelctedForm] = useState<string>("");
   const applicantsFromVideoAsk = useSelector(
     (state: any) => state.entities.applicants
   );
+  const filteredApplicants = useSelector(
+    (state: any) => state.entities.filteredApplicants
+  );
+
+  console.log("FILTEREDAPPLICANTS YA KHARA", filteredApplicants);
   const { data: comments = [] } = useCommentsDbQuery("comments");
   const { data: category = [] } = useGetCategoriesQuery("category");
 
@@ -56,21 +62,23 @@ function Main() {
   const [addCategory] = useAddCategoryMutation();
   const [RemoveStage] = useRemoveCategoryMutation();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const checked = e.target.checked;
-    if (checked) {
-      // @ts-ignore
-      setCheck([...checkEmail, value]);
-    } else {
-      setCheck(value);
-    }
-  };
+  // // // // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // // // //   const value = e.target.value;
+  // // // //   const checked = e.target.checked;
+  // // // //   if (checked) {
+  // // // //     // @ts-ignore
+  // // // //     setCheck([...checkEmail, value]);
+  // // // //   } else {
+  // // // //     setCheck(value);
+  // // // //   }
+  // // // // };
 
   const handleSetStage = (value: any) => {
     //@ts-ignore
     dispatch(setStage(value));
   };
+
+  let mailList: any = [];
 
   useEffect(() => {
     async function getLoadForm() {
@@ -89,6 +97,9 @@ function Main() {
     runLoadApplicant();
   }, []);
   // }, [selectedForm, selectedStage, Category]);
+
+  mailList = filteredApplicants.map((f: any) => f.email);
+  console.log("mailist ", mailList);
 
   async function handleSubmitSelect(e: React.FormEvent<HTMLFormElement>) {
     localStorage.setItem("form", selectedForm);
@@ -139,8 +150,7 @@ function Main() {
           value={form ? form : selectedForm}
         >
           <option value="" disabled={true}>
-            {" "}
-            Batch{" "}
+            Batch
           </option>
           {forms.map((f: any) => (
             <option key={f.form_id} value={f.form_id}>
@@ -160,33 +170,18 @@ function Main() {
           ))}
         </select>
       </form>
-
-      <TableBody onChange={handleChange} />
-      {checkEmail ? (
-        <Email to="/mail" onClick={() => dispatch(getEmails(checkEmail))}>
-          Send
-          <i
-            className="fa-solid fa-paper-plane"
-            style={{
-              fontSize: "16px",
-              backgroundColor: "black",
-              marginLeft: "10px",
-            }}
-          ></i>
-        </Email>
-      ) : (
-        <Text>
-          {" "}
-          <i
-            className="fa-solid fa-arrow-up"
-            style={{
-              fontSize: "12px",
-              marginRight: "10px",
-            }}
-          ></i>
-          VÄLJ MEJL
-        </Text>
-      )}
+      <TableBody />
+      <Email to="/mail" onClick={() => dispatch(getEmails(mailList))}>
+        Send
+        <i
+          className="fa-solid fa-paper-plane"
+          style={{
+            fontSize: "16px",
+            backgroundColor: "black",
+            marginLeft: "10px",
+          }}
+        ></i>
+      </Email>
     </Container>
   );
 }

@@ -4,6 +4,7 @@ import contactsReducer from "./contacts";
 import formReducer from "./formvideoask";
 import stageReducer from "./stage";
 import searchqueryReducer from "./searchQuery";
+import filteredApplicantsReducer from "./filteredAplicants.ts";
 
 export default combineReducers({
   applicants: applicantReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   forms: formReducer,
   stage: stageReducer,
   searchquery: searchqueryReducer,
+  filteredApplicants: filteredApplicantsReducer,
 });

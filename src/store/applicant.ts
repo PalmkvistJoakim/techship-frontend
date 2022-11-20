@@ -17,15 +17,13 @@ const slice = createSlice({
         (applicant: IVideoask) => applicant.name !== null
       );
     },
-    // filterApplicant: (applicants, action) => {
-    //   return applicants.filter((applicant: IVideoask) =>
-    //     applicant.name.toLowerCase().startsWith(action.payload.toLowerCase())
-    //   );
-    // },
+    filterApplicant: (applicants, action) => {
+      return action.payload;
+    },
   },
 });
 
-export const { loadApplicant } = slice.actions;
+export const { loadApplicant, filterApplicant } = slice.actions;
 export default slice.reducer;
 
 // let filteredApplicant = [];

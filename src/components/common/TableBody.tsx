@@ -1,46 +1,67 @@
-import { ChangeEvent, FormEvent, useEffect } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { useSelector } from "react-redux";
 import { useCommentsDbQuery } from "../../store/Api";
 import { useGetCategoriesQuery } from "../../store/Api";
+import { filterApplicant } from "../../store/filteredAplicants.ts";
+import { useSelector, useDispatch } from "react-redux";
+
 interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function TableBody({ onChange }: Props): JSX.Element {
+function TableBody(): JSX.Element {
   const applicants = useSelector((state: any) => state.entities.applicants);
+  const filteredApplicants = useSelector(
+    (state: any) => state.entities.filteredApplicants
+  );
+  console.log("filterd console", filteredApplicants);
+  console.log("applicants console", filteredApplicants);
+
   const stage = useSelector((state: any) => state.entities.stage);
   const { data: category = [] } = useGetCategoriesQuery("category");
   const searchQuery = useSelector((state: any) => state.entities.searchquery);
   const { data: comments = [] } = useCommentsDbQuery("comments");
   console.log("stage", stage);
 
+  const [selectedCategory, setSelectedCategory] = useState({
+    _id: "",
+    name: "All categories",
+  });
+
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
-  let filteredApplicant = [];
-  //@ts-ignore
-  let filteredApplicants = [];
+  useEffect(() => {
+    let filterOneApplicant = [];
+    //@ts-ignore
+    let allFilteredApplicants = [];
 
-  if (searchQuery) {
-    filteredApplicants = applicants.filter((a: any) =>
-      a.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  } else if (stage !== "636febaf89043be7c2d17c37") {
-    let NewApplicationsFromDb = comments.filter(
-      (application: any) => application.categoryId._id === stage
-    );
-    for (const a of NewApplicationsFromDb) {
-      filteredApplicant = applicants.filter(
-        (applicant: any) => applicant.contact_id === a.contact_id
+    if (searchQuery) {
+      allFilteredApplicants = applicants.filter((a: any) =>
+        a.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      //@ts-ignore
-      filteredApplicants = filteredApplicants.concat(filteredApplicant);
-    }
-  } else filteredApplicants = applicants;
+    } else if (stage !== "636febaf89043be7c2d17c37") {
+      let NewApplicationsFromDb = comments.filter(
+        (application: any) => application.categoryId._id === stage
+      );
+      for (const a of NewApplicationsFromDb) {
+        filterOneApplicant = applicants.filter(
+          (applicant: any) => applicant.contact_id === a.contact_id
+        );
+        //@ts-ignore
+        allFilteredApplicants =
+          //@ts-ignore
+          allFilteredApplicants.concat(filterOneApplicant);
+      }
+    } else allFilteredApplicants = applicants;
+
+    dispatch(filterApplicant(allFilteredApplicants));
+  }, [stage, searchQuery, applicants]);
 
   return (
     <table>
@@ -48,7 +69,7 @@ function TableBody({ onChange }: Props): JSX.Element {
         {filteredApplicants.map((applicant: any) => (
           <Tr key={applicant.answer_id}>
             <>
-              <TdEmail>
+              {/* <TdEmail>
                 {
                   <form onSubmit={handleSubmit}>
                     <input
@@ -59,7 +80,7 @@ function TableBody({ onChange }: Props): JSX.Element {
                     />
                   </form>
                 }
-              </TdEmail>
+              </TdEmail> */}
               <TdName>
                 <Link
                   to={`/dashboard/${applicant.contact_id}`}
