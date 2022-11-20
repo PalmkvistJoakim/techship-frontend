@@ -10,63 +10,6 @@ export const getAccessToken = async (code: string) => {
   localStorage.setItem("access_token", `${Code}`);
 };
 
-export const GetUserIdVideoask = async (id: string | undefined) => {
-  const token = localStorage.getItem("access_token");
-  const form = localStorage.getItem("form");
-  const { data } = await http.get(
-    `https://api.videoask.com/forms/${form}/contacts/${id}?include_answers=true&all_answers_transcoded=true`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  try {
-    return data.answers;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const GetQuestionById = async (id: string) => {
-  const token = localStorage.getItem("access_token");
-  const { data } = await http.get(`https://api.videoask.com/questions/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "organization-id": "ea431fe4-8776-4ca5-b512-3fcc8a8e9c32",
-    },
-  });
-  try {
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const GetallFormVideoask = async () => {
-  const token = localStorage.getItem("access_token");
-  const { data } = await http.get("http://localhost:5000/api/videoask/form", {
-    params: { token: token },
-  });
-  return data;
-};
-
-export const GetDataFromVideoask = async (FormId: string) => {
-  const token = localStorage.getItem("access_token");
-  const { data } = await http.get(
-    `https://api.videoask.com/forms/${FormId}/contacts?limit=200&offset=0`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  try {
-    return data.results;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const RemoveProfile = (id: string) => {
   const token = localStorage.getItem("access_token");
   const data = http.get(`http://localhost:5000/api/videoask/profile`, {

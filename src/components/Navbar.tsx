@@ -58,7 +58,7 @@ const List = styled.div`
       border: none;
       font-weight: bold;
       padding: 0.8rem;
-      border-radius: 2rem;
+      border-radius: 0.8rem;
       background-color: #58eac1;
       transition: width 2s;
       opacity: 0.9;
