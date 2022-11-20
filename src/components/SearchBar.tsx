@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IVideoask } from "../types/IVideoAsk";
 import { toast } from "react-toastify";
@@ -36,6 +36,9 @@ const Input = styled.input`
   border-radius: 2rem;
   background-color: black;
   color: #58eac1;
+  ::placeholder {
+    font-weight: bold;
+  }
 `;
 
 // function SearchBar() {

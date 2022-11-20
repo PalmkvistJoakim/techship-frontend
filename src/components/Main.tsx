@@ -1,22 +1,22 @@
 import SearchBar from "./SearchBar";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { ChangeEvent } from "react";
 import TableBody from "./common/TableBody";
-import { GetallFormVideoask } from "../services/videoaskService";
-import { useSelector, useDispatch } from "react-redux";
-
-import { loadForm } from "../store/formvideoask";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getEmails } from "../store/contacts";
-import { useCommentsDbQuery } from "../store/Api";
-import { GetDataFromVideoask } from "../services/videoaskService";
+import contacts, { getEmails } from "../store/contacts";
+import {
+  useCommentsDbQuery,
+  useGetApplicantIdVideaskQuery,
+} from "../store/Api";
 import { loadApplicant } from "../store/applicant";
 import { setStage } from "../store/stage";
 import {
   useGetCategoriesQuery,
   useAddCategoryMutation,
   useRemoveCategoryMutation,
+  useGetFormVideaskQuery,
 } from "../store/Api";
 import { useForm } from "../hooks/useForm";
 import Joi from "joi";
@@ -42,36 +42,19 @@ function Main() {
     schema
   );
   const dispatch = useDispatch();
-  const forms = useSelector((state: any) => state.entities.forms);
-  // // // const [checkEmail, setCheck] = useState<string | string[]>("");
+  const { data: forms } = useGetFormVideaskQuery("Form");
   const [selectedForm, setSelctedForm] = useState<string>("");
-  const applicantsFromVideoAsk = useSelector(
-    (state: any) => state.entities.applicants
-  );
-  const filteredApplicants = useSelector(
-    (state: any) => state.entities.filteredApplicants
-  );
-
-  console.log("FILTEREDAPPLICANTS YA KHARA", filteredApplicants);
+  const stage = useSelector((state: any) => state.entities.stage);
   const { data: comments = [] } = useCommentsDbQuery("comments");
   const { data: category = [] } = useGetCategoriesQuery("category");
-
-  // // // const [selectedStage, setStage] = useState<string>("");
-  const stage = useSelector((state: any) => state.entities.stage);
+  const form = localStorage.getItem("form");
+  let { data: contacts, error: isError } = useGetApplicantIdVideaskQuery(form);
+  const filterApplicant = useSelector(
+    (state: any) => state.entities.filterApplicant
+  );
   const { data: Category } = useGetCategoriesQuery("category");
   const [addCategory] = useAddCategoryMutation();
   const [RemoveStage] = useRemoveCategoryMutation();
-
-  // // // // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  // // // //   const value = e.target.value;
-  // // // //   const checked = e.target.checked;
-  // // // //   if (checked) {
-  // // // //     // @ts-ignore
-  // // // //     setCheck([...checkEmail, value]);
-  // // // //   } else {
-  // // // //     setCheck(value);
-  // // // //   }
-  // // // // };
 
   const handleSetStage = (value: any) => {
     //@ts-ignore
@@ -79,29 +62,9 @@ function Main() {
   };
 
   let mailList: any = [];
+  mailList = filterApplicant?.map((c: any) => c.email);
 
-  useEffect(() => {
-    async function getLoadForm() {
-      const form = await GetallFormVideoask();
-      dispatch(loadForm(form));
-    }
-    getLoadForm();
-
-    async function runLoadApplicant() {
-      const form = localStorage.getItem("form");
-      if (form) {
-        const applicants = await GetDataFromVideoask(form);
-        dispatch(loadApplicant(applicants));
-      }
-    }
-    runLoadApplicant();
-  }, []);
-  // }, [selectedForm, selectedStage, Category]);
-
-  mailList = filteredApplicants.map((f: any) => f.email);
-  console.log("mailist ", mailList);
-
-  async function handleSubmitSelect(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmitSelect(e: FormEvent<HTMLFormElement>) {
     localStorage.setItem("form", selectedForm);
   }
 
@@ -109,19 +72,25 @@ function Main() {
 
   async function handleRemoveStage() {
     try {
-      await RemoveStage(stage);
-      toast.success("🦄 Stage borttagen", { theme: "dark" });
-    } catch (error) {
-      console.log("DET GICK INETEEEEEEEEEEEEEEEEEEEEEEEEEE!!!");
-    }
+      const result = window.confirm(`Är du säkert du vill radera Staget ?`);
+      if (result === true) {
+        await RemoveStage(stage);
+        toast.success("🦄 Stage borttagen", { theme: "dark" });
+      } else {
+        return;
+      }
+    } catch (error) {}
   }
   async function handleAddStage() {
     try {
       await addCategory(body);
       toast.success("🦄 Stage har lagts till", { theme: "dark" });
-    } catch (error) {}
+    } catch (error) {
+      toast.error("👀 Något gick fel!", { theme: "dark" });
+    }
   }
-  const form = localStorage.getItem("form");
+  console.log("selctedStagecategory", stage);
+  console.log("form redux", forms);
   return (
     <Container>
       <HeadCss>
@@ -152,13 +121,14 @@ function Main() {
           <option value="" disabled={true}>
             Batch
           </option>
-          {forms.map((f: any) => (
+          {forms?.map((f: any) => (
             <option key={f.form_id} value={f.form_id}>
               {f.title}
             </option>
           ))}
         </select>
-        <button type="submit"> ^ </button>
+        <Button type="submit"> ^ </Button>
+
         <select onChange={(e) => handleSetStage(e.target.value)} value={stage}>
           <option value="" disabled={true}>
             Stage
@@ -284,4 +254,15 @@ const Email = styled(Link)`
 const Text = styled.div`
   margin-left: 10px;
   margin-top: 5%;
+`;
+
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: none;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  text-align: center;
 `;

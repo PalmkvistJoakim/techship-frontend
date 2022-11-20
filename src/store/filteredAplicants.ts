@@ -3,7 +3,7 @@ import { IVideoask } from "../types/IVideoAsk";
 
 const slice = createSlice({
   name: "filteredApplicants" as string,
-  initialState: [] as IVideoask[],
+  initialState: [] as any,
   reducers: {
     filterApplicant: (applicants, action) => {
       return action.payload;

@@ -5,10 +5,8 @@ const slice = createSlice({
   name: "contacts" as string,
   initialState: [] as IContactId[],
   reducers: {
-    loadContacts: (contacts, action) => {
-      return action.payload;
-    },
     getEmails: (sate, action) => {
+      console.log("ACTION:PAYLOAD", action.payload);
       return action.payload;
     },
   },
@@ -16,7 +14,7 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { loadContacts, getEmails } = slice.actions;
+export const { getEmails } = slice.actions;
 
 // let filteredApplicant = [];
 //       //@ts-ignore

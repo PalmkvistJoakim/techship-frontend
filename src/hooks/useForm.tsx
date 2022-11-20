@@ -127,8 +127,8 @@ const ErrorMsg = styled.p`
   opacity: 0.8;
   color: red;
   border: none;
-  padding: 9px;
-  font-size: 14px;
+  padding: 5px;
+  font-size: 10px;
 `;
 
 const Label = styled.label`
@@ -166,4 +166,8 @@ const Input = styled.input`
   border-radius: 2rem;
   background-color: black;
   color: #58eac1;
+
+  ::placeholder {
+    font-weight: bold;
+  }
 `;

@@ -1,72 +1,89 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { useCommentsDbQuery } from "../../store/Api";
-import { useGetCategoriesQuery } from "../../store/Api";
-import { filterApplicant } from "../../store/filteredAplicants.ts";
+import { filterApplicant } from "../../store/filteredAplicants";
 import { useSelector, useDispatch } from "react-redux";
-
-interface Props {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+import { FormEvent, useEffect } from "react";
+import {
+  useCommentsDbQuery,
+  useGetApplicantIdVideaskQuery,
+  useRemoveProfileBYIdMutation,
+} from "../../store/Api";
+import { IVideoask } from "../../types/IVideoAsk";
+import { toast } from "react-toastify";
 
 function TableBody(): JSX.Element {
-  const applicants = useSelector((state: any) => state.entities.applicants);
-  const filteredApplicants = useSelector(
-    (state: any) => state.entities.filteredApplicants
-  );
-  console.log("filterd console", filteredApplicants);
-  console.log("applicants console", filteredApplicants);
-
-  const stage = useSelector((state: any) => state.entities.stage);
-  const { data: category = [] } = useGetCategoriesQuery("category");
+  const form = localStorage.getItem("form");
+  const [RemoveProfile] = useRemoveProfileBYIdMutation();
+  const { data: comments } = useCommentsDbQuery("comments");
+  let { data: contacts, error: isError } = useGetApplicantIdVideaskQuery(form);
   const searchQuery = useSelector((state: any) => state.entities.searchquery);
-  const { data: comments = [] } = useCommentsDbQuery("comments");
-  console.log("stage", stage);
-
-  const [selectedCategory, setSelectedCategory] = useState({
-    _id: "",
-    name: "All categories",
-  });
-
   const dispatch = useDispatch();
+  const stage = useSelector((state: any) => state.entities.stage);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
-  useEffect(() => {
-    let filterOneApplicant = [];
-    //@ts-ignore
-    let allFilteredApplicants = [];
+  console.log("searchQuery", searchQuery);
 
-    if (searchQuery) {
-      allFilteredApplicants = applicants.filter((a: any) =>
-        a.name.toLowerCase().includes(searchQuery.toLowerCase())
+  useEffect(() => {}, [stage, searchQuery, contacts]);
+
+  // function dispatchFilterApplicant(allFilteredApplicants: any) {
+  //   return dispatch(filterApplicant(allFilteredApplicants));
+  // }
+
+  contacts = contacts?.filter((c: IVideoask) => c.name !== null);
+  let filterOneApplicant = [];
+  //@ts-ignore
+  let allFilteredApplicants = [];
+
+  if (searchQuery) {
+    allFilteredApplicants = contacts.filter((a: any) =>
+      a.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  } else if (stage !== "636febaf89043be7c2d17c37") {
+    let NewApplicationsFromDb = comments.filter(
+      (application: any) => application.categoryId._id === stage
+    );
+    for (const a of NewApplicationsFromDb) {
+      filterOneApplicant = contacts.filter(
+        (applicant: any) => applicant.contact_id === a.contact_id
       );
-    } else if (stage !== "636febaf89043be7c2d17c37") {
-      let NewApplicationsFromDb = comments.filter(
-        (application: any) => application.categoryId._id === stage
-      );
-      for (const a of NewApplicationsFromDb) {
-        filterOneApplicant = applicants.filter(
-          (applicant: any) => applicant.contact_id === a.contact_id
-        );
+      //@ts-ignore
+      allFilteredApplicants =
         //@ts-ignore
-        allFilteredApplicants =
-          //@ts-ignore
-          allFilteredApplicants.concat(filterOneApplicant);
-      }
-    } else allFilteredApplicants = applicants;
+        allFilteredApplicants.concat(filterOneApplicant);
+    }
+  } else {
+    allFilteredApplicants = contacts;
+  }
 
-    dispatch(filterApplicant(allFilteredApplicants));
-  }, [stage, searchQuery, applicants]);
+  async function handleRemove(id: string) {
+    try {
+      const result = window.confirm(
+        "Är du säkert du vill radera ? Profilen kan inte tas tillbaka."
+      );
+      if (result === true) {
+        toast.success("👍 Profilen borttagen.", { theme: "dark" });
+        // await RemoveProfile(id);
+      } else {
+        return;
+      }
+    } catch (error) {
+      toast.error("👀 kunde inte radera!", { theme: "dark" });
+    }
+  }
+  useEffect(() => {
+    if (isError) {
+      window.location.href = "/dashboard";
+    }
+  }, [contacts, comments, isError]);
 
   return (
     <table>
       <Container>
-        {filteredApplicants.map((applicant: any) => (
+        {allFilteredApplicants?.map((applicant: IVideoask) => (
           <Tr key={applicant.answer_id}>
             <>
               {/* <TdEmail>
@@ -90,7 +107,8 @@ function TableBody(): JSX.Element {
                 </Link>
               </TdName>
               <TdCreated>
-                {applicant.created_at} ({applicant.status})
+                {new Date(applicant.created_at).toLocaleString()} (
+                {applicant.status})
               </TdCreated>
 
               <TdStage>
@@ -101,7 +119,11 @@ function TableBody(): JSX.Element {
                 })}
               </TdStage>
               <TdComment>
-                <i className="fa-regular fa-trash-can"></i>
+                <i
+                  className="fa-regular fa-trash-can"
+                  style={{ color: "red", cursor: "pointer", fontSize: "14px" }}
+                  onClick={() => handleRemove(applicant.respondent_id)}
+                ></i>
               </TdComment>
             </>
           </Tr>
@@ -183,4 +205,7 @@ const TdComment = styled.td`
   display: grid;
   grid-template-columns: 60%;
   justify-self: end;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 `;
