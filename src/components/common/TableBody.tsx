@@ -163,7 +163,7 @@ const Tr = styled.tr<BdgColor>`
   grid-template-areas:
     "mail name comment"
     "mail created stage";
-  grid-template-columns: 2rem 18rem 6rem;
+  grid-template-columns: 1rem 18rem 6rem;
   grid-template-rows: 1fr 1fr;
   justify-items: stretch;
   margin-top: 80px;
