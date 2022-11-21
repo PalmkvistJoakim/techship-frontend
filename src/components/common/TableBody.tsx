@@ -87,7 +87,7 @@ function TableBody(): JSX.Element {
 
   return (
     <table>
-      <Container>
+      <Container className="question">
         {filterApplicantsFromRedux?.map((applicant: IVideoask) => (
           <Tr
             status={
@@ -154,8 +154,20 @@ const Container = styled.div`
   grid-template-rows: 1fr;
   border-collapse: collapse;
   width: 100%;
-  overflow-y: scroll;
   max-height: 30rem;
+  &.question {
+    overflow-y: scroll;
+  }
+
+  &.question::-webkit-scrollbar {
+    border-radius: 1rem;
+    background-color: #737373;
+    width: 6px;
+  }
+  &.question::-webkit-scrollbar-thumb {
+    background-color: #58eac1;
+    border-radius: 1rem;
+  }
 `;
 
 const Tr = styled.tr<BdgColor>`

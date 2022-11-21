@@ -126,7 +126,7 @@ function ProfilePage() {
                   }
                 })}
               </Userinfo>
-              <Question>
+              <Question className="question">
                 {Answers?.map((User: any) => (
                   <>
                     {User.media_url ? (
@@ -197,6 +197,14 @@ const Question = styled.ul`
     font-size: 1.3rem;
     margin-right: 5rem;
     margin-left: 5rem;
+  }
+
+  &.question {
+    overflow-y: scroll;
+  }
+
+  &.question::-webkit-scrollbar {
+    display: none;
   }
 `;
 
