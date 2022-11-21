@@ -236,7 +236,7 @@ const Container = styled.div`
 const HeadCss = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 1.8rem;
+  margin-left: 1rem;
 `;
 
 const Email = styled(Link)`

@@ -202,7 +202,6 @@ const TdStage = styled.td`
   grid-template-rows: 100%;
   margin-right: 0%;
   font-size: 12px;
-  justify-self: end;
   font-weight: bold;
   font-size: 1.05rem;
 `;

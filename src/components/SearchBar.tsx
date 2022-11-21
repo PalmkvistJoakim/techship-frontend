@@ -27,8 +27,8 @@ function SearchBar() {
 export default SearchBar;
 
 const Input = styled.input`
-  width: 20rem;
-  margin-right: 20px;
+  width: 23rem;
+  margin-left: 1rem;
   padding: 8px;
   border-radius: 2rem;
   background-color: black;

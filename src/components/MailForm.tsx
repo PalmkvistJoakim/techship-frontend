@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { SendEmail } from "../services/mejlService";
 import { useForm } from "../hooks/useForm";
+import { useGetCategoriesQuery } from "../store/Api";
 
 interface IMail {
   subject: string;
@@ -17,7 +18,8 @@ const schema = Joi.object({
 const MailForm = () => {
   const allMail = useSelector((state: any) => state.entities.contacts);
   console.log("allMail", allMail);
-
+  const { data: category } = useGetCategoriesQuery("category");
+  const stage = useSelector((state: any) => state.entities.stage);
   const { data, renderInput, renderButton, handleSubmit, renderTextArea } =
     useForm<IMail>(
       {
@@ -39,12 +41,16 @@ const MailForm = () => {
       console.log(error);
     }
   }
-  console.log(allMail);
+
+  const filteradCategory = category?.filter((c: any) => c._id === stage);
+  const CategoryName = filteradCategory?.map((c: any) => c.name);
+
   return (
     <div>
       <StyledForm>
         <form onSubmit={handleSubmit(doSubmit)}>
-          <h1> Fyll i formuläret</h1>
+          <h1> {CategoryName}</h1>
+          {renderInput("subject", "Subject...", "subject")}
           <Dropdown>
             <select>
               <option disabled={true}> All mejl du valde... </option>
@@ -55,7 +61,6 @@ const MailForm = () => {
               ))}
             </select>
           </Dropdown>
-          {renderInput("subject", "Subject...", "subject")}
           {renderTextArea("text", "", "message...")}
           {renderButton("Send")}
         </form>
@@ -99,10 +104,15 @@ const Dropdown = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+  margin-top: 5px;
+  width: 22rem;
+  padding: 8px;
+  border-radius: 1rem;
 
   select {
     padding: 8px;
     font-weight: bold;
+    border-radius: 1rem;
   }
   option {
     font-weight: bold;

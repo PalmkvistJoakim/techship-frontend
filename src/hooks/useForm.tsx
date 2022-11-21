@@ -161,11 +161,8 @@ const Button = styled.button`
 
 const Input = styled.input`
   width: 20rem;
-  margin-right: 20px;
   padding: 8px;
-  border-radius: 2rem;
-  background-color: black;
-  color: #58eac1;
+  border-radius: 1rem;
 
   ::placeholder {
     font-weight: bold;

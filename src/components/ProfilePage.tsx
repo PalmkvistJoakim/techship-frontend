@@ -85,14 +85,11 @@ function ProfilePage() {
         if (id === d.contact_id)
           return (
             <Container>
-              <Userinfo
-                status={d.status === "completed" ? "completed" : "dropped_out"}
-              >
+              <Userinfo>
                 <h1>{d.name}</h1>
                 <p> {new Date(d.created_at).toLocaleString()}</p>
                 <p className="email"> {d.email}</p>
                 <p>{d.phone_number}</p>
-                <p className="status">{d.status}</p>
                 <div className="form">
                   <form onSubmit={handleSubmit(doSubmit)}>
                     <Dropdown>
@@ -119,15 +116,11 @@ function ProfilePage() {
                   if (c.contact_id === id) {
                     return (
                       <CommentStyle>
-                        <div key={c._id}>
-                          {c.kommentar}
-                          <Icon
-                            className="fa-solid fa-xmark"
-                            onClick={() => handleDelete(c._id)}
-                          />
-                        </div>
-
-                        <div> {c.categoryId.name} </div>
+                        <p style={{ color: "#58eac1" }}>{c.kommentar}</p>
+                        <Icon
+                          className="fa-regular fa-trash-can"
+                          onClick={() => handleDelete(c._id)}
+                        />
                       </CommentStyle>
                     );
                   }
@@ -159,16 +152,12 @@ function ProfilePage() {
 
 export default ProfilePage;
 
-interface StausColor {
-  status: "dropped_out" | "idle" | "completed";
-}
-
 const Container = styled.div`
   display: grid;
   grid-template-columns: 32rem 42rem;
   grid-template-areas: "userinfo answer";
 `;
-const Userinfo = styled.div<StausColor>`
+const Userinfo = styled.div`
   grid-area: userinfo;
   display: block;
   justify-content: center;
@@ -188,17 +177,6 @@ const Userinfo = styled.div<StausColor>`
     &.email {
       font-size: 16px;
       font-weight: bold;
-    }
-    &.status {
-      color: ${(props) =>
-        props.status === "completed" ? "#09814A" : "#F55D3E"};
-    }
-    div {
-    }
-
-    .form {
-      form {
-      }
     }
   }
 `;
@@ -226,6 +204,10 @@ const Dropdown = styled.div`
   display: grid;
   gap: 12px;
   justify-content: center;
+
+  input {
+    background-color: black;
+  }
   select {
     margin-top: 10px;
     border: none;
@@ -244,8 +226,6 @@ const Dropdown = styled.div`
 
 const Icon = styled.i`
   font-size: 20px;
-  margin-left: 20px;
-  color: red;
   cursor: pointer;
   :hover {
     opacity: 0.7;
@@ -254,7 +234,7 @@ const Icon = styled.i`
 
 const CommentStyle = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 12px;

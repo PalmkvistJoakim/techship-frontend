@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Techship from "../sveg/Techship";
 import { useNavigate } from "react-router-dom";
 import Techshiplogo from "../sveg/Techshiplogo";
+import TechshipNoanmation from "../sveg/TechshipNoanmation";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Navbar = () => {
         {token ? (
           <>
             <Logo>
-              <Techshiplogo width={"200px"} height={"75px"} />
+              <TechshipNoanmation width={"200px"} height={"75px"} />
             </Logo>
             <List>
               <h1 onClick={() => navigate("/dashboard")}>Dashboard</h1>
