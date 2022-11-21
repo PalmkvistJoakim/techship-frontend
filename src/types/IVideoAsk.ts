@@ -13,6 +13,7 @@ export interface IVideoask {
   contact_id: string;
   status: string;
   stage: IStage;
+  categoryId: ICategory;
 }
 
 export interface IProfile {
@@ -28,7 +29,7 @@ export interface IKomment {
   _id: string;
   contact_id: string;
   createdAt: string;
-  stage: string;
+  categoryId: ICategory;
   kommentar: string;
   question_id: string;
 }
@@ -36,4 +37,9 @@ export interface IKomment {
 export interface IForm {
   form_id: string;
   title: string;
+}
+
+export interface ICategory {
+  _id: string;
+  name: string;
 }

@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import _ from "lodash";
 import { filterApplicant } from "../../store/filteredAplicants";
 import { useSelector, useDispatch } from "react-redux";
-import { FormEvent, useEffect } from "react";
+import { useEffect } from "react";
 import {
   useCommentsDbQuery,
   useGetApplicantIdVideaskQuery,
@@ -11,23 +10,21 @@ import {
 } from "../../store/Api";
 import { IVideoask } from "../../types/IVideoAsk";
 import { toast } from "react-toastify";
+import { IStage } from "../../types/IStage";
 
 function TableBody(): JSX.Element {
+  const dispatch = useDispatch();
   const form = localStorage.getItem("form");
-  const [RemoveProfile] = useRemoveProfileBYIdMutation();
+
   const { data: comments } = useCommentsDbQuery("comments");
+  const [RemoveProfile] = useRemoveProfileBYIdMutation();
+
   let { data: contacts, error: isError } = useGetApplicantIdVideaskQuery(form);
   const searchQuery = useSelector((state: any) => state.entities.searchquery);
-  const dispatch = useDispatch();
-  const stage = useSelector((state: any) => state.entities.stage);
+  const stage = useSelector((state: IStage) => state.entities.stage);
   const filterApplicantsFromRedux = useSelector(
-    (state: any) => state.entities.filterApplicant
+    (state: IVideoask) => state.entities.filterApplicant
   );
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
-
-  console.log("searchQuery", searchQuery);
 
   useEffect(() => {
     contacts = contacts?.filter((c: IVideoask) => c.name !== null);
@@ -36,18 +33,18 @@ function TableBody(): JSX.Element {
     let allFilteredApplicants = [];
 
     if (searchQuery) {
-      allFilteredApplicants = contacts.filter((a: any) =>
+      allFilteredApplicants = contacts.filter((a: IVideoask) =>
         a.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     } else if (stage !== "636febaf89043be7c2d17c37") {
       let NewApplicationsFromDb = comments.filter(
-        (application: any) => application.categoryId._id === stage
+        (application: IVideoask) => application.categoryId._id === stage
       );
       for (const a of NewApplicationsFromDb) {
         filterOneApplicant = contacts.filter(
-          (applicant: any) => applicant.contact_id === a.contact_id
+          (applicant: IVideoask) => applicant.contact_id === a.contact_id
         );
-        //@ts-ignore
+
         allFilteredApplicants =
           //@ts-ignore
           allFilteredApplicants.concat(filterOneApplicant);
@@ -58,10 +55,6 @@ function TableBody(): JSX.Element {
 
     dispatch(filterApplicant(allFilteredApplicants));
   }, [stage, searchQuery, contacts]);
-
-  // function dispatchFilterApplicant(allFilteredApplicants: any) {
-  //   return dispatch(filterApplicant(allFilteredApplicants));
-  // }
 
   async function handleRemove(id: string) {
     try {
@@ -88,7 +81,12 @@ function TableBody(): JSX.Element {
     <table>
       <Container>
         {filterApplicantsFromRedux?.map((applicant: IVideoask) => (
-          <Tr key={applicant.answer_id}>
+          <Tr
+            status={
+              applicant.status === "completed" ? "completed" : "dropped_out"
+            }
+            key={applicant.answer_id}
+          >
             <>
               {/* <TdEmail>
                 {
@@ -111,8 +109,7 @@ function TableBody(): JSX.Element {
                 </Link>
               </TdName>
               <TdCreated>
-                {new Date(applicant.created_at).toLocaleString()} (
-                {applicant.status})
+                {new Date(applicant.created_at).toLocaleString()}
               </TdCreated>
 
               <TdStage>
@@ -125,7 +122,7 @@ function TableBody(): JSX.Element {
               <TdComment>
                 <i
                   className="fa-regular fa-trash-can"
-                  style={{ color: "red", cursor: "pointer", fontSize: "14px" }}
+                  style={{ cursor: "pointer", fontSize: "14px" }}
                   onClick={() => handleRemove(applicant.respondent_id)}
                 ></i>
               </TdComment>
@@ -139,6 +136,10 @@ function TableBody(): JSX.Element {
 
 export default TableBody;
 
+interface BdgColor {
+  status: "dropped_out" | "idle" | "completed";
+}
+
 const Container = styled.div`
   margin-top: 2rem;
   display: grid;
@@ -149,7 +150,7 @@ const Container = styled.div`
   max-height: 30rem;
 `;
 
-const Tr = styled.tr`
+const Tr = styled.tr<BdgColor>`
   display: grid;
   grid-template-areas:
     "mail name comment"
@@ -160,19 +161,13 @@ const Tr = styled.tr`
   margin-top: 80px;
   margin: 2%;
   padding-top: 0.5rem;
+  /* background-color: ${(props) =>
+    props.status === "completed" ? "#09814A" : "#F55D3E"}; */
 
   :hover {
     background-color: grey;
   }
   cursor: pointer;
-`;
-
-const TdEmail = styled.td`
-  grid-area: mail;
-  display: grid;
-  grid-template-columns: 100%;
-  align-items: center;
-  margin-bottom: 0.5rem;
 `;
 
 const TdName = styled.td`
