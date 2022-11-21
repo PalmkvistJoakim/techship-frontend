@@ -163,6 +163,7 @@ const Input = styled.input`
   width: 20rem;
   padding: 8px;
   border-radius: 1rem;
+  color: #58eac1;
 
   ::placeholder {
     font-weight: bold;

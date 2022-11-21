@@ -70,8 +70,8 @@ function TableBody(): JSX.Element {
         "Är du säkert du vill radera ? Profilen kan inte tas tillbaka."
       );
       if (result === true) {
-        toast.success("👍 Profilen borttagen.", { theme: "dark" });
-        // await RemoveProfile(id);
+        toast.success("✅ Profilen borttagen.", { theme: "dark" });
+        await RemoveProfile(id);
       } else {
         return;
       }

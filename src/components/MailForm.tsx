@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { SendEmail } from "../services/mejlService";
 import { useForm } from "../hooks/useForm";
 import { useGetCategoriesQuery } from "../store/Api";
+import { toast } from "react-toastify";
 
 interface IMail {
   subject: string;
@@ -19,6 +20,7 @@ const MailForm = () => {
   const allMail = useSelector((state: any) => state.entities.contacts);
   console.log("allMail", allMail);
   const { data: category } = useGetCategoriesQuery("category");
+
   const stage = useSelector((state: any) => state.entities.stage);
   const { data, renderInput, renderButton, handleSubmit, renderTextArea } =
     useForm<IMail>(
@@ -36,7 +38,7 @@ const MailForm = () => {
         subject: data.subject,
         message: data.text,
       });
-      console.log(res);
+      toast.success("✅ Skickat.", { theme: "dark" });
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +86,10 @@ const StyledForm = styled.div`
     text-align: center;
     position: relative;
     transition: all 0.2s ease-in-out;
+
+    input {
+      color: black;
+    }
 
     h1 {
       margin-bottom: 10px;
