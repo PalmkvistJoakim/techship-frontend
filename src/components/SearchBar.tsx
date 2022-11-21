@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IVideoask } from "../types/IVideoAsk";
-import { toast } from "react-toastify";
 import { searchQuery } from "../store/searchQuery";
 
 function SearchBar() {

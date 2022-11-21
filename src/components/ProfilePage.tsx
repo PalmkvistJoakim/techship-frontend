@@ -6,7 +6,8 @@ import { useForm } from "../hooks/useForm";
 import { IprofileAdd } from "../types/IStage";
 import Joi from "joi";
 import { toast } from "react-toastify";
-import { IVideoask } from "../types/IVideoAsk";
+import { IKomment, IVideoask } from "../types/IVideoAsk";
+import Spinner from "../sveg/Spinner";
 import {
   useCommentsDbQuery,
   useCommentsAddMutation,
@@ -19,15 +20,18 @@ import {
 const schema = Joi.object({
   kommentar: Joi.string().label("Kommentar"),
 });
+
 const form = localStorage.getItem("form");
+
 function ProfilePage() {
   const { id } = useParams();
-  const { data: comments } = useCommentsDbQuery("comments");
+  const { data: comments = [] } = useCommentsDbQuery("comments");
   const [addComment] = useCommentsAddMutation();
   const [RemoveComment] = useCommentsRemoveMutation();
-  const { data: Answers } = useGetUserbyIdVideaskQuery(id);
-  const { data: contacts } = useGetApplicantIdVideaskQuery(form);
-  const { data: Category } = useGetCategoriesQuery("category");
+  const { data: Answers = [] } = useGetUserbyIdVideaskQuery(id);
+  const { data: contacts = [], isLoading } =
+    useGetApplicantIdVideaskQuery(form);
+  const { data: Category = [] } = useGetCategoriesQuery("category");
 
   const [stage, setStage] = useState<string>("");
   const {
@@ -42,7 +46,7 @@ function ProfilePage() {
     schema
   );
 
-  useEffect(() => {}, [form, contacts, Answers, stage]); //answers
+  useEffect(() => {}, [form, Answers, stage]);
 
   async function doSubmit() {
     if (id) {
@@ -68,11 +72,15 @@ function ProfilePage() {
       toast.error("👀 kunde inte radera!", { theme: "dark" });
     }
   };
-
-  console.log("redux contacts", contacts);
-  console.log("redux Answers", Answers);
   return (
     <>
+      {isLoading ? (
+        <div style={{ position: "absolute", top: "30%", left: "40%" }}>
+          <Spinner />
+        </div>
+      ) : (
+        <></>
+      )}
       {contacts?.map((d: IVideoask) => {
         if (id === d.contact_id)
           return (
@@ -81,7 +89,7 @@ function ProfilePage() {
                 status={d.status === "completed" ? "completed" : "dropped_out"}
               >
                 <h1>{d.name}</h1>
-                <p> {d.created_at}</p>
+                <p> {new Date(d.created_at).toLocaleString()}</p>
                 <p className="email"> {d.email}</p>
                 <p>{d.phone_number}</p>
                 <p className="status">{d.status}</p>
@@ -106,7 +114,7 @@ function ProfilePage() {
                     </Dropdown>
                   </form>
                 </div>
-                {comments?.map((c: any) => {
+                {comments?.map((c: IKomment) => {
                   if (c.contact_id === id) {
                     return (
                       <CommentStyle>
@@ -181,7 +189,8 @@ const Userinfo = styled.div<StausColor>`
       font-weight: bold;
     }
     &.status {
-      color: ${(props) => (props.status === "completed" ? "green" : "red")};
+      color: ${(props) =>
+        props.status === "completed" ? "#09814A" : "#F55D3E"};
     }
     div {
     }

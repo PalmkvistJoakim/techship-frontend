@@ -1,4 +1,5 @@
 export interface IStage {
+  entities?: any;
   _id: string;
   name: string;
 }

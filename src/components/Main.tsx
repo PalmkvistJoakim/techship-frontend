@@ -5,140 +5,114 @@ import { ChangeEvent } from "react";
 import TableBody from "./common/TableBody";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import contacts, { getEmails } from "../store/contacts";
-import {
-  useCommentsDbQuery,
-  useGetApplicantIdVideaskQuery,
-} from "../store/Api";
-import { loadApplicant } from "../store/applicant";
+import { getEmails } from "../store/contacts";
 import { setStage } from "../store/stage";
-import {
-  useGetCategoriesQuery,
-  useAddCategoryMutation,
-  useRemoveCategoryMutation,
-  useGetFormVideaskQuery,
-} from "../store/Api";
-import { useForm } from "../hooks/useForm";
-import Joi from "joi";
-import { toast } from "react-toastify";
-
-interface Category {
-  name: string;
-}
+import { useGetCategoriesQuery, useGetFormVideaskQuery } from "../store/Api";
+import { IStage } from "../types/IStage";
+import { IForm, IVideoask } from "../types/IVideoAsk";
 
 function Main() {
-  const schema = Joi.object({
-    name: Joi.string().label("name"),
-  });
-  const {
-    data: body,
-    renderInput,
-    handleSubmit,
-    renderButton,
-  } = useForm<Category>(
-    {
-      name: "",
-    },
-    schema
-  );
+  const form = localStorage.getItem("form");
   const dispatch = useDispatch();
   const { data: forms } = useGetFormVideaskQuery("Form");
   const [selectedForm, setSelctedForm] = useState<string>("");
-  const stage = useSelector((state: any) => state.entities.stage);
-  const { data: comments = [] } = useCommentsDbQuery("comments");
-  const { data: category = [] } = useGetCategoriesQuery("category");
-  const form = localStorage.getItem("form");
-  let { data: contacts, error: isError } = useGetApplicantIdVideaskQuery(form);
+  const stage = useSelector((state: IStage) => state.entities.stage);
   const filterApplicant = useSelector(
-    (state: any) => state.entities.filterApplicant
+    (state: IVideoask) => state.entities.filterApplicant
   );
   const { data: Category } = useGetCategoriesQuery("category");
-  const [addCategory] = useAddCategoryMutation();
-  const [RemoveStage] = useRemoveCategoryMutation();
+  // const [addCategory] = useAddCategoryMutation();
+  // const [RemoveStage] = useRemoveCategoryMutation();
 
   const handleSetStage = (value: any) => {
-    //@ts-ignore
     dispatch(setStage(value));
   };
 
   let mailList: any = [];
-  mailList = filterApplicant?.map((c: any) => c.email);
+  mailList = filterApplicant?.map((c: IVideoask) => c.email);
 
-  async function handleSubmitSelect(e: FormEvent<HTMLFormElement>) {
-    localStorage.setItem("form", selectedForm);
+  function handleSubmitSelect(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
   }
 
-  async function doSubmit() {}
+  function handleSelcetForm(e: ChangeEvent<HTMLSelectElement>) {
+    const form = e.target.value;
+    localStorage.setItem("form", form);
+    setSelctedForm(form);
+    window.location.reload();
+  }
 
-  async function handleRemoveStage() {
-    try {
-      const result = window.confirm(`Är du säkert du vill radera Staget ?`);
-      if (result === true) {
-        await RemoveStage(stage);
-        toast.success("🦄 Stage borttagen", { theme: "dark" });
-      } else {
-        return;
-      }
-    } catch (error) {}
-  }
-  async function handleAddStage() {
-    try {
-      await addCategory(body);
-      toast.success("🦄 Stage har lagts till", { theme: "dark" });
-    } catch (error) {
-      toast.error("👀 Något gick fel!", { theme: "dark" });
-    }
-  }
-  console.log("selctedStagecategory", stage);
-  console.log("form redux", forms);
+  // async function handleRemoveStage() {
+  //   try {
+  //     const result = window.confirm(`Är du säkert du vill radera Staget ?`);
+  //     if (result === true) {
+  //       await RemoveStage(stage);
+  //       toast.success("🦄 Stage borttagen", { theme: "dark" });
+  //     } else {
+  //       return;
+  //     }
+  //   } catch (error) {}
+  // }
+  // async function handleAddStage() {
+  //   try {
+  //     await addCategory(body);
+  //     toast.success("🦄 Stage har lagts till", { theme: "dark" });
+  //   } catch (error) {
+  //     toast.error("👀 Något gick fel!", { theme: "dark" });
+  //   }
+  // }
+  // async function doSubmit() {}
   return (
     <Container>
       <HeadCss>
         <SearchBar />
       </HeadCss>
-      <Wrapper>
+      {/* <Wrapper>
         <form onChange={handleSubmit(doSubmit)}>
-          {renderInput("name", "Lägg till ny stage", "text")}
+        {renderInput("name", "Lägg till ny stage", "text")}
         </form>
         <i
-          className="fa-solid fa-circle-plus"
-          onClick={handleAddStage}
-          style={{ color: "blue", cursor: "pointer", fontSize: "15px" }}
+        className="fa-solid fa-circle-plus"
+        onClick={handleAddStage}
+        style={{ color: "blue", cursor: "pointer", fontSize: "15px" }}
         ></i>
         <i
           className="fa-regular fa-trash-can"
           onClick={handleRemoveStage}
           style={{ color: "red", cursor: "pointer", fontSize: "14px" }}
         ></i>
-      </Wrapper>
+      </Wrapper> */}
       <form onSubmit={handleSubmitSelect}>
-        <select
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            setSelctedForm(e.target.value)
-          }
-          value={form ? form : selectedForm}
-        >
-          <option value="" disabled={true}>
-            Batch
-          </option>
-          {forms?.map((f: any) => (
-            <option key={f.form_id} value={f.form_id}>
-              {f.title}
+        <Dropdown>
+          <select
+            onChange={handleSelcetForm}
+            value={form ? form : selectedForm}
+          >
+            <option value="" disabled={true}>
+              Välj Batch
             </option>
-          ))}
-        </select>
-        <Button type="submit"> ^ </Button>
-
-        <select onChange={(e) => handleSetStage(e.target.value)} value={stage}>
-          <option value="" disabled={true}>
-            Stage
-          </option>
-          {Category?.map((s: any) => (
-            <option key={s._id} value={s._id}>
-              {s.name}
+            {forms?.map((f: IForm) => (
+              <option key={f.form_id} value={f.form_id}>
+                {f.title}
+              </option>
+            ))}
+          </select>
+        </Dropdown>
+        <Dropdown>
+          <select
+            onChange={(e) => handleSetStage(e.target.value)}
+            value={stage}
+          >
+            <option value="" disabled={true}>
+              Välj Stage
             </option>
-          ))}
-        </select>
+            {Category?.map((s: any) => (
+              <option key={s._id} value={s._id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </Dropdown>
       </form>
       <TableBody />
       <Email to="/mail" onClick={() => dispatch(getEmails(mailList))}>
@@ -158,29 +132,50 @@ function Main() {
 
 export default Main;
 
-const Wrapper = styled.div`
-  margin-left: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+// const Wrapper = styled.div`
+//   margin-left: 10px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   gap: 5px;
 
-  button {
+//   button {
+//     margin-top: 10px;
+//     margin-bottom: 10px;
+//     width: 8rem;
+//     border: none;
+//     padding: 5px;
+//     color: black;
+//     font-weight: bold;
+//     border-radius: 0.3rem;
+//     cursor: pointer;
+//     :hover {
+//       background-color: #a8f5df;
+//       transform: scale(0.9);
+//     }
+//     :active {
+//       transform: rotate(1);
+//     }
+//   }
+// `;
+
+const Dropdown = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+
+  select {
     margin-top: 10px;
-    margin-bottom: 10px;
-    width: 8rem;
     border: none;
-    padding: 5px;
-    color: black;
-    font-weight: bold;
+    padding: 6px;
     border-radius: 0.3rem;
-    cursor: pointer;
-    :hover {
-      background-color: #a8f5df;
-      transform: scale(0.9);
-    }
-    :active {
-      transform: rotate(1);
+    font-size: 13px;
+    font-weight: 300;
+    text-align: center;
+
+    option {
+      font-size: 16px;
+      font-weight: 500;
     }
   }
 `;
@@ -208,6 +203,11 @@ const Container = styled.div`
         border-radius: 1rem;
         font-weight: bold;
         font-size: 14px;
+        :checked {
+          background: linear-gradient(#d6d6d6, #d6d6d6);
+          background-color: black !important;
+          color: white !important;
+        }
       }
     }
 
