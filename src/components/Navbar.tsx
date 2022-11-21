@@ -16,7 +16,7 @@ const Navbar = () => {
             </Logo>
             <List>
               <h1 onClick={() => navigate("/dashboard")}>Dashboard</h1>
-              <h1 onClick={() => navigate("/logout")}>Logout</h1>
+              <h1 onClick={() => navigate("/logout")}>Logga ut</h1>
             </List>
           </>
         ) : (

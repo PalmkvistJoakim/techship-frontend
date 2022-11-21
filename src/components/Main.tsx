@@ -108,7 +108,7 @@ function Main() {
             value={stage}
           >
             <option value="" disabled={true}>
-              Välj Stage
+              Välj steg
             </option>
             {categories?.map((s: any) => (
               <option key={s._id} value={s._id}>

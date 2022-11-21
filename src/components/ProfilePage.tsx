@@ -102,7 +102,7 @@ function ProfilePage() {
                         value={stage}
                       >
                         <option value="" disabled={true}>
-                          Lägg till Stage
+                          Lägg till steg
                         </option>
                         {Category?.map((s: any) => (
                           <option key={s._id} value={s._id}>
