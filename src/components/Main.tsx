@@ -11,6 +11,8 @@ import { useGetCategoriesQuery, useGetFormVideaskQuery } from "../store/Api";
 import { IStage } from "../types/IStage";
 import { IForm, IVideoask } from "../types/IVideoAsk";
 
+const DEFAULT_CATEGORY = { _id: "", name: "ALL APPLICANTS" };
+
 function Main() {
   const form = localStorage.getItem("form");
   const dispatch = useDispatch();
@@ -20,7 +22,10 @@ function Main() {
   const filterApplicant = useSelector(
     (state: IVideoask) => state.entities.filterApplicant
   );
-  const { data: Category } = useGetCategoriesQuery("category");
+  const { data: Category = [] } = useGetCategoriesQuery("category");
+  console.log("category", Category);
+  const categories = [DEFAULT_CATEGORY, ...Category];
+
   // const [addCategory] = useAddCategoryMutation();
   // const [RemoveStage] = useRemoveCategoryMutation();
 
@@ -106,7 +111,7 @@ function Main() {
             <option value="" disabled={true}>
               Välj Stage
             </option>
-            {Category?.map((s: any) => (
+            {categories?.map((s: any) => (
               <option key={s._id} value={s._id}>
                 {s.name}
               </option>

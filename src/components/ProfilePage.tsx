@@ -110,6 +110,7 @@ function ProfilePage() {
                           </option>
                         ))}
                       </select>
+
                       {renderButton("Spara")}
                     </Dropdown>
                   </form>

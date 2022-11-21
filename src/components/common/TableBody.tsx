@@ -36,7 +36,7 @@ function TableBody(): JSX.Element {
       allFilteredApplicants = contacts.filter((a: IVideoask) =>
         a.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-    } else if (stage !== "636febaf89043be7c2d17c37") {
+    } else if (stage) {
       let NewApplicationsFromDb = comments.filter(
         (application: IVideoask) => application.categoryId._id === stage
       );
