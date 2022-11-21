@@ -11,7 +11,7 @@ import { useGetCategoriesQuery, useGetFormVideaskQuery } from "../store/Api";
 import { IStage } from "../types/IStage";
 import { IForm, IVideoask } from "../types/IVideoAsk";
 
-const DEFAULT_CATEGORY = { _id: "", name: "ALL APPLICANTS" };
+const DEFAULT_CATEGORY = { _id: "", name: "Alla ansökningar" };
 
 function Main() {
   const form = localStorage.getItem("form");
