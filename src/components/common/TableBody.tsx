@@ -16,32 +16,39 @@ function TableBody(): JSX.Element {
   const dispatch = useDispatch();
   const form = localStorage.getItem("form");
 
-  const { data: comments } = useCommentsDbQuery("comments");
+  const { data: comments = [] } = useCommentsDbQuery("comments");
   const [RemoveProfile] = useRemoveProfileBYIdMutation();
 
-  let { data: contacts, error: isError } = useGetApplicantIdVideaskQuery(form);
+  let { data: contacts = [], error: isError } =
+    useGetApplicantIdVideaskQuery(form);
   const searchQuery = useSelector((state: any) => state.entities.searchquery);
   const stage = useSelector((state: IStage) => state.entities.stage);
   const filterApplicantsFromRedux = useSelector(
     (state: IVideoask) => state.entities.filterApplicant
   );
 
+  contacts = contacts?.filter((c: IVideoask) => c.name !== null);
+
   useEffect(() => {
-    contacts = contacts?.filter((c: IVideoask) => c.name !== null);
+    console.log("Kommer in i Use EFFECT");
     let filterOneApplicant = [];
     //@ts-ignore
     let allFilteredApplicants = [];
 
     if (searchQuery) {
-      allFilteredApplicants = contacts.filter((a: IVideoask) =>
+      console.log("Kommer in i if searchQuery", searchQuery);
+
+      allFilteredApplicants = contacts?.filter((a: IVideoask) =>
         a.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     } else if (stage) {
-      let NewApplicationsFromDb = comments.filter(
+      console.log("Kommer in i else if stage", stage);
+
+      let NewApplicationsFromDb = comments?.filter(
         (application: IVideoask) => application.categoryId._id === stage
       );
       for (const a of NewApplicationsFromDb) {
-        filterOneApplicant = contacts.filter(
+        filterOneApplicant = contacts?.filter(
           (applicant: IVideoask) => applicant.contact_id === a.contact_id
         );
 
@@ -50,11 +57,12 @@ function TableBody(): JSX.Element {
           allFilteredApplicants.concat(filterOneApplicant);
       }
     } else {
+      console.log(contacts);
       allFilteredApplicants = contacts;
     }
 
     dispatch(filterApplicant(allFilteredApplicants));
-  }, [stage, searchQuery, contacts]);
+  }, [stage, searchQuery, contacts.length]);
 
   async function handleRemove(id: string) {
     try {

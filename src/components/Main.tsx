@@ -23,7 +23,6 @@ function Main() {
     (state: IVideoask) => state.entities.filterApplicant
   );
   const { data: Category = [] } = useGetCategoriesQuery("category");
-  console.log("category", Category);
   const categories = [DEFAULT_CATEGORY, ...Category];
 
   // const [addCategory] = useAddCategoryMutation();
