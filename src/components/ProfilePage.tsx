@@ -137,7 +137,7 @@ function ProfilePage() {
                 {Answers?.map((User: any) => (
                   <>
                     {User.media_url ? (
-                      <li>
+                      <li key={User.answer_id}>
                         <ReactPlayer
                           url={User.media_url}
                           controls={true}
